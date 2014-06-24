@@ -387,10 +387,7 @@ class Generator extends JPanel implements Runnable {
 		pitch=440;
 		angle=0;
 
-
-
 		setLayout(null);
-
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent m) {
