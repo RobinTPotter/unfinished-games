@@ -380,7 +380,6 @@ class Generator extends JPanel implements Runnable {
 	public Generator(HarmonicControlPanel p, MainControlPanel mp) {
 		setBackground((Color.gray).darker());
 
-
 		hcp=p;
 		mcp=mp;
 
