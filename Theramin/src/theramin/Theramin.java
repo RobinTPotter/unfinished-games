@@ -400,7 +400,6 @@ class Generator extends JPanel implements Runnable {
 
 		});
 
-
 		addMouseListener(new MouseAdapter() {
 			public void mouseEntered(MouseEvent m) {
 				Generator.this.requestFocus();
