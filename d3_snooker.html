@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<script src="../lib/d3/d3.v3.js"></script>
+<script src="../lib/rtp/Vector.js"></script>
+</head>
+<body onkeydown="keypress(event)">
+<script>
+
+
+var svg=d3.select("body").append("svg")//.attr("width",WIDTH).attr("height",HEIGHT)
+
+var WIDTH=1200 //document.body.clientWidth
+var HEIGHT=600 //document.body.clientHeight
+var RADIUS=20 // dims roughly right
+var POCKET=22
+
+//var TABLE_WIDTH=WIDTH-2*RADIUS
+//var TABLE_HEIGHT=HEIGHT-2*RADIUS
+
+
+svg.append("rect").attr("x",RADIUS).attr("y",RADIUS).attr("width",WIDTH-2*RADIUS).attr("height",HEIGHT-2*RADIUS).style("fill","#006600")
+
+
+
+
+var pockets=[]
+
+function pocket(xx,yy) {
+	this.xx=xx
+	this.yy=yy
+	this.position=new Vector(xx*WIDTH, yy*HEIGHT)
+}
+
+var blocks=[]
+
+function block() {
+	this.points=[]
+	
+	this.generate=function() {
+		var path=""
+		for (var p in this.points) {
+			if (p==0) path+="M"; else path+="L"
+			path+=this.points[p].x+","+this.points[p].y+" "
+		}
+		path+="Z"
+		svg.append("path").attr("d",path).style("fill","#55ff55").style("stroke","black").style("stroke-width","1")
+	}
+	
+	this.line=function(n) {
+		console.log(arguments,this.points.length,n,(n+1)%this.points.length)
+		return [this.points[n],this.points[(n+1)%this.points.length]]	
+	}
+}
+
+blocks.push(new block())
+blocks[blocks.length-1].points.push(new Vector(100,100))
+blocks[blocks.length-1].points.push(new Vector(200,150))
+blocks[blocks.length-1].points.push(new Vector(90,250))
+blocks[blocks.length-1].generate()
+
+blocks.push(new block())
+blocks[blocks.length-1].points.push(new Vector(500,400))
+blocks[blocks.length-1].points.push(new Vector(550,550))
+blocks[blocks.length-1].points.push(new Vector(410,250))
+blocks[blocks.length-1].generate()
+
+
+
+
+pockets.push(new pocket(0,0))
+pockets.push(new pocket(0.5,0))
+pockets.push(new pocket(1,0))
+pockets.push(new pocket(0,1))
+pockets.push(new pocket(0.5,1))
+pockets.push(new pocket(1,1))
+
+
+//pockets
+svg.selectAll(".pocket").data(pockets).enter().append("g").attr("class","pocket").attr("id", function(d,i) { return "pocket_"+d.id }).append("circle").attr("r", function(d,i) { return POCKET }).style("fill","black")
+svg.selectAll(".pocket").attr("transform", function(d,i) { return "translate("+d.position.x+","+d.position.y+")" })
+
+
+
+
+function ball(col) {
+	this.position=new Vector(0,0)
+	this.velocity=new Vector(0,0)	
+	this.colour=col
+	this.position.x=Math.random()*400+RADIUS*2
+	this.position.y=Math.random()*300+RADIUS*2
+	this.radius=RADIUS
+}
+
+
+var colours=[0,1,1,1,1,1,1,1,1,1,1,2,3,4,5,6,7]
+var colval=["#eefeff","red","yellow","green","brown","blue","pink","black"]
+var balls=[]
+
+colours.forEach(function(c) {
+	b=new ball(colval[c])
+	b.id=balls.length
+	balls.push(b)
+})
+
+
+
+
+function cuefunction() {
+	this.start=new Vector()
+	this.end=new Vector()
+	this.power=function() { return this.end.subtract(this.start).multiply(-1.0) }
+}
+
+var cue=new cuefunction()
+
+function cueball_drag_start(x) {
+	cue.start=new Vector(d3.event.sourceEvent.x,d3.event.sourceEvent.y)
+	cue.end=new Vector(d3.event.sourceEvent.x,d3.event.sourceEvent.y)
+	d3_cueline.attr("x1",cue.start.x)
+	d3_cueline.attr("y1",cue.start.y)
+	d3_cueline.attr("x2",cue.end.x)
+	d3_cueline.attr("y2",cue.end.y)
+	d3_cueline.style("visibility","visible")
+	
+}
+function cueball_drag_move() {
+	cue.end=new Vector(d3.event.sourceEvent.x,d3.event.sourceEvent.y)
+	d3_cueline.attr("x1",cue.start.x)
+	d3_cueline.attr("y1",cue.start.y)
+	d3_cueline.attr("x2",cue.end.x)
+	d3_cueline.attr("y2",cue.end.y)
+}
+function cueball_drag_end() {
+	d3_cueline.style("visibility","hidden")
+	balls[0].velocity=cue.power().multiply(0.05)
+}
+
+var drag = d3.behavior.drag()
+	.origin(null)
+	.on("dragstart", cueball_drag_start)
+	.on("drag", cueball_drag_move)
+	.on("dragend", cueball_drag_end)
+
+
+//balls
+svg.selectAll(".ball").data(balls).enter().append("g").attr("class","ball").attr("id", function(d,i) { return "ball_"+d.id }).append("circle").attr("r", function(d,i) { return d.radius }).style("fill",function(d,i) { return d.colour })
+
+
+
+
+
+
+
+
+function keypress(e) {
+	if (e.which==27) {	
+		balls.forEach(function(b1) { 
+			b1.velocity=b1.velocity.multiply(0.01)
+		})		
+	}
+}
+
+
+var settingup=true
+var d3_cueball=svg.select("#ball_0").call(drag)
+
+var d3_cueline=svg.append("line").style("stroke","black").style("stroke-width",2)
+tick()
+
+function tick(){
+
+	var allquiet=true
+	balls.forEach(function(b1) {
+		balls.forEach(function(b2) {
+			if (b1.id!=b2.id) {
+				if (b1.position.distance(b2.position)<2*RADIUS) {
+					var newvel=0.01
+					if (!settingup) {
+						newvel=b1.velocity.magnitude()+b2.velocity.magnitude()
+						//console.log(newvel)
+						newvel/=4.0
+						if (newvel>2) newvel=2
+					}
+					b1.velocity=b1.velocity.add( b2.position.subtract(b1.position).normalize().multiply(-newvel) )
+					b2.velocity=b2.velocity.add( b1.position.subtract(b2.position).normalize().multiply(-newvel) )
+				}
+			}
+		})
+		
+		b1.velocity=b1.velocity.multiply(0.9965)
+		
+		
+		blocks.forEach(function(b) {
+			for (var ll=0;ll<b.points.length;ll++) {
+				var line=b.line(ll)
+				console.log(line_point_test(line[0],line[1],b1.position))
+			}
+		
+		})
+		
+		
+		
+		
+		
+		
+		test=b1.position.add(b1.velocity)
+		if (test.x<RADIUS*2|| test.x>WIDTH-RADIUS*2) b1.velocity.x=-b1.velocity.x
+		if (test.y<RADIUS*2 || test.y>HEIGHT-RADIUS*2) b1.velocity.y=-b1.velocity.y
+		if (b1.velocity.magnitude()>0.01) {
+			b1.position=b1.position.add(b1.velocity)
+			allquiet=false
+		} else {
+			b1.velocity.x=0
+			b1.velocity.y=0
+		}
+		
+	})
+	if (settingup) settingup=false
+
+	//if (allquiet) console.log("resting")
+	
+	svg.selectAll(".ball").attr("transform", function(d,i) { return "translate("+d.position.x+","+d.position.y+")" })
+	setTimeout("tick()",10)
+}
+
+
+
+</script>
+</body>
+</html>
