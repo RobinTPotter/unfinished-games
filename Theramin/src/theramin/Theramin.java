@@ -397,7 +397,6 @@ class Generator extends JPanel implements Runnable {
 
 				Generator.this.repaint();
 			}
-
 		});
 
 		addMouseListener(new MouseAdapter() {
