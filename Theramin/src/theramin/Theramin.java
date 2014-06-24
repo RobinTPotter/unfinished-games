@@ -272,17 +272,24 @@ class MainControlPanel extends Panel  {
 		add(buffer);
 		add(mouseDiffFactorVal);
 		add(fine);
+		
+		fine.addAdjustmentListener(new AdjustmentListener() { public void adjustmentValueChanged(AdjustmentEvent a) { gen.repaint(); }});
+		mouseDiffFactorVal.addAdjustmentListener(new AdjustmentListener() { public void adjustmentValueChanged(AdjustmentEvent a) { gen.repaint(); }});
+		
 		add(record);
 		add(recordfilename);
 		add(basepitch);
 
+
+
+
 		l=new Label[6];
-		l[0]=new Label(); add(l[0]); l[0].setText("G");
-		l[1]=new Label(); add(l[1]); l[1].setText("B");
-		l[2]=new Label(); add(l[2]); l[2].setText("M");
-		l[3]=new Label(); add(l[3]); l[3].setText("T");
-		l[4]=new Label(); add(l[4]); l[4].setText("F");
-		l[5]=new Label(); add(l[5]); l[5].setText("P");
+		l[0]=new Label(); add(l[0]); l[0].setText("G"); //Gain over all
+		l[1]=new Label(); add(l[1]); l[1].setText("B"); //buffer size
+		l[2]=new Label(); add(l[2]); l[2].setText("M"); //something to do with the mouse control
+		l[3]=new Label(); add(l[3]); l[3].setText("T"); //tuning?
+		l[4]=new Label(); add(l[4]); l[4].setText("F"); //file name to output raw data to
+		l[5]=new Label(); add(l[5]); l[5].setText("P"); //base pitch 440Hz = A
 
 		buffer.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent a) {
@@ -537,9 +544,12 @@ class Generator extends JPanel implements Runnable {
 		
 		//System.arraycopy(buffer,0,buffer2,0,buffer.length);
 		line.write(buffer, 0, frames);
+		
 		if (mcp.record.getState()) {
-			mcp.fos.write(buffer,0,frames);
-			written+=frames;
+			if (mcp.fos!=null) {
+				mcp.fos.write(buffer,0,frames);
+				written+=frames;
+			}
 		}
 		//pitch+=1;
 	}  
@@ -549,13 +559,17 @@ class Generator extends JPanel implements Runnable {
 
 		try {
 			thread=null;
-			mcp.fos.flush();
-			Thread.sleep(100);
-			mcp.fos.close();
-			AudioInputStream fis=new AudioInputStream(new FileInputStream(new File(mcp.recordfilename.getText()+".dat")),audioFormat,written/(16/8));
-			AudioSystem.write(fis,AudioFileFormat.Type.WAVE, new File(mcp.recordfilename.getText()+".wav"));
-			System.out.println(written+" frames");
-			written=0;
+			if (mcp.fos!=null) {
+				mcp.fos.flush();
+				Thread.sleep(100);
+				mcp.fos.close();
+			}
+			if (mcp.record.getState()) {
+				AudioInputStream fis=new AudioInputStream(new FileInputStream(new File(mcp.recordfilename.getText()+".dat")),audioFormat,written/(16/8));
+				AudioSystem.write(fis,AudioFileFormat.Type.WAVE, new File(mcp.recordfilename.getText()+".wav"));
+				System.out.println(written+" frames");
+				written=0;
+			}
 		} catch(Exception ex) { ex.printStackTrace(); }
 	}
 
