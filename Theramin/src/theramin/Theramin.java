@@ -218,9 +218,9 @@ class MainControlPanel extends Panel  {
 		setPreferredSize(new Dimension(WIDTH,200));
 
 		gain=new Scrollbar(Scrollbar.HORIZONTAL,50,1,0,100);
-		buffer=new Scrollbar(Scrollbar.HORIZONTAL,1024,16,32,2048);
-		mouseDiffFactorVal=new Scrollbar(Scrollbar.HORIZONTAL,3,1,1,20);
-		fine=new Scrollbar(Scrollbar.HORIZONTAL,100,1,0,200);
+		buffer=new Scrollbar(Scrollbar.HORIZONTAL,1024,16,512,4096);
+		mouseDiffFactorVal=new Scrollbar(Scrollbar.HORIZONTAL,2,1,1,20);
+		fine=new Scrollbar(Scrollbar.HORIZONTAL,50,1,0,200);
 		record=new Checkbox("Recording");
 		recordfilename=new TextField(10);
 		recordfilename.setText((new File(System.getProperty("java.class.path"))).getParent()+File.separator+"temp");
@@ -282,7 +282,6 @@ class MainControlPanel extends Panel  {
 
 
 
-
 		l=new Label[6];
 		l[0]=new Label(); add(l[0]); l[0].setText("G"); //Gain over all
 		l[1]=new Label(); add(l[1]); l[1].setText("B"); //buffer size
@@ -294,8 +293,10 @@ class MainControlPanel extends Panel  {
 		buffer.addAdjustmentListener(new AdjustmentListener() {
 			public void adjustmentValueChanged(AdjustmentEvent a) {
 				if (gen!=null)  {
-					gen.stop();
-					gen.commence();
+					synchronized(gen) {
+						gen.stop();
+						gen.commence();
+					}
 				}
 			}
 		}) ;
@@ -319,7 +320,8 @@ class MainControlPanel extends Panel  {
 	}
 
 	public void setGenerator(Generator g) {
-		gen=g;
+		gen=g;		
+		gen.repaint(200);
 	}
 
 	public void doLayout() {
@@ -354,7 +356,7 @@ class Generator extends JPanel implements Runnable {
 
 	private int sampleRate = 22050;
 
-	Point m;
+	Point m=new Point(0,0);
 	String label;
 	AudioFormat audioFormat;
 
@@ -412,8 +414,9 @@ class Generator extends JPanel implements Runnable {
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent k) {
 				try{
-					if (k.getKeyCode()>=65 && k.getKeyCode()<=91) pitch=30*(k.getKeyCode()-64);
+					if (k.getKeyCode()>=65 && k.getKeyCode()<=91) pitch=-10+30*(k.getKeyCode()-64);
 					System.out.println("pitch set "+pitch);
+					mcp.basepitch.setText(String.valueOf(pitch));
 					Generator.this.repaint();
 				} catch(Exception ex) { ex.printStackTrace(); }
 			}
@@ -441,7 +444,7 @@ class Generator extends JPanel implements Runnable {
 
 
 	public void stop() {
-		line.stop();
+		if (line!=null) line.stop();
 		line=null;
 		thread=null;
 		System.out.println("!stopped!");
