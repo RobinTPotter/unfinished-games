@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-<script src="../lib/d3/d3.v3.js"></script>
-<script src="../lib/rtp/Vector.js"></script>
+<!--<script src="../lib/d3/d3.v3.js" charset="utf-8"></script>-->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="js_lib/Vector.js"></script>
 </head>
 <body onkeydown="keypress(event)">
 <script>
@@ -22,7 +23,7 @@ var POCKET=22
 svg.append("rect").attr("x",RADIUS).attr("y",RADIUS).attr("width",WIDTH-2*RADIUS).attr("height",HEIGHT-2*RADIUS).style("fill","#006600")
 
 
-
+var tickmark=0
 
 var pockets=[]
 
@@ -48,7 +49,7 @@ function block() {
 	}
 	
 	this.line=function(n) {
-		console.log(arguments,this.points.length,n,(n+1)%this.points.length)
+		//console.log(arguments,this.points.length,n,(n+1)%this.points.length)
 		return [this.points[n],this.points[(n+1)%this.points.length]]	
 	}
 }
@@ -59,12 +60,13 @@ blocks[blocks.length-1].points.push(new Vector(200,150))
 blocks[blocks.length-1].points.push(new Vector(90,250))
 blocks[blocks.length-1].generate()
 
+/*
 blocks.push(new block())
 blocks[blocks.length-1].points.push(new Vector(500,400))
 blocks[blocks.length-1].points.push(new Vector(550,550))
 blocks[blocks.length-1].points.push(new Vector(410,250))
 blocks[blocks.length-1].generate()
-
+*/
 
 
 
@@ -170,6 +172,7 @@ tick()
 
 function tick(){
 
+	tickmark++
 	var allquiet=true
 	balls.forEach(function(b1) {
 		balls.forEach(function(b2) {
@@ -190,18 +193,17 @@ function tick(){
 		
 		b1.velocity=b1.velocity.multiply(0.9965)
 		
-		
-		blocks.forEach(function(b) {
-			for (var ll=0;ll<b.points.length;ll++) {
-				var line=b.line(ll)
-				console.log(line_point_test(line[0],line[1],b1.position))
-			}
-		
-		})
-		
-		
-		
-		
+		//as a check only act on cue
+		if (b1==balls[balls.length-1]) {
+			blocks.forEach(function(b) {
+				var test=0
+				for (var ll=0;ll<b.points.length;ll++) {
+					var line=b.line(ll)
+					test+=line_point_test(line[0],line[1],b1.position)?1:0
+				}			
+				if (tickmark % 100==0) console.log("block test "+test)
+			})
+		}
 		
 		
 		test=b1.position.add(b1.velocity)
