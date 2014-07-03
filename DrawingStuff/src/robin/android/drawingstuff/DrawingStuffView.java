@@ -24,6 +24,7 @@ public class DrawingStuffView extends SurfaceView implements SurfaceHolder.Callb
 	@SuppressLint("HandlerLeak")
 	public DrawingStuffView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		mContext=context;
 
 		// register our interest in hearing about changes to our surface
 		SurfaceHolder holder = getHolder();
@@ -41,6 +42,7 @@ public class DrawingStuffView extends SurfaceView implements SurfaceHolder.Callb
 		});
 
 		setFocusable(true); // make sure we get key events
+		
 		
 	}
 	
