@@ -1,12 +1,11 @@
 package robin.android.paint;
 
-import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -14,8 +13,9 @@ import android.view.SurfaceView;
 
 public class MainActivity extends  Activity   
 {
-    private ArrayList<Path> _graphics = new ArrayList<Path>();
+   // private ArrayList<Path> _graphics = new ArrayList<Path>();
     private Paint mPaint;
+    private Bitmap bmp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) 
@@ -25,17 +25,17 @@ public class MainActivity extends  Activity
         mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setColor(0xFFFFFF00);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(3);
-
+        mPaint.setStyle(Paint.Style.FILL);
+       // mPaint.setStrokeJoin(Paint.Join.ROUND);
+       // mPaint.setStrokeCap(Paint.Cap.ROUND);
+       // mPaint.setStrokeWidth(3);
+        
     }
 
     class DrawingPanel extends SurfaceView implements SurfaceHolder.Callback 
     {
         private DrawingThread _thread;
-        private Path path;
+     /*   private Path path;*/
 
         public DrawingPanel(Context context) 
         {
@@ -49,31 +49,37 @@ public class MainActivity extends  Activity
         {
             synchronized (_thread.getSurfaceHolder()) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    path = new Path();
-                    path.moveTo(event.getX(), event.getY());
-                    path.lineTo(event.getX(), event.getY());
+                //    path = new Path();
+                //    path.moveTo(event.getX(), event.getY());
+                //    path.lineTo(event.getX(), event.getY());
                 }else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                    path.lineTo(event.getX(), event.getY());
+                //    path.lineTo(event.getX(), event.getY());
+                	Canvas c=new Canvas(bmp);
+                	c.drawCircle(event.getX(), event.getY(), 10, mPaint);
                 }else if(event.getAction() == MotionEvent.ACTION_UP){
-                    path.lineTo(event.getX(), event.getY());
-                    _graphics.add(path);
+                //    path.lineTo(event.getX(), event.getY());
                 }
 
+               // _graphics.add(path);
                 return true;
             }
         }
 
         @Override
         public void onDraw(Canvas canvas) {
+        	/*
             for (Path path : _graphics) {
                 //canvas.drawPoint(graphic.x, graphic.y, mPaint);
                 canvas.drawPath(path, mPaint);
             }
+            */
+            canvas.drawBitmap(bmp, 0,0,null);
         }
 
         public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                    int height) {
             // TODO Auto-generated method stub
+            bmp=Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         }
 
