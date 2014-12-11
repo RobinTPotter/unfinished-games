@@ -43,7 +43,7 @@ class SolomonsKey:
 
     level=None
     keys={}
-    xx,yy,zz=0.0,0.0,0.0
+    xx,yy,zz=5.5,4.0,12.0
 
     def __init__(self):
         glutInit(sys.argv)
@@ -71,7 +71,7 @@ class SolomonsKey:
         glutDisplayFunc(self.display)
         glutIdleFunc(self.display)
         glMatrixMode(GL_PROJECTION)
-        gluPerspective(90.0,640.0/480.,1.,50.)
+        gluPerspective(60.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
 
@@ -99,7 +99,7 @@ class SolomonsKey:
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         print (self.xx,self.yy,self.zz)
         gluLookAt(self.xx,self.yy,self.zz,
-                  7.5,-3.0,6.0,
+                  5.5,4.0,0.0,
                   0,1,0)
         glPushMatrix()
         #color = [1.0,0.,0.,1.]
