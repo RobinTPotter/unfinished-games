@@ -13,6 +13,52 @@ class Baddie:
 
 
 
+def DrawSolomon():
+    glTranslate(1,-0.15,0)
+    glTranslate(4,2,0)
+    glRotatef(-90.0,1.0,0,0)
+    glScale(0.25,0.25,0.25)
+
+    
+    #hat
+    glPushMatrix()
+    glTranslate(0,0,0.5)
+    glutSolidCone(1,2,12,6)
+    glPopMatrix()
+    
+    #head/body
+    glPushMatrix()
+    glTranslate(0,0,0)
+    glutSolidSphere(1,12,12)            
+    glPopMatrix()
+    
+    #left arm
+    glPushMatrix()
+    glTranslate(0,0.9,0)
+    glutSolidSphere(0.5,12,12)            
+    glPopMatrix()
+    
+    #right arm
+    glPushMatrix()
+    glTranslate(0,-0.9,0)
+    glutSolidSphere(0.5,12,12)            
+    glPopMatrix()
+    
+    #left foot
+    glPushMatrix()
+    glTranslate(0,0.75,-1)
+    glScale(2,1,1)
+    glutSolidSphere(0.5,12,12)            
+    glPopMatrix()
+    
+    #right foot
+    glPushMatrix()
+    glTranslate(0,-0.75,-1)
+    glScale(2,1,1)
+    glutSolidSphere(0.5,12,12)            
+    glPopMatrix()
+    
+
 class Level:
     grid=None
     baddies=[]
@@ -97,7 +143,7 @@ class SolomonsKey:
 
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        print (self.xx,self.yy,self.zz)
+        #print (self.xx,self.yy,self.zz)
         gluLookAt(self.xx,self.yy,self.zz,
                   5.5,4.0,0.0,
                   0,1,0)
@@ -107,6 +153,7 @@ class SolomonsKey:
         #glutSolidSphere(2,20,20)
         self.level.draw()
         glPopMatrix()
+        DrawSolomon()
         try:
             if self.keys["x"]: self.xx+=0.1
             if self.keys["z"]: self.xx-=0.1
@@ -117,16 +164,16 @@ class SolomonsKey:
         except:
             pass    
 
-        print "."
+        #print "."
         glutSwapBuffers()
         #return
 
     def keydownevent(self,c,x,y):
-        print (c,x,y)
+        #print (c,x,y)
         self.keys[c]=True
 
     def keyupevent(self,c,x,y):
-        print (c,x,y)
+        #print (c,x,y)
         if self.keys.has_key(c): self.keys[c]=False
 
 
