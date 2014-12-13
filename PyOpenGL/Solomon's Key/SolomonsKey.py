@@ -5,6 +5,8 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
 
+X=0.0
+
 name = "solomon\'s key"
 red=[1.0,0.0,0.0,1.0]
 green=[0.0,1.0,0.0,1.0]
@@ -27,7 +29,7 @@ def DrawSolomon():
     glTranslate(4,2,0)
     glRotatef(-90.0,1.0,0,0)
     glScale(0.25,0.25,0.25)
-
+    
     
     #hat
     glPushMatrix()
@@ -50,12 +52,6 @@ def DrawSolomon():
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
-    #right arm
-    glPushMatrix()
-    glTranslate(0,-0.9,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
-    glutSolidSphere(0.5,24,12)            
-    glPopMatrix()
     
     #left foot
     glPushMatrix()
@@ -73,6 +69,33 @@ def DrawSolomon():
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
+    
+    
+    #right arm
+    glPushMatrix()
+    glTranslate(0,-0.9,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+    glutSolidSphere(0.5,24,12)            
+    glPopMatrix()
+    
+    #wand
+    q=gluNewQuadric()
+    
+    glPushMatrix()
+    glTranslate(1.1,-1.02,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)
+    glRotatef(90,0,1,0) 
+    gluCylinder(q,0.1,0.1,0.2,12,1)            
+    glPopMatrix()
+    
+    glPushMatrix()
+    glTranslate(0.5,-1.02,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,wand)
+    glRotatef(90,0,1,0) 
+    gluCylinder(q,0.1,0.1,0.6,12,1)            
+    glPopMatrix()
+    
+    
 
 class Level:
     grid=None
@@ -83,6 +106,14 @@ class Level:
         self.grid=griddata
 
     def draw(self):
+		
+        glPushMatrix()
+        glTranslate(8,5.5,-0.5)
+        glScale(15,12,0.1)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
+        glutSolidCube(1)		
+        glPopMatrix()
+		
         rr=0
         for r in self.grid:
             cc=0
@@ -95,6 +126,7 @@ class Level:
                     elif c=="s": color = [1.0,1.0,0.0,1.0]
                     glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
                     glutSolidCube(1)
+                    
                 glPopMatrix()
                 
             rr+=1
@@ -158,16 +190,18 @@ class SolomonsKey:
 
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        print (self.xx,self.yy,self.zz)
+        #print (self.xx,self.yy,self.zz)
         gluLookAt(self.xx,self.yy,self.zz,
                   self.xx,self.yy,self.zz-5,
                   0,1,0)
-        glPushMatrix()
+                  
+        glRotatef(10,0,1,0)
+        ###glPushMatrix()
         #color = [1.0,0.,0.,1.]
         #glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
         #glutSolidSphere(2,20,20)
         self.level.draw()
-        glPopMatrix()
+        ###glPopMatrix()
         DrawSolomon()
         try:
             if self.keys["x"]: self.xx+=0.1
