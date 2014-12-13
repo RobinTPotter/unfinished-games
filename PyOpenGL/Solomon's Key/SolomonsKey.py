@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
 
-X=0.0
+X=46.0
 
 name = "solomon\'s key"
 red=[1.0,0.0,0.0,1.0]
@@ -25,7 +25,7 @@ class Baddie:
 
 
 def DrawSolomon():
-    glTranslate(1,-0.15,0)
+    glTranslate(1,-0.2,0)
     glTranslate(4,2,0)
     glScale(0.25,0.25,0.25)
     
@@ -63,7 +63,7 @@ def DrawSolomon():
     #left foot
     glPushMatrix()
     glTranslate(0,0.75,-1)
-    glScale(2,1,.8)
+    glScale(2,1,.5)
     glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
@@ -71,7 +71,7 @@ def DrawSolomon():
     #right foot
     glPushMatrix()
     glTranslate(0,-0.75,-1)
-    glScale(2,1,.8)
+    glScale(2,1,.5)
     glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
@@ -101,6 +101,32 @@ def DrawSolomon():
     glRotatef(90,0,1,0) 
     gluCylinder(q,0.1,0.1,0.6,12,1)            
     glPopMatrix()
+    
+    #eyes
+    glPushMatrix()
+    glTranslate(1,.2,.1)
+    glRotatef(90,0,1,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+    gluDisk(q,0.05,0.2,12,12)           
+    glPopMatrix()
+    
+    glPushMatrix()    
+    glTranslate(1,-.2,.1)
+    glRotatef(90,0,1,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+    gluDisk(q,0.05,0.2,12,12)           
+    glPopMatrix()
+    
+    #nose    
+    glPushMatrix()
+    glTranslate(1,0,-.1)
+    glScale(1,1,0.5)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+    glutSolidSphere(0.3,24,12)            
+    glPopMatrix()
+    
+    
+    
     
     X+=0.5
 
