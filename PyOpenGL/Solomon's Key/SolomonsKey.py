@@ -6,6 +6,15 @@ from OpenGL.GL import *
 import sys
 
 name = "solomon\'s key"
+red=[1.0,0.0,0.0,1.0]
+green=[0.0,1.0,0.0,1.0]
+blue=[0.0,0.0,1.0,1.0]
+hat=[0.105,0.097,0.107,1.0]
+body=[0.093,0.02,0.0006071,1.0]
+arm=[0.24,0.007,0.0,1.0]
+shoe=[0.096,0.0,1.0]
+wand=[0,0,0,1.0]
+wandtip=[1,1,1,1.0]
 
 class Baddie:
     def __init__(self,type):
@@ -23,39 +32,45 @@ def DrawSolomon():
     #hat
     glPushMatrix()
     glTranslate(0,0,0.5)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
     glutSolidCone(1,2,12,6)
     glPopMatrix()
     
     #head/body
     glPushMatrix()
     glTranslate(0,0,0)
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,body)
     glutSolidSphere(1,12,12)            
     glPopMatrix()
     
     #left arm
     glPushMatrix()
     glTranslate(0,0.9,0)
-    glutSolidSphere(0.5,12,12)            
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+    glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
     #right arm
     glPushMatrix()
     glTranslate(0,-0.9,0)
-    glutSolidSphere(0.5,12,12)            
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+    glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
     #left foot
     glPushMatrix()
     glTranslate(0,0.75,-1)
     glScale(2,1,1)
-    glutSolidSphere(0.5,12,12)            
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+    glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
     #right foot
     glPushMatrix()
     glTranslate(0,-0.75,-1)
     glScale(2,1,1)
-    glutSolidSphere(0.5,12,12)            
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+    glutSolidSphere(0.5,24,12)            
     glPopMatrix()
     
 
@@ -89,7 +104,7 @@ class SolomonsKey:
 
     level=None
     keys={}
-    xx,yy,zz=5.5,4.0,12.0
+    xx,yy,zz=4.5,2.0,4.5
 
     def __init__(self):
         glutInit(sys.argv)
@@ -98,7 +113,7 @@ class SolomonsKey:
         glutCreateWindow(name)
 
         glClearColor(0.,0.,0.,1.)
-        glShadeModel(GL_FLAT)
+        glShadeModel(GL_SMOOTH)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
@@ -143,9 +158,9 @@ class SolomonsKey:
 
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        #print (self.xx,self.yy,self.zz)
+        print (self.xx,self.yy,self.zz)
         gluLookAt(self.xx,self.yy,self.zz,
-                  5.5,4.0,0.0,
+                  self.xx,self.yy,self.zz-5,
                   0,1,0)
         glPushMatrix()
         #color = [1.0,0.,0.,1.]
@@ -169,7 +184,7 @@ class SolomonsKey:
         #return
 
     def keydownevent(self,c,x,y):
-        #print (c,x,y)
+        print (c,x,y)
         self.keys[c]=True
 
     def keyupevent(self,c,x,y):
