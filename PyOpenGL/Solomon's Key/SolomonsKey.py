@@ -27,9 +27,16 @@ class Baddie:
 def DrawSolomon():
     glTranslate(1,-0.15,0)
     glTranslate(4,2,0)
-    glRotatef(-90.0,1.0,0,0)
     glScale(0.25,0.25,0.25)
     
+    global X
+    glRotatef(X,0,1,0)
+    
+    
+    
+    
+    
+    glRotatef(-90.0,1.0,0,0)    
     
     #hat
     glPushMatrix()
@@ -56,7 +63,7 @@ def DrawSolomon():
     #left foot
     glPushMatrix()
     glTranslate(0,0.75,-1)
-    glScale(2,1,1)
+    glScale(2,1,.8)
     glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
@@ -64,7 +71,7 @@ def DrawSolomon():
     #right foot
     glPushMatrix()
     glTranslate(0,-0.75,-1)
-    glScale(2,1,1)
+    glScale(2,1,.8)
     glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
     glutSolidSphere(0.5,24,12)            
     glPopMatrix()
@@ -95,7 +102,7 @@ def DrawSolomon():
     gluCylinder(q,0.1,0.1,0.6,12,1)            
     glPopMatrix()
     
-    
+    X+=0.5
 
 class Level:
     grid=None
