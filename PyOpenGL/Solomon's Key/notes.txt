@@ -1,5 +1,4 @@
-spectrum maps
-found
+spectrum maps found
 15 across
 12 down
 
@@ -21,6 +20,38 @@ http://www.lighthouse3d.com/tutorials/glut-tutorial/keyboard-example-moving-arou
 https://www.opengl.org/sdk/docs/man2/xhtml/gluPerspective.xml
 https://www.opengl.org/documentation/specs/glut/glut-3.spec.pdf
 
+  git add .
+  git commit -m "solomon draft 3 finished"
+  git push
 
+. nothing
+g gemstone
+@ solomon start
+k key
+d door
+s solid block
+b breakable block
+1 bashing baddie
+2 fire
+3 bottle potion
+4 fairy bell
+5 falliing dragon
+6 baddy genertor
+
+
+
+        self.level=Level([
+            "...............",
+            ".6.6...........",
+            ".......4.....k.",
+            ".ss.........bb.",
+            "...ss.....bb...",
+            ".....ss.bb.....",
+            "...............",
+            ".....bbbss.....",
+            ".@.bbbbbbbss.d.",
+            ".bb.........ss.",
+            "...............",
+            "..............."])
 
 

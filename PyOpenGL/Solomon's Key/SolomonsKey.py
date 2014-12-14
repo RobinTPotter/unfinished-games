@@ -1,4 +1,4 @@
-
+#!/bin/python
 
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -24,134 +24,156 @@ class Baddie:
 
 
 
-def DrawSolomon():
-    glTranslate(1,-0.2,0)
-    glTranslate(4,2,0)
-    glScale(0.25,0.25,0.25)
+class Solomon:
     
-    global X
-    glRotatef(X,0,1,0)
+    x,y=None,None
     
-    
-    
-    
-    
-    glRotatef(-90.0,1.0,0,0)    
-    
-    #hat
-    glPushMatrix()
-    glTranslate(0,0,0.5)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
-    glutSolidCone(1,2,12,6)
-    glPopMatrix()
-    
-    #head/body
-    glPushMatrix()
-    glTranslate(0,0,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,body)
-    glutSolidSphere(1,12,12)            
-    glPopMatrix()
-    
-    #left arm
-    glPushMatrix()
-    glTranslate(0,0.9,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
-    glutSolidSphere(0.5,24,12)            
-    glPopMatrix()
-    
-    
-    #left foot
-    glPushMatrix()
-    glTranslate(0,0.75,-1)
-    glScale(2,1,.5)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
-    glutSolidSphere(0.5,24,12)            
-    glPopMatrix()
-    
-    #right foot
-    glPushMatrix()
-    glTranslate(0,-0.75,-1)
-    glScale(2,1,.5)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
-    glutSolidSphere(0.5,24,12)            
-    glPopMatrix()
-    
-    
-    
-    #right arm
-    glPushMatrix()
-    glTranslate(0,-0.9,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
-    glutSolidSphere(0.5,24,12)            
-    glPopMatrix()
-    
-    #wand
-    q=gluNewQuadric()
-    
-    glPushMatrix()
-    glTranslate(1.1,-1.02,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)
-    glRotatef(90,0,1,0) 
-    gluCylinder(q,0.1,0.1,0.2,12,1)            
-    glPopMatrix()
-    
-    glPushMatrix()
-    glTranslate(0.5,-1.02,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,wand)
-    glRotatef(90,0,1,0) 
-    gluCylinder(q,0.1,0.1,0.6,12,1)            
-    glPopMatrix()
-    
-    #eyes
-    glPushMatrix()
-    glTranslate(1,.2,.1)
-    glRotatef(90,0,1,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
-    gluDisk(q,0.05,0.2,12,12)           
-    glPopMatrix()
-    
-    glPushMatrix()    
-    glTranslate(1,-.2,.1)
-    glRotatef(90,0,1,0)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
-    gluDisk(q,0.05,0.2,12,12)           
-    glPopMatrix()
-    
-    #nose    
-    glPushMatrix()
-    glTranslate(1,0,-.1)
-    glScale(1,1,0.5)
-    glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
-    glutSolidSphere(0.3,24,12)            
-    glPopMatrix()
-    
-    
-    
-    
-    X+=0.5
+    def __init__(self,sx,sy):
+        self.x=sx
+        self.y=sy
+
+    def draw(self):
+            
+
+        #correction
+        glTranslate(0,-0.2,0)
+        
+        
+        glTranslate(self.x,self.y,0)
+        glScale(0.25,0.25,0.25)
+        
+        global X
+        glRotatef(X,0,1,0)
+        
+        
+        
+        
+        
+        glRotatef(-90.0,1.0,0,0)    
+        
+        #hat
+        glPushMatrix()
+        glTranslate(0,0,0.5)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
+        glutSolidCone(1,2,12,6)
+        glPopMatrix()
+        
+        #head/body
+        glPushMatrix()
+        glTranslate(0,0,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,body)
+        glutSolidSphere(1,12,12)            
+        glPopMatrix()
+        
+        #left arm
+        glPushMatrix()
+        glTranslate(0,0.9,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glutSolidSphere(0.5,24,12)            
+        glPopMatrix()
+        
+        
+        #left foot
+        glPushMatrix()
+        glTranslate(0,0.75,-1)
+        glScale(2,1,.5)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+        glutSolidSphere(0.5,24,12)            
+        glPopMatrix()
+        
+        #right foot
+        glPushMatrix()
+        glTranslate(0,-0.75,-1)
+        glScale(2,1,.5)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+        glutSolidSphere(0.5,24,12)            
+        glPopMatrix()
+        
+        
+        
+        #right arm
+        glPushMatrix()
+        glTranslate(0,-0.9,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glutSolidSphere(0.5,24,12)            
+        glPopMatrix()
+        
+        #wand
+        q=gluNewQuadric()
+        
+        glPushMatrix()
+        glTranslate(1.1,-1.02,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)
+        glRotatef(90,0,1,0) 
+        gluCylinder(q,0.1,0.1,0.2,12,1)            
+        glPopMatrix()
+        
+        glPushMatrix()
+        glTranslate(0.5,-1.02,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,wand)
+        glRotatef(90,0,1,0) 
+        gluCylinder(q,0.1,0.1,0.6,12,1)            
+        glPopMatrix()
+        
+        #eyes
+        glPushMatrix()
+        glTranslate(1,.2,.1)
+        glRotatef(90,0,1,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+        gluDisk(q,0.05,0.2,12,12)           
+        glPopMatrix()
+        
+        glPushMatrix()    
+        glTranslate(1,-.2,.1)
+        glRotatef(90,0,1,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+        gluDisk(q,0.05,0.2,12,12)           
+        glPopMatrix()
+        
+        #nose    
+        glPushMatrix()
+        glTranslate(1,0,-.1)
+        glScale(1,1,0.5)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glutSolidSphere(0.3,24,12)            
+        glPopMatrix()
+        
+        X+=0.5
 
 class Level:
     grid=None
     baddies=[]
+    solomon=None
     
     def __init__(self,griddata):
         griddata.reverse()
         self.grid=griddata
-
-    def draw(self):
-		
-        glPushMatrix()
-        glTranslate(8,5.5,-0.5)
-        glScale(15,12,0.1)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
-        glutSolidCube(1)		
-        glPopMatrix()
-		
+        
         rr=0
         for r in self.grid:
             cc=0
             for c in r:
+                if c=="@":
+                    self.solomon=Solomon(cc,rr)
+                
                 cc+=1
+                
+            rr+=1
+        
+
+    def draw(self):
+        
+        glPushMatrix()
+        glTranslate(7,5.5,-0.5)
+        glScale(15,12,0.1)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
+        glutSolidCube(1)        
+        glPopMatrix()
+        
+        rr=0
+        for r in self.grid:
+            cc=0
+            for c in r:
                 glPushMatrix()
                 glTranslate(cc,rr,0)
                 if c in ["b","s"]: 
@@ -161,6 +183,7 @@ class Level:
                     glutSolidCube(1)
                     
                 glPopMatrix()
+                cc+=1
                 
             rr+=1
                 
@@ -170,6 +193,7 @@ class SolomonsKey:
     level=None
     keys={}
     xx,yy,zz=4.5,2.0,4.5
+    
 
     def __init__(self):
         glutInit(sys.argv)
@@ -200,7 +224,9 @@ class SolomonsKey:
         gluPerspective(60.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
-
+        
+        
+        '''
         self.level=Level([
             "b.............b",
             ".......d.......",
@@ -214,6 +240,21 @@ class SolomonsKey:
             "...b@bbbbbkb...",
             "...sbs...sbs...",
             "b.............b"])
+        '''
+        
+        self.level=Level([
+            "...............",
+            ".6.6...........",
+            ".......4.....k.",
+            ".ss.........bb.",
+            "...ss.....bb...",
+            ".....ss.bb.....",
+            "...............",
+            ".....bbbss.....",
+            ".@.bbbbbbbss.d.",
+            ".bb.........ss.",
+            "...............",
+            "..............."])
 
         glutMainLoop()
 
@@ -235,7 +276,7 @@ class SolomonsKey:
         #glutSolidSphere(2,20,20)
         self.level.draw()
         ###glPopMatrix()
-        DrawSolomon()
+        self.level.solomon.draw()
         try:
             if self.keys["x"]: self.xx+=0.1
             if self.keys["z"]: self.xx-=0.1
