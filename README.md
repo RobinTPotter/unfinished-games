@@ -15,3 +15,5 @@ also needed to do:
 git remote set-url origin https://{username}:{password}@github.com/RobinTPotter/unfinished-games.git
 
 before it would work. presumably only once.
+
+Oh and pyopengl you need to iNstall numpy Somehow
