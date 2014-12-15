@@ -1,5 +1,6 @@
 #!/bin/python
 
+from OpenGL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
@@ -199,10 +200,12 @@ class SolomonsKey:
 
     level=None
     keys={}
-    xx,yy,zz=4.5,2.0,4.5
+    xx,yy,zz=2.5,3.0,4.5
     
 
     def __init__(self):
+
+        print bool(glutInit)
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(640,480)
