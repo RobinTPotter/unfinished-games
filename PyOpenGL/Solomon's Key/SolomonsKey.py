@@ -18,6 +18,8 @@ shoe=[0.096,0.0,1.0]
 wand=[0,0,0,1.0]
 wandtip=[1,1,1,1.0]
 
+
+
 class Baddie:
     def __init__(self,type):
         pass
@@ -32,7 +34,7 @@ class Solomon:
         self.x=sx
         self.y=sy
 
-    def draw(self):
+    def draw(self,pose="stand"):
             
 
         #correction
@@ -75,16 +77,18 @@ class Solomon:
         
         #left foot
         glPushMatrix()
-        glTranslate(0,0.75,-1)
         glScale(2,1,.5)
+        
+        glTranslate(0,0.5,-2)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
         #right foot
         glPushMatrix()
-        glTranslate(0,-0.75,-1)
         glScale(2,1,.5)
+        
+        glTranslate(0,-0.5,-2)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -96,23 +100,26 @@ class Solomon:
         glTranslate(0,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
-        glPopMatrix()
+        #move pop to end to keep arm local system
         
         #wand
         q=gluNewQuadric()
         
         glPushMatrix()
-        glTranslate(1.1,-1.02,0)
+        glTranslate(1.1,0,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)
         glRotatef(90,0,1,0) 
         gluCylinder(q,0.1,0.1,0.2,12,1)            
         glPopMatrix()
         
         glPushMatrix()
-        glTranslate(0.5,-1.02,0)
+        glTranslate(0.5,0,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,wand)
         glRotatef(90,0,1,0) 
         gluCylinder(q,0.1,0.1,0.6,12,1)            
+        glPopMatrix()
+        
+        #from arm
         glPopMatrix()
         
         #eyes
@@ -270,13 +277,11 @@ class SolomonsKey:
                   0,1,0)
                   
         glRotatef(10,0,1,0)
-        ###glPushMatrix()
-        #color = [1.0,0.,0.,1.]
-        #glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-        #glutSolidSphere(2,20,20)
-        self.level.draw()
-        ###glPopMatrix()
+        
+        
+        self.level.draw()        
         self.level.solomon.draw()
+        
         try:
             if self.keys["x"]: self.xx+=0.1
             if self.keys["z"]: self.xx-=0.1
