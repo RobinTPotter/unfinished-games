@@ -17,3 +17,5 @@ git remote set-url origin https://{username}:{password}@github.com/RobinTPotter/
 before it would work. presumably only once.
 
 Oh and pyopengl you need to iNstall numpy Somehow
+
+oh.. and .. on one windows machine couldn't work with pyopengl_accelerate, uninstalled and worked fine...
