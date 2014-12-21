@@ -32,15 +32,17 @@ class Action:
     value=0
     last=-1
     cycle=False 
+    start=0
     
-    def __init__(self,end=-1,cycle=False):
+    def __init__(self,end=-1,cycle=False,start=0):
         self.tick=-1
         self.last=end     
         self.cycle=cycle       
+        self.start=start
 
     def do(self,func):
         if self.cycle==True:
-            if self.tick>self.last: self.tick=-1
+            if self.tick>self.last: self.tick=self.start-1
         else:
             if self.tick>=self.last: return
             
@@ -64,7 +66,7 @@ class Solomon:
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
-        self.st_a=Action(10,True)
+        self.st_a=Action(10,True,start=-10)
         
 
     def draw(self,action=st_a):
