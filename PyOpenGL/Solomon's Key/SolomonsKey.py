@@ -26,16 +26,48 @@ class Baddie:
         pass
 
 
+class Action:
+    
+    tick=0
+    value=0
+    last=-1
+    cycle=False 
+    
+    def __init__(self,end=-1,cycle=False):
+        self.tick=-1
+        self.last=end     
+        self.cycle=cycle       
+
+    def do(self,func):
+        if self.cycle==True:
+            if self.tick>self.last: self.tick=-1
+        else:
+            if self.tick>=self.last: return
+            
+        self.tick+=1
+        
+        
+        self.value=func((self.tick,self.value,self.last))
+        return self.value
+        
 
 class Solomon:
-    
+
     x,y=None,None
+    st_a=None
     
+    def plop(self,tvl):
+        t,v,l=tvl
+        #print (t,v,l)
+        return t
+
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
+        self.st_a=Action(10,True)
+        
 
-    def draw(self,pose="stand"):
+    def draw(self,action=st_a):
             
 
         #correction
@@ -46,7 +78,8 @@ class Solomon:
         glScale(0.25,0.25,0.25)
         
         global X
-        glRotatef(X,0,1,0)
+        glRotatef(int(self.st_a.do(self.plop)),0,1,0)
+        #glRotatef(X,0,1,0)
         
         
         
@@ -146,7 +179,7 @@ class Solomon:
         glutSolidSphere(0.3,24,12)            
         glPopMatrix()
         
-        X+=0.5
+        #X+=0.5
 
 class Level:
     grid=None
