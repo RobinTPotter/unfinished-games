@@ -33,23 +33,30 @@ class Action:
     last=-1
     cycle=False 
     start=0
+    loop=False
+    dir=1
     
-    def __init__(self,end=-1,cycle=False,start=0):
+    def __init__(self,end=-1,cycle=False,start=0,loop=False):
         self.tick=-1
         self.last=end     
         self.cycle=cycle       
         self.start=start
+        self.loop=loop
 
     def do(self,func):
         if self.cycle==True:
-            if self.tick>self.last: self.tick=self.start-1
+            if self.loop==False:
+                if self.tick>self.last: self.tick=self.start-1
+            elif self.loop==True:
+                if self.tick>self.last or self.tick<self.start: self.dir*=-1 
+           
         else:
             if self.tick>=self.last: return
             
-        self.tick+=1
-        
+        self.tick+=self.dir        
         
         self.value=func((self.tick,self.value,self.last))
+        
         return self.value
         
 
@@ -60,13 +67,13 @@ class Solomon:
     
     def plop(self,tvl):
         t,v,l=tvl
-        #print (t,v,l)
+        print (t,v,l)
         return t
 
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
-        self.st_a=Action(10,True,start=-10)
+        self.st_a=Action(10,True,start=-10,loop=True)
         
 
     def draw(self,action=st_a):
