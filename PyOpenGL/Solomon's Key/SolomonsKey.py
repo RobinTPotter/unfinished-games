@@ -34,16 +34,22 @@ class Action:
     cycle=False 
     start=0
     loop=False
-    dir=1
+    dir=1    
+    func=None
     
-    def __init__(self,end=-1,cycle=False,start=0,loop=False):
-        self.tick=-1
+    #defined function must return the value for storage
+    def __init__(self,func=func,end=-1,cycle=False,start=0,loop=False):
+        self.func=func
         self.last=end     
         self.cycle=cycle       
         self.start=start
         self.loop=loop
+        self.kick()
+    
+    def kick(self):    
+        self.tick=self.start    
 
-    def do(self,func):
+    def do(self):
         if self.cycle==True:
             if self.loop==False:
                 if self.tick>self.last: self.tick=self.start-1
@@ -51,33 +57,75 @@ class Action:
                 if self.tick>self.last or self.tick<self.start: self.dir*=-1 
            
         else:
-            if self.tick>=self.last: return
+            if self.tick>=self.last: return self.start
             
         self.tick+=self.dir        
         
-        self.value=func((self.tick,self.value,self.last))
+        self.value=self.func((self.tick,self.value,self.start,self.last))
         
         return self.value
         
 
+#defines a set of actions to be done as one.
+class ActionGroup:
+
+    actions={}
+
+    def __init__(self):
+        self.actions={}
+        
+    def append(self,action_name,action):
+        if self.actions.has_key(action_name):
+            raise Error("action defined "+action_name)
+        else:
+            self.actions[action_name]=action
+            
+        
+    def kick(self):
+        for a in self.actions.keys():
+            self.actions[a].kick()
+            
+    def do(self):
+        for a in self.actions.keys():
+            self.actions[a].do()
+            
+    def value(self,action_name):
+        if self.actions.has_key(action_name):
+            return self.actions[action_name].value
+        else:
+            raise Error("no such action registered "+action_name)
+            
+    def action(self,action_name):
+        if self.actions.has_key(action_name):
+            return self.actions[action_name]
+        else:
+            raise Error("no such action registered "+action_name)
+            
+
 class Solomon:
 
     x,y=None,None
-    st_a=None
+    #st_a=None
+    AG_walk=None
     
-    def plop(self,tvl):
-        t,v,l=tvl
-        print (t,v,l)
-        return t
+    def plop(self,tvsl):
+        t,v,s,l=tvsl
+        v=t
+        print (t,v,s,l)
+        return v
 
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
-        self.st_a=Action(10,True,start=-10,loop=True)
+        self.AG_walk=ActionGroup()
+        self.AG_walk.append("wobble",Action(self.plop,10,False,start=-10))
+        
         
 
-    def draw(self,action=st_a):
+    def draw(self):
             
+        self.AG_walk.do()
+
 
         #correction
         glTranslate(0,-0.2,0)
@@ -87,7 +135,7 @@ class Solomon:
         glScale(0.25,0.25,0.25)
         
         global X
-        glRotatef(int(self.st_a.do(self.plop)),0,1,0)
+        glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
         #glRotatef(X,0,1,0)
         
         
@@ -188,8 +236,9 @@ class Solomon:
         glutSolidSphere(0.3,24,12)            
         glPopMatrix()
         
-        #X+=0.5
-
+        X+=1
+        #if X==100: self.st_a.kick() #ok that works
+        
 class Level:
     grid=None
     baddies=[]
