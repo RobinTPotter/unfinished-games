@@ -108,17 +108,25 @@ class Solomon:
     #st_a=None
     AG_walk=None
     
-    def plop(self,tvsl):
+    def wobble(self,tvsl):
         t,v,s,l=tvsl
         v=t
-        print (t,v,s,l)
+        #print (t,v,s,l)
+        return v
+    
+    def footL(self,tvsl):
+        t,v,s,l=tvsl
+        if t<7: v=t
+        else: v=6+l-t
+        #print (t,v,s,l)
         return v
 
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
         self.AG_walk=ActionGroup()
-        self.AG_walk.append("wobble",Action(self.plop,10,False,start=-10))
+        self.AG_walk.append("wobble",Action(self.wobble,10,False,start=-10))
+        self.AG_walk.append("footL",Action(self.footL,10,False,start=0))
         
         
 
@@ -135,6 +143,8 @@ class Solomon:
         glScale(0.25,0.25,0.25)
         
         global X
+        
+        #using wobble for whole object
         glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
         #glRotatef(X,0,1,0)
         
@@ -171,6 +181,7 @@ class Solomon:
         glScale(2,1,.5)
         
         glTranslate(0,0.5,-2)
+        glRotatef(int(self.AG_walk.value("footL")),0,0,1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
