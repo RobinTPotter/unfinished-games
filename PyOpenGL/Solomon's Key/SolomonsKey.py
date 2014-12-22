@@ -47,7 +47,7 @@ class Action:
         self.kick()
     
     def kick(self):    
-        self.tick=self.start    
+        self.tick=self.start-1 
 
     def do(self):
         if self.cycle==True:
@@ -57,7 +57,9 @@ class Action:
                 if self.tick>self.last or self.tick<self.start: self.dir*=-1 
            
         else:
-            if self.tick>=self.last: return self.start
+            if self.tick>=self.last:
+                self.value=self.start
+                return self.value
             
         self.tick+=self.dir        
         
@@ -87,10 +89,12 @@ class ActionGroup:
             
     def do(self):
         for a in self.actions.keys():
+            #print "do action "+str(a)
             self.actions[a].do()
             
     def value(self,action_name):
         if self.actions.has_key(action_name):
+            #print "action "+str(action_name)+" "+str(self.actions[action_name].value)
             return self.actions[action_name].value
         else:
             raise Error("no such action registered "+action_name)
@@ -114,10 +118,20 @@ class Solomon:
         #print (t,v,s,l)
         return v
     
+    def footR(self,tvsl):
+        t,v,s,l=tvsl
+        if t<15: v+=2
+        elif t<21: v-=3
+        else: v=0
+        #print (t,v,s,l)
+        return v
+        
     def footL(self,tvsl):
         t,v,s,l=tvsl
-        if t<7: v=t
-        else: v=6+l-t
+        t=(t+20)%l
+        if t<15: v+=2
+        elif t<21: v-=3
+        else: v=0
         #print (t,v,s,l)
         return v
 
@@ -126,7 +140,8 @@ class Solomon:
         self.y=sy
         self.AG_walk=ActionGroup()
         self.AG_walk.append("wobble",Action(self.wobble,10,False,start=-10))
-        self.AG_walk.append("footL",Action(self.footL,10,False,start=0))
+        self.AG_walk.append("footR",Action(self.footR,40,False,start=0))
+        self.AG_walk.append("footL",Action(self.footL,40,False,start=0))
         
         
 
@@ -145,8 +160,8 @@ class Solomon:
         global X
         
         #using wobble for whole object
-        glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
-        #glRotatef(X,0,1,0)
+        #glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
+        glRotatef(X/6,0,1,0)
         
         
         
@@ -178,19 +193,29 @@ class Solomon:
         
         #left foot
         glPushMatrix()
+        
+        glTranslate(-0.5,0,0)
+        glRotatef(-float(self.AG_walk.value("footL")),0,1,0)
+        glTranslate(0.5,0,0)    
+    
         glScale(2,1,.5)
         
         glTranslate(0,0.5,-2)
-        glRotatef(int(self.AG_walk.value("footL")),0,0,1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
         #right foot
         glPushMatrix()
-        glScale(2,1,.5)
         
+        glTranslate(-0.5,0,0)
+        glRotatef(-float(self.AG_walk.value("footR")),0,1,0)
+        glTranslate(0.5,0,0)    
+    
+          
+        glScale(2,1,.5)      
         glTranslate(0,-0.5,-2)
+        
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -248,7 +273,7 @@ class Solomon:
         glPopMatrix()
         
         X+=1
-        #if X==100: self.st_a.kick() #ok that works
+        if (X % 40)==0: self.AG_walk.kick() #ok that works
         
 class Level:
     grid=None
