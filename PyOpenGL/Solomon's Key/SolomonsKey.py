@@ -5,7 +5,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
-
+from time import time
 X=46.0
 
 name = "solomon\'s key"
@@ -121,7 +121,7 @@ class Solomon:
     def footR(self,tvsl):
         t,v,s,l=tvsl
         if t<15: v+=2
-        elif t<21: v-=3
+        elif t<21: v-=5
         else: v=0
         #print (t,v,s,l)
         return v
@@ -130,7 +130,7 @@ class Solomon:
         t,v,s,l=tvsl
         t=(t+20)%l
         if t<15: v+=2
-        elif t<21: v-=3
+        elif t<21: v-=5
         else: v=0
         #print (t,v,s,l)
         return v
@@ -328,7 +328,32 @@ class SolomonsKey:
     level=None
     keys={}
     xx,yy,zz=2.5,3.0,4.5
+    lastFrameTime=0
+    topFPS=0
+
+    def animate(self,FPS=10):
     
+        currentTime=time()
+    
+        try:
+            if self.keys["x"]: self.xx+=0.1
+            if self.keys["z"]: self.xx-=0.1
+            if self.keys["d"]: self.yy+=0.1
+            if self.keys["c"]: self.yy-=0.1
+            if self.keys["f"]: self.zz+=0.1
+            if self.keys["v"]: self.zz-=0.1
+        except:
+            pass 
+
+        glutPostRedisplay()
+        glutTimerFunc(int(1000/FPS), self.animate, FPS)
+
+        drawTime=currentTime-self.lastFrameTime
+        self.topFPS=int(1000/drawTime)
+        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)
+        
+        self.lastFrameTime=time()
+
 
     def __init__(self):
 
@@ -350,13 +375,17 @@ class SolomonsKey:
         glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
+        
+        glutIgnoreKeyRepeat(1)
+        
         glutSpecialFunc(self.keydownevent)
         glutSpecialUpFunc(self.keyupevent)
 
         glutKeyboardFunc(self.keydownevent)
         glutKeyboardUpFunc(self.keyupevent)
         glutDisplayFunc(self.display)
-        glutIdleFunc(self.display)
+        #glutIdleFunc(self.display)
+        self.animate()
         glMatrixMode(GL_PROJECTION)
         gluPerspective(60.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
@@ -412,16 +441,6 @@ class SolomonsKey:
         self.level.draw()        
         self.level.solomon.draw()
         
-        try:
-            if self.keys["x"]: self.xx+=0.1
-            if self.keys["z"]: self.xx-=0.1
-            if self.keys["d"]: self.yy+=0.1
-            if self.keys["c"]: self.yy-=0.1
-            if self.keys["f"]: self.zz+=0.1
-            if self.keys["v"]: self.zz-=0.1
-        except:
-            pass    
-
         #print "."
         glutSwapBuffers()
         #return
