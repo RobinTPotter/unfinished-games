@@ -29,42 +29,48 @@ class Baddie:
 class Action:
     
     tick=0
+    min=-5
+    max=5
     value=0
-    last=-1
     cycle=False 
-    start=0
-    loop=False
+    reverseloop=False
     dir=1    
     func=None
+    init_tick=0
+    working=True
     
     #defined function must return the value for storage
-    def __init__(self,func=func,end=-1,cycle=False,start=0,loop=False):
+    def __init__(self,func=func,min=-5,max=5,cycle=False,reverseloop=False,init_tick=0):
         self.func=func
-        self.last=end     
-        self.cycle=cycle       
-        self.start=start
-        self.loop=loop
-        self.kick()
+        self.min=min           
+        self.max=max
+        self.cycle=cycle 
+        self.reverseloop=reverseloop
+        self.init_tick=init_tick
     
     def kick(self):    
-        self.tick=self.start-1 
+        self.dir=1      
+        self.tick=self.init_tick
+        working=True
 
     def do(self):
-        if self.cycle==True:
-            if self.loop==False:
-                if self.tick>self.last: self.tick=self.start-1
-            elif self.loop==True:
-                if self.tick>self.last or self.tick<self.start: self.dir*=-1 
-           
-        else:
-            if self.tick>=self.last:
-                self.value=self.start
-                return self.value
+        
+        if not self.working: return
+        self.tick+=self.dir
+        
+        self.value=self.func((self.tick,self.value,self.min,self.max))   
+                
+        if self.cycle==True and self.reverseloop==False:
+            if self.tick>self.max: self.tick=self.min
             
-        self.tick+=self.dir        
-        
-        self.value=self.func((self.tick,self.value,self.start,self.last))
-        
+        elif self.cycle==True and self.reverseloop==True:
+            if self.tick>self.max or self.tick<self.min:
+                self.dir*=-1
+                     
+        elif self.cycle==False:
+            if self.tick>self.max:
+                self.working=False
+                     
         return self.value
         
 
@@ -112,25 +118,25 @@ class Solomon:
     #st_a=None
     AG_walk=None
     
-    def wobble(self,tvsl):
-        t,v,s,l=tvsl
+    def wobble(self,tvmm):
+        t,v,mi,ma=tvmm
         v=t
-        #print (t,v,s,l)
+        #print (t,v,mi,ma)
         return v
     
     def footR(self,tvsl):
         t,v,s,l=tvsl
-        if t<15: v+=2
-        elif t<21: v-=5
+        if t<7: v+=2
+        elif t<10: v-=5
         else: v=0
         #print (t,v,s,l)
         return v
         
     def footL(self,tvsl):
         t,v,s,l=tvsl
-        t=(t+20)%l
-        if t<15: v+=2
-        elif t<21: v-=5
+        t=(t+10)%l
+        if t<7: v+=2
+        elif t<10: v-=5
         else: v=0
         #print (t,v,s,l)
         return v
@@ -139,9 +145,9 @@ class Solomon:
         self.x=sx
         self.y=sy
         self.AG_walk=ActionGroup()
-        self.AG_walk.append("wobble",Action(self.wobble,10,False,start=-10))
-        self.AG_walk.append("footR",Action(self.footR,40,False,start=0))
-        self.AG_walk.append("footL",Action(self.footL,40,False,start=0))
+        self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
+        self.AG_walk.append("footR",Action(func=self.footR,max=20,cycle=True,min=0))
+        self.AG_walk.append("footL",Action(func=self.footL,max=20,cycle=True,min=0))
         
         
 
@@ -161,16 +167,17 @@ class Solomon:
         
         #using wobble for whole object
         #glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
-        glRotatef(X/6,0,1,0)
+        glRotatef(int(X/100)*45,0,1,0)
         
         
         
         
         
-        glRotatef(-90.0,1.0,0,0)    
+        glRotatef(-90.0,1.0,0,0)   
         
         #hat
         glPushMatrix()
+        glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
         glTranslate(0,0,0.5)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
         glutSolidCone(1,2,12,6)
@@ -185,7 +192,7 @@ class Solomon:
         
         #left arm
         glPushMatrix()
-        glTranslate(0,0.9,0)
+        glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -195,7 +202,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        glRotatef(-float(self.AG_walk.value("footL")),0,1,0)
+        glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
         glTranslate(0.5,0,0)    
     
         glScale(2,1,.5)
@@ -209,7 +216,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        glRotatef(-float(self.AG_walk.value("footR")),0,1,0)
+        glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
         glTranslate(0.5,0,0)    
     
           
@@ -224,7 +231,8 @@ class Solomon:
         
         #right arm
         glPushMatrix()
-        glTranslate(0,-0.9,0)
+        #glTranslate(0,-0.9,0)
+        glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         #move pop to end to keep arm local system
@@ -273,7 +281,7 @@ class Solomon:
         glPopMatrix()
         
         X+=1
-        if (X % 40)==0: self.AG_walk.kick() #ok that works
+        #if (X % 40)==0: self.AG_walk.kick() #ok that works
         
 class Level:
     grid=None
@@ -331,7 +339,7 @@ class SolomonsKey:
     lastFrameTime=0
     topFPS=0
 
-    def animate(self,FPS=10):
+    def animate(self,FPS=30):
     
         currentTime=time()
     
@@ -392,7 +400,6 @@ class SolomonsKey:
         glPushMatrix()
         
         
-        '''
         self.level=Level([
             "b.............b",
             ".......d.......",
@@ -406,8 +413,8 @@ class SolomonsKey:
             "...b@bbbbbkb...",
             "...sbs...sbs...",
             "b.............b"])
-        '''
         
+        '''
         self.level=Level([
             "...............",
             ".6.6...........",
@@ -421,7 +428,8 @@ class SolomonsKey:
             ".bb.........ss.",
             "...............",
             "..............."])
-
+		'''
+		
         glutMainLoop()
 
         return
