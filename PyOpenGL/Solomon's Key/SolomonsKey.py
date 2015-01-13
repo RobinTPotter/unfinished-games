@@ -117,6 +117,7 @@ class Solomon:
     x,y=None,None
     #st_a=None
     AG_walk=None
+    current_state="standing"
     
     def wobble(self,tvmm):
         t,v,mi,ma=tvmm
@@ -151,9 +152,9 @@ class Solomon:
         
         
 
-    def draw(self,currently="standing"):
+    def draw(self):
             
-        if currently=="walking":
+        if self.current_state=="walking":
             self.AG_walk.do()
 
 
@@ -178,7 +179,7 @@ class Solomon:
         
         #hat
         glPushMatrix()
-        if currently=="walking": glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
+        if self.current_state=="walking": glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
         glTranslate(0,0,0.5)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
         glutSolidCone(1,2,12,6)
@@ -193,8 +194,8 @@ class Solomon:
         
         #left arm
         glPushMatrix()
-        if currently=="walking": glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
-        elif currently=="standing": glTranslate(0,0.9,0)
+        if self.current_state=="walking": glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
+        elif self.current_state=="standing": glTranslate(0,0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -204,8 +205,8 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        if currently=="walking": glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
-        elif currently=="standing": glRotatef(0,0,1,0)
+        if self.current_state=="walking": glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
+        elif self.current_state=="standing": glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
         glScale(2,1,.5)
@@ -219,8 +220,8 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        if currently=="walking": glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
-        elif currently=="standing": glRotatef(0,0,1,0)
+        if self.current_state=="walking": glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
+        elif self.current_state=="standing": glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
           
@@ -236,8 +237,8 @@ class Solomon:
         #right arm
         glPushMatrix()
         #glTranslate(0,-0.9,0)
-        if currently=="walking": glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
-        elif currently=="standing": glTranslate(0,-0.9,0)
+        if self.current_state=="walking": glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
+        elif self.current_state=="standing": glTranslate(0,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         #move pop to end to keep arm local system
@@ -289,6 +290,7 @@ class Solomon:
         #if (X % 40)==0: self.AG_walk.kick() #ok that works
         
 class Level:
+
     grid=None
     baddies=[]
     solomon=None
@@ -308,6 +310,12 @@ class Level:
                 
             rr+=1
         
+    def evaluate(self,joystick,keys): 
+        if joystick.isRight(keys)==True: self.solomon.current_state="walking"
+        elif joystick.isLeft(keys)==True: self.solomon.current_state="walking"
+        else: self.solomon.current_state="standing"
+        
+    
 
     def draw(self):
         
@@ -334,7 +342,45 @@ class Level:
                 cc+=1
                 
             rr+=1
-                
+         
+        self.solomon.draw()       
+
+
+class Joystick:
+    
+    up,down,left,right,fire="","","","",""
+
+    def __init__(self,up="q",down="a",left="o",right="p",fire="m"):
+        self.up=up
+        self.down=down
+        self.left=left
+        self.right=right
+        self.fire=fire
+        
+    def isUp(self,keys):
+        if keys.has_key(self.up): return keys[self.up]
+        else: return False
+         
+    def isDown(self,keys):
+        if keys.has_key(self.down): return keys[self.down]
+        else: return False
+         
+    def isLeft(self,keys):
+        if keys.has_key(self.left): return keys[self.left]
+        else: return False
+         
+    def isRight(self,keys):
+        if keys.has_key(self.right): return keys[self.right]
+        else: return False
+         
+    def isFire(self,keys):
+        if keys.has_key(self.fire): return keys[self.fire]
+        else: return False
+         
+ 
+        
+        
+
 
 class SolomonsKey:
 
@@ -343,8 +389,9 @@ class SolomonsKey:
     xx,yy,zz=2.5,3.0,4.5
     lastFrameTime=0
     topFPS=0
+    joystick=Joystick()
 
-    def animate(self,FPS=30):
+    def animate(self,FPS=60):
     
         currentTime=time()
     
@@ -433,11 +480,21 @@ class SolomonsKey:
             ".bb.........ss.",
             "...............",
             "..............."])
-		'''
-		
+            
+        '''
+        
+        
+        self.initkey("zxdcfvqaopm")
+        
         glutMainLoop()
 
         return
+
+
+    def initkey(self,cl):   
+        for c in cl:
+            self.keydownevent(c.lower(),0,0)        
+            self.keyupevent(c.lower(),0,0)
 
     def display(self):
 
@@ -450,21 +507,23 @@ class SolomonsKey:
                   
         glRotatef(10,0,1,0)
         
-        
+        self.level.evaluate(self.joystick,self.keys)
         self.level.draw()        
-        self.level.solomon.draw()
         
         #print "."
         glutSwapBuffers()
         #return
 
     def keydownevent(self,c,x,y):
-        print (c,x,y)
-        self.keys[c]=True
+        #print (c,x,y)
+        self.keys[c.lower()]=True
+        glutPostRedisplay()
+        
 
     def keyupevent(self,c,x,y):
         #print (c,x,y)
-        if self.keys.has_key(c): self.keys[c]=False
+        if self.keys.has_key(c.lower()): self.keys[c.lower()]=False
+        glutPostRedisplay()
 
 
 if __name__ == '__main__': SolomonsKey()
