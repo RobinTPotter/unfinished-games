@@ -151,9 +151,10 @@ class Solomon:
         
         
 
-    def draw(self):
+    def draw(self,currently="walking"):
             
-        self.AG_walk.do()
+        if currently=="walking":
+            self.AG_walk.do()
 
 
         #correction
@@ -177,7 +178,7 @@ class Solomon:
         
         #hat
         glPushMatrix()
-        glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
+        if currently=="walking": glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
         glTranslate(0,0,0.5)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
         glutSolidCone(1,2,12,6)
@@ -192,7 +193,7 @@ class Solomon:
         
         #left arm
         glPushMatrix()
-        glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
+        if currently=="walking": glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -202,7 +203,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
+        if currently=="walking": glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
         glTranslate(0.5,0,0)    
     
         glScale(2,1,.5)
@@ -216,7 +217,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
+        if currently=="walking": glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
         glTranslate(0.5,0,0)    
     
           
@@ -232,7 +233,7 @@ class Solomon:
         #right arm
         glPushMatrix()
         #glTranslate(0,-0.9,0)
-        glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
+        if currently=="walking": glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         #move pop to end to keep arm local system
