@@ -13,9 +13,9 @@ colours={}
 colours["red"]=[1.0,0.0,0.0,1.0]
 colours["green"]=[0.0,1.0,0.0,1.0]
 colours["blue"]=[0.0,0.0,1.0,1.0]
-colours["yellow"]=[1.0,1.0,0.0,1.0]
-colours["cyan"]=[0.0,1.0,1.0,1.0]
-colours["white"]=[1.0,1.0,1.0,1.0]
+#colours["yellow"]=[1.0,1.0,0.0,1.0]
+#colours["cyan"]=[0.0,1.0,1.0,1.0]
+#colours["white"]=[1.0,1.0,1.0,1.0]
 
 class Tile:
     
@@ -25,6 +25,7 @@ class Tile:
     turning=0
     colour=None
     controller=None
+    target=[0,0]
     
     def __init__(self,x,y,controller):
         self.x,self.y=x,y  
@@ -32,7 +33,8 @@ class Tile:
         self.colour=colours.keys()[col]
         self.controller=controller
         
-    def have_turn(self,hinge):
+    def have_turn(self,target, hinge):
+	self.target=target
         self.hinge=hinge
         self.state=0.0
         self.turning=1
@@ -47,15 +49,17 @@ class Tile:
         
         
         if self.turning==1:
-            #glTranslate(-self.state,0,0)
-            glTranslate(.5,0,0)
-            glRotate(180*self.state,0,1,0)
-            glTranslate(-.5,0,0)
             glRotate(90.0*self.hinge,0,0,1)
+	    
+	    
+            #glTranslate(-self.state,0,0)
+            glTranslate(-.5,0,0)
+            glRotate(-180*self.state,0,1,0)
+            glTranslate(.5,0,0)
             
             
                  
-        glScale(0.95,0.95,0.1)
+        glScale(0.95,0.95,0.2)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[self.colour])
         glutSolidCube(1) 
 
@@ -67,12 +71,12 @@ class Tile:
         
             #glTranslate(-1,0,0)
             
-            self.state+=0.01
+            self.state+=0.1
             
             if self.state>1.0:
                 self.state=0
                 self.turning=0
-                print "done "+str(self.hinge)                
+                #print "done "+str(self.hinge)                
              
                 if self.hinge==0:
                     self.x-=1
@@ -97,11 +101,14 @@ class Tile:
 class Thing:
 
     tiles=[]
+    coverage={}
     
     lastFrameTime=0
     
-    xx,yy,zz=-2,-2,6
-    cxx,cyy,czz=-2,-2,0
+    max_number_going=12
+    
+    xx,yy,zz=1,1,6
+    cxx,cyy,czz=2,-2,1
 
     def draw(self,FPS=1):
         
@@ -146,29 +153,55 @@ class Thing:
     def next(self):
     
         #random.shuffle(self.tiles)
+	
+	#print "next"
         
-        holes=[]
+        holes={}
         for t in self.tiles:
-            #if self.isTileHere(t.x-1,t.y)==None: holes.append([t,t.x-1,t.y,0])
-            #if self.isTileHere(t.x+1,t.y)==None: holes.append([t,t.x+1,t.y,2])
-            if self.isTileHere(t.x,t.y-1)==None: holes.append([t,t.x,t.y-1,1])
-            #if self.isTileHere(t.x,t.y+1)==None: holes.append([t,t.x,t.y+1,3])
+	    if t.turning==0:
+		#if self.coverage.has_key((t.x-1,t.y))==False: holes[(t.x-1,t.y)]=[t,0]
+		if self.isTileHere(t.x-1,t.y)==None: holes[(t.x-1,t.y)]=[t,0]
+		if self.isTileHere(t.x+1,t.y)==None: holes[(t.x+1,t.y)]=[t,2]
+		if self.isTileHere(t.x,t.y-1)==None: holes[(t.x,t.y-1)]=[t,1]
+		if self.isTileHere(t.x,t.y+1)==None: holes[(t.x,t.y+1)]=[t,3]
             
+	    
+	#print len(holes)
+        for t in self.tiles:
+	    if holes.has_key((t.x,t.y)): del(holes[(t.x,t.y)])
+	    if holes.has_key((t.target[0],t.target[1])): del(holes[(t.target[0],t.target[1])])
+	
+	
+	for k in holes.keys():
+	    if k[0]<0: del(holes[k])
+	    if k[1]<0: del(holes[k])
+	    if k[0]>18: del(holes[k])
+	    if k[1]>18: del(holes[k])
+	
+	#print len(holes)
         next_hole=random.randint(0,len(holes)-1)
-        holes[next_hole][0].have_turn(holes[next_hole][3])
+	key=holes.keys()[next_hole]
+	#print key
+	#print holes
+        holes[key][0].have_turn( key , holes[key][1])
              
         
 
 
     def __init__(self):   
      
-        for xx in range(0,2):
-            for yy in range(0,2):
-                if random.randint(0,20)>0: self.tiles.append(Tile(xx,yy,self))
-                
+     
+     
+        for xx in range(0,11):
+            for yy in range(0,11):
+                if random.randint(0,20)>3:
+		    self.tiles.append(Tile(xx,yy,self))
+		    self.coverage[(xx,yy)]=True
+	
+	if self.max_number_going>len(self.tiles): self.max_number_going=len(self.tiles)
             
         #print str(self.tiles)
-        self.next()
+        for n in range(1,self.max_number_going): self.next()
         
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
@@ -223,6 +256,7 @@ class Thing:
         self.cyy+=(yy-self.cyy)/50
         self.czz+=(zz-self.czz)/50
         
+	
         
         gluLookAt(self.xx,self.yy,self.zz,
                   self.cxx,self.cyy,self.czz,
