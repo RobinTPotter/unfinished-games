@@ -39,44 +39,40 @@ class Tile:
         
     def draw(self):
     
-    
-    
-    
-        glPushMatrix() 
+       
+        glPushMatrix()         
         glTranslate(self.x,self.y,0)   
         
         #print "drawing "+str(self.hinge)+" "+str(self.state)
         
         
         if self.turning==1:
-            glRotate(90*self.hinge,0,0,1)
+            #glTranslate(-self.state,0,0)
+            glTranslate(.5,0,0)
             glRotate(180*self.state,0,1,0)
-            glTranslate(-1,0,0)
-        
+            glTranslate(-.5,0,0)
+            glRotate(90.0*self.hinge,0,0,1)
             
-                
             
                  
         glScale(0.95,0.95,0.1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[self.colour])
         glutSolidCube(1) 
 
-        #glTranslate(1,0,0)                  
-        glPopMatrix()
 
         
         
                 
         if self.turning==1:
         
+            #glTranslate(-1,0,0)
+            
             self.state+=0.01
             
             if self.state>1.0:
                 self.state=0
                 self.turning=0
-                print "done "+str(self.hinge)
-                self.controller.next()
-                
+                print "done "+str(self.hinge)                
              
                 if self.hinge==0:
                     self.x-=1
@@ -87,8 +83,11 @@ class Tile:
                 elif self.hinge==3:
                     self.y+=1
             
+                self.controller.next()
                 
 
+        #glTranslate(1,0,0)                  
+        glPopMatrix()
             
             
         
@@ -101,7 +100,8 @@ class Thing:
     
     lastFrameTime=0
     
-    xx,yy,zz=3,1,2
+    xx,yy,zz=-2,-2,6
+    cxx,cyy,czz=-2,-2,0
 
     def draw(self,FPS=1):
         
@@ -149,10 +149,10 @@ class Thing:
         
         holes=[]
         for t in self.tiles:
-            if self.isTileHere(t.x-1,t.y)==None: holes.append([t,t.x-1,t.y,0])
-            if self.isTileHere(t.x+1,t.y)==None: holes.append([t,t.x+1,t.y,2])
+            #if self.isTileHere(t.x-1,t.y)==None: holes.append([t,t.x-1,t.y,0])
+            #if self.isTileHere(t.x+1,t.y)==None: holes.append([t,t.x+1,t.y,2])
             if self.isTileHere(t.x,t.y-1)==None: holes.append([t,t.x,t.y-1,1])
-            if self.isTileHere(t.x,t.y+1)==None: holes.append([t,t.x,t.y+1,3])
+            #if self.isTileHere(t.x,t.y+1)==None: holes.append([t,t.x,t.y+1,3])
             
         next_hole=random.randint(0,len(holes)-1)
         holes[next_hole][0].have_turn(holes[next_hole][3])
@@ -162,8 +162,8 @@ class Thing:
 
     def __init__(self):   
      
-        for xx in range(0,10):
-            for yy in range(0,10):
+        for xx in range(0,2):
+            for yy in range(0,2):
                 if random.randint(0,20)>0: self.tiles.append(Tile(xx,yy,self))
                 
             
@@ -210,8 +210,22 @@ class Thing:
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         #print (self.xx,self.yy,self.zz)
+        
+        xx,yy,zz=0.0,0.0,0.0
+        for t in self.tiles:
+            xx+=t.x
+            yy+=t.y
+            
+        yy/=len(self.tiles)
+        xx/=len(self.tiles)
+        
+        self.cxx+=(xx-self.cxx)/50
+        self.cyy+=(yy-self.cyy)/50
+        self.czz+=(zz-self.czz)/50
+        
+        
         gluLookAt(self.xx,self.yy,self.zz,
-                  5,5,0,
+                  self.cxx,self.cyy,self.czz,
                   0,1,0)
                   
         glRotatef(10,0,1,0)
