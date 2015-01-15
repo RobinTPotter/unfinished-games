@@ -26,10 +26,12 @@ class Tile:
     colour=None
     controller=None
     target=[0,0]
+    speed=(random.randint(0,9)+1)/50.0
     
     def __init__(self,x,y,controller):
         self.x,self.y=x,y  
-        col=random.randint(0,len(colours)-1)
+        #col=random.randint(0,len(colours)-1)
+	col=x % len(colours)
         self.colour=colours.keys()[col]
         self.controller=controller
         
@@ -71,7 +73,7 @@ class Tile:
         
             #glTranslate(-1,0,0)
             
-            self.state+=0.1
+            self.state+=self.speed
             
             if self.state>1.0:
                 self.state=0
@@ -107,7 +109,7 @@ class Thing:
     
     max_number_going=12
     
-    xx,yy,zz=1,1,6
+    xx,yy,zz=5,2,6
     cxx,cyy,czz=2,-2,1
 
     def draw(self,FPS=1):
@@ -175,8 +177,8 @@ class Thing:
 	for k in holes.keys():
 	    if k[0]<0: del(holes[k])
 	    if k[1]<0: del(holes[k])
-	    if k[0]>18: del(holes[k])
-	    if k[1]>18: del(holes[k])
+	    if k[0]>22: del(holes[k])
+	    if k[1]>22: del(holes[k])
 	
 	#print len(holes)
         next_hole=random.randint(0,len(holes)-1)
@@ -192,9 +194,9 @@ class Thing:
      
      
      
-        for xx in range(0,11):
+        for xx in range(0,14):
             for yy in range(0,11):
-                if random.randint(0,20)>3:
+                if random.randint(0,30)>3:
 		    self.tiles.append(Tile(xx,yy,self))
 		    self.coverage[(xx,yy)]=True
 	
@@ -203,6 +205,8 @@ class Thing:
         #print str(self.tiles)
         for n in range(1,self.max_number_going): self.next()
         
+	    
+	
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(640,480)
@@ -231,7 +235,7 @@ class Thing:
         glutDisplayFunc(self.display)
         #glutIdleFunc(self.display)
         glMatrixMode(GL_PROJECTION)
-        gluPerspective(90.0,640.0/480.,1.,50.)
+        gluPerspective(110.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
         glutMainLoop()
@@ -240,6 +244,8 @@ class Thing:
 
     def display(self):
 
+	glEnable (GL_BLEND)
+	glEnable (GL_POLYGON_SMOOTH)
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         #print (self.xx,self.yy,self.zz)
@@ -252,9 +258,9 @@ class Thing:
         yy/=len(self.tiles)
         xx/=len(self.tiles)
         
-        self.cxx+=(xx-self.cxx)/50
-        self.cyy+=(yy-self.cyy)/50
-        self.czz+=(zz-self.czz)/50
+        self.cxx+=(xx-self.cxx)/20
+        self.cyy+=(yy-self.cyy)/20
+        self.czz+=(zz-self.czz)/20
         
 	
         
