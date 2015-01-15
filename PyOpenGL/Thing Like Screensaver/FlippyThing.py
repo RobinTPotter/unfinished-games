@@ -1,4 +1,16 @@
+"""
+=================
+Flippy Tile thing
+=================
 
+A near remake of the flip-flopping tile screen saver I found in Ubuntu.
+Needing to develop Python skills, took it up myself to write this
+using PyOpenGL. It uses dictionaries to capture the available holes and checks to see 
+if there is a tile there already or a tile has the hole as a target.
+
+There are various hard coded parameters as it amuses me to leave these there.
+
+"""
 
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -31,12 +43,12 @@ class Tile:
     def __init__(self,x,y,controller):
         self.x,self.y=x,y  
         #col=random.randint(0,len(colours)-1)
-	col=x % len(colours)
+        col=x % len(colours)
         self.colour=colours.keys()[col]
         self.controller=controller
         
     def have_turn(self,target, hinge):
-	self.target=target
+        self.target=target
         self.hinge=hinge
         self.state=0.0
         self.turning=1
@@ -52,8 +64,8 @@ class Tile:
         
         if self.turning==1:
             glRotate(90.0*self.hinge,0,0,1)
-	    
-	    
+        
+        
             #glTranslate(-self.state,0,0)
             glTranslate(-.5,0,0)
             glRotate(-180*self.state,0,1,0)
@@ -155,39 +167,40 @@ class Thing:
     def next(self):
     
         #random.shuffle(self.tiles)
-	
-	#print "next"
+    
+        #print "next"
         
         holes={}
-        for t in self.tiles:
-	    if t.turning==0:
-		#if self.coverage.has_key((t.x-1,t.y))==False: holes[(t.x-1,t.y)]=[t,0]
-		if self.isTileHere(t.x-1,t.y)==None: holes[(t.x-1,t.y)]=[t,0]
-		if self.isTileHere(t.x+1,t.y)==None: holes[(t.x+1,t.y)]=[t,2]
-		if self.isTileHere(t.x,t.y-1)==None: holes[(t.x,t.y-1)]=[t,1]
-		if self.isTileHere(t.x,t.y+1)==None: holes[(t.x,t.y+1)]=[t,3]
-            
-	    
-	#print len(holes)
-        for t in self.tiles:
-	    if holes.has_key((t.x,t.y)): del(holes[(t.x,t.y)])
-	    if holes.has_key((t.target[0],t.target[1])): del(holes[(t.target[0],t.target[1])])
-	
-	
-	for k in holes.keys():
-	    if k[0]<0: del(holes[k])
-	    if k[1]<0: del(holes[k])
-	    if k[0]>22: del(holes[k])
-	    if k[1]>22: del(holes[k])
-	
-	#print len(holes)
-        next_hole=random.randint(0,len(holes)-1)
-	key=holes.keys()[next_hole]
-	#print key
-	#print holes
-        holes[key][0].have_turn( key , holes[key][1])
-             
         
+        for t in self.tiles:
+            if t.turning==0:
+            #if self.coverage.has_key((t.x-1,t.y))==False: holes[(t.x-1,t.y)]=[t,0]
+                if self.isTileHere(t.x-1,t.y)==None: holes[(t.x-1,t.y)]=[t,0]
+                if self.isTileHere(t.x+1,t.y)==None: holes[(t.x+1,t.y)]=[t,2]
+                if self.isTileHere(t.x,t.y-1)==None: holes[(t.x,t.y-1)]=[t,1]
+                if self.isTileHere(t.x,t.y+1)==None: holes[(t.x,t.y+1)]=[t,3]
+                
+            
+        #print len(holes)
+        for t in self.tiles:
+            if holes.has_key((t.x,t.y)): del(holes[(t.x,t.y)])
+            if holes.has_key((t.target[0],t.target[1])): del(holes[(t.target[0],t.target[1])])
+    
+    
+        for k in holes.keys():
+            if k[0]<0: del(holes[k])
+            if k[1]<0: del(holes[k])
+            if k[0]>22: del(holes[k])
+            if k[1]>22: del(holes[k])
+        
+        #print len(holes)
+        next_hole=random.randint(0,len(holes)-1)
+        key=holes.keys()[next_hole]
+        #print key
+        #print holes
+        holes[key][0].have_turn( key , holes[key][1])
+                 
+            
 
 
     def __init__(self):   
@@ -197,16 +210,16 @@ class Thing:
         for xx in range(0,14):
             for yy in range(0,11):
                 if random.randint(0,30)>3:
-		    self.tiles.append(Tile(xx,yy,self))
-		    self.coverage[(xx,yy)]=True
-	
-	if self.max_number_going>len(self.tiles): self.max_number_going=len(self.tiles)
+                    self.tiles.append(Tile(xx,yy,self))
+                    self.coverage[(xx,yy)]=True
+    
+        if self.max_number_going>len(self.tiles): self.max_number_going=len(self.tiles)
             
         #print str(self.tiles)
         for n in range(1,self.max_number_going): self.next()
         
-	    
-	
+        
+    
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(640,480)
@@ -244,13 +257,14 @@ class Thing:
 
     def display(self):
 
-	glEnable (GL_BLEND)
-	glEnable (GL_POLYGON_SMOOTH)
+        glEnable (GL_BLEND)
+        glEnable (GL_POLYGON_SMOOTH)
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         #print (self.xx,self.yy,self.zz)
         
         xx,yy,zz=0.0,0.0,0.0
+        
         for t in self.tiles:
             xx+=t.x
             yy+=t.y
@@ -262,7 +276,7 @@ class Thing:
         self.cyy+=(yy-self.cyy)/20
         self.czz+=(zz-self.czz)/20
         
-	
+    
         
         gluLookAt(self.xx,self.yy,self.zz,
                   self.cxx,self.cyy,self.czz,
@@ -280,5 +294,7 @@ class Thing:
         #return
 
 
-
+"""
+Do this because if it gets put through pydoc or imported its automatically executed
+"""
 if __name__ == '__main__': Thing()
