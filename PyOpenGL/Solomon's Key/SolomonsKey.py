@@ -6,6 +6,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
 from time import time
+from math import sin, cos, pi
 X=46.0
 
 name = "solomon\'s key"
@@ -295,6 +296,21 @@ class Level:
     baddies=[]
     solomon=None
     
+    AG_twinklers=None
+    
+    def singo(self,tvsl):
+        t,v,s,l=tvsl
+        v=0.5*(1+sin(2*pi*t/(l)))
+        #print (t,v)
+        return v
+        
+    def singo2(self,tvsl):
+        t,v,s,l=tvsl
+        v=0.5*(1+sin(4*pi*t/(l)))
+        #print (t,v)
+        return v
+        
+    
     def __init__(self,griddata):
         griddata.reverse()
         self.grid=griddata
@@ -309,8 +325,16 @@ class Level:
                 cc+=1
                 
             rr+=1
+            
+        
+        self.AG_twinklers=ActionGroup()
+        self.AG_twinklers.append("twinkle1",Action(func=self.singo,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
+        self.AG_twinklers.append("twinkle2",Action(func=self.singo2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
         
     def evaluate(self,joystick,keys): 
+    
+        self.AG_twinklers.do()
+    
         if joystick.isRight(keys)==True: self.solomon.current_state="walking"
         elif joystick.isLeft(keys)==True: self.solomon.current_state="walking"
         else: self.solomon.current_state="standing"
@@ -320,7 +344,7 @@ class Level:
     def draw(self):
         
         glPushMatrix()
-        glTranslate(7,5.5,-0.5)
+        glTranslate(7,5.5,-0.55)
         glScale(15,12,0.1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
         glutSolidCube(1)        
@@ -332,11 +356,35 @@ class Level:
             for c in r:
                 glPushMatrix()
                 glTranslate(cc,rr,0)
+                
                 if c in ["b","s"]: 
-                    if c=="b": color = [0.5,0.5,1.0,1.0]
+                
+                    if c=="b": color = [0.3,0.3,1.0,1.0]
                     elif c=="s": color = [1.0,1.0,0.0,1.0]
                     glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
                     glutSolidCube(1)
+                    
+                if c in ["d","6"]: 
+                
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+                    if c=="d": color = [0.8,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]
+                    elif c=="6": color = [10,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]  
+                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                    glutSolidCube( float(self.AG_twinklers.value("twinkle2"))*0.3+0.7)      
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+                    glDisable(GL_BLEND)
+                    
+                if c in ["B"]: ##i.e changed to half a block because recieved bash
+                
+                    glEnable(GL_BLEND)
+                    glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+                    color =   [0.3,0.3,1.0, 0.3]
+                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                    glutSolidCube(1)      
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+                    glDisable(GL_BLEND)
+                    
                     
                 glPopMatrix()
                 cc+=1
@@ -419,22 +467,32 @@ class SolomonsKey:
 
         print bool(glutInit)
         glutInit(sys.argv)
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH)
         glutInitWindowSize(640,480)
         glutCreateWindow(name)
-
+        
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+    
         glClearColor(0.,0.,0.,1.)
         glShadeModel(GL_SMOOTH)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
         lightZeroPosition = [10.,4.,10.,1.]
-        lightZeroColor = [0.8,1.0,0.8,1.0] #green tinged
+        lightZeroColor = [0.9,1.0,0.9,1.0] #green tinged
         glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition)
         glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor)
-        glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
+        glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.2)
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
+        
+        lightZeroPosition2 = [-10.,-4.,10.,1.]
+        lightZeroColor2 = [1.0,0.9,0.9,1.0] #green tinged
+        glLightfv(GL_LIGHT1, GL_POSITION, lightZeroPosition2)
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, lightZeroColor2)
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.2)
+        glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
+        glEnable(GL_LIGHT1)
         
         glutIgnoreKeyRepeat(1)
         
