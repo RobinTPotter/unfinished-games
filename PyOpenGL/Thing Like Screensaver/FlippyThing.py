@@ -18,6 +18,7 @@ from OpenGL.GL import *
 import random 
 import sys
 from time import time
+#import math
 
 name = "thing"
 
@@ -38,7 +39,7 @@ class Tile:
     colour=None
     controller=None
     target=[0,0]
-    speed=(random.randint(0,9)+1)/50.0
+    speed=(random.randint(0,9)+1)/40.0
     
     def __init__(self,x,y,controller):
         self.x,self.y=x,y  
@@ -115,18 +116,23 @@ class Tile:
 class Thing:
 
     tiles=[]
-    coverage={}
     
     lastFrameTime=0
     
-    max_number_going=12
+    max_number_going=30
     
-    xx,yy,zz=5,2,6
+    xx,yy,zz=10,10,10
+    X=0
     cxx,cyy,czz=2,-2,1
 
     def draw(self,FPS=1):
         
-        
+        #self.X+=1
+	#if self.X % 100==0: self.X=0
+	
+	#s#elf.yy=7*math.sin(2*math.pi*self.X/100)
+	#self.xx=7*math.cos(2*math.pi*self.X/100)
+	
         currentTime=time()
         
         '''
@@ -174,7 +180,6 @@ class Thing:
         
         for t in self.tiles:
             if t.turning==0:
-            #if self.coverage.has_key((t.x-1,t.y))==False: holes[(t.x-1,t.y)]=[t,0]
                 if self.isTileHere(t.x-1,t.y)==None: holes[(t.x-1,t.y)]=[t,0]
                 if self.isTileHere(t.x+1,t.y)==None: holes[(t.x+1,t.y)]=[t,2]
                 if self.isTileHere(t.x,t.y-1)==None: holes[(t.x,t.y-1)]=[t,1]
@@ -207,11 +212,10 @@ class Thing:
      
      
      
-        for xx in range(0,14):
-            for yy in range(0,11):
-                if random.randint(0,30)>3:
+        for xx in range(0,20):
+            for yy in range(0,20):
+                if   (xx-10)*(xx-10)+(yy-10)*(yy-10) <80 and random.randint(0,30)>3:
                     self.tiles.append(Tile(xx,yy,self))
-                    self.coverage[(xx,yy)]=True
     
         if self.max_number_going>len(self.tiles): self.max_number_going=len(self.tiles)
             
