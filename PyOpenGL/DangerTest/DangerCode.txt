@@ -1,0 +1,4 @@
+glPushMatrix()
+glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["red"])
+glutSolidCube(1)
+glPopMatrix()
