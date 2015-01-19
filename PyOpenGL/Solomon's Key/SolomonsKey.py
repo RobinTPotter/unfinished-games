@@ -39,6 +39,7 @@ class Action:
     func=None
     init_tick=0
     working=True
+    overide=False
     
     #defined function must return the value for storage
     def __init__(self,func=func,min=-5,max=5,cycle=False,reverseloop=False,init_tick=0):
@@ -48,11 +49,12 @@ class Action:
         self.cycle=cycle 
         self.reverseloop=reverseloop
         self.init_tick=init_tick
+        self.kick()
     
     def kick(self):    
         self.dir=1      
         self.tick=self.init_tick
-        working=True
+        self.working=True
 
     def do(self):
         
@@ -62,15 +64,16 @@ class Action:
         self.value=self.func((self.tick,self.value,self.min,self.max))   
                 
         if self.cycle==True and self.reverseloop==False:
-            if self.tick>self.max: self.tick=self.min
+            if self.tick>=self.max: self.tick=self.min
             
         elif self.cycle==True and self.reverseloop==True:
-            if self.tick>self.max or self.tick<self.min:
+            if self.tick>=self.max or self.tick<=self.min:
                 self.dir*=-1
                      
         elif self.cycle==False:
-            if self.tick>self.max:
+            if self.tick>=self.max:
                 self.working=False
+                self.overide=False
                      
         return self.value
         
@@ -118,8 +121,9 @@ class Solomon:
     x,y=None,None
     #st_a=None
     AG_walk=None
+    A_wandswish=None
     current_state="standing"
-    
+  
     def wobble(self,tvmm):
         t,v,mi,ma=tvmm
         v=t
@@ -142,21 +146,30 @@ class Solomon:
         else: v=0
         #print (t,v,s,l)
         return v
+        
+    def swish(self,tvmm):
+        t,v,min,max=tvmm
+        v=t
+        print (t,v)
+        return v
 
     def __init__(self,sx,sy):
         self.x=sx
         self.y=sy
+        
         self.AG_walk=ActionGroup()
         self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
         self.AG_walk.append("footR",Action(func=self.footR,max=20,cycle=True,min=0))
         self.AG_walk.append("footL",Action(func=self.footL,max=20,cycle=True,min=0))
-        
+         
+        self.A_wandswish=Action(func=self.swish,min=-3,max=-1,cycle=False,reverseloop=False,init_tick=-3)
         
 
     def draw(self):
             
         if self.current_state=="walking":
             self.AG_walk.do()
+            
 
 
         #correction
@@ -166,12 +179,14 @@ class Solomon:
         glTranslate(self.x,self.y,0)
         glScale(0.25,0.25,0.25)
         
+        
         global X
+        '''
         
         #using wobble for whole object
         #glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
         glRotatef(int(X/100)*45,0,1,0)
-        
+        '''
         
         
         
@@ -196,7 +211,7 @@ class Solomon:
         #left arm
         glPushMatrix()
         if self.current_state=="walking": glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
-        elif self.current_state=="standing": glTranslate(0,0.9,0)
+        elif self.current_state=="standing" or self.current_state=="wandswish": glTranslate(0,0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
@@ -207,7 +222,7 @@ class Solomon:
         
         glTranslate(-0.5,0,0)
         if self.current_state=="walking": glRotatef(-2*float(self.AG_walk.value("footL")),0,1,0)
-        elif self.current_state=="standing": glRotatef(0,0,1,0)
+        elif self.current_state=="standing" or self.current_state=="wandswish": glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
         glScale(2,1,.5)
@@ -222,7 +237,7 @@ class Solomon:
         
         glTranslate(-0.5,0,0)
         if self.current_state=="walking": glRotatef(-2*float(self.AG_walk.value("footR")),0,1,0)
-        elif self.current_state=="standing": glRotatef(0,0,1,0)
+        elif self.current_state=="standing" or self.current_state=="wandswish": glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
           
@@ -238,7 +253,13 @@ class Solomon:
         #right arm
         glPushMatrix()
         #glTranslate(0,-0.9,0)
-        if self.current_state=="walking": glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
+        if self.current_state=="wandswish":
+            poo=float(self.A_wandswish.do()/0.05)
+            print poo
+            glTranslate(0,-0.9,0)
+            glRotatef(poo,1,1,0)
+            
+        elif self.current_state=="walking": glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
         elif self.current_state=="standing": glTranslate(0,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
@@ -335,9 +356,15 @@ class Level:
     
         self.AG_twinklers.do()
     
-        if joystick.isRight(keys)==True: self.solomon.current_state="walking"
-        elif joystick.isLeft(keys)==True: self.solomon.current_state="walking"
-        else: self.solomon.current_state="standing"
+        if self.solomon.A_wandswish.overide==False:
+        
+            if joystick.isRight(keys)==True: self.solomon.current_state="walking"
+            elif joystick.isLeft(keys)==True: self.solomon.current_state="walking"
+            elif joystick.isFire(keys)==True and not self.solomon.current_state=="wandswish":
+                self.solomon.A_wandswish.kick()
+                self.solomon.A_wandswish.overide=True
+                self.solomon.current_state="wandswish"
+            else: self.solomon.current_state="standing"
         
     
 
