@@ -6,7 +6,7 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 import sys
 from time import time
-from math import sin, cos, pi, floor, ceil
+from math import sin, cos, pi, floor, ceil, sqrt
 X=46.0
 
 name = "solomon\'s key"
@@ -19,6 +19,66 @@ arm=[0.24,0.007,0.0,1.0]
 shoe=[0.096,0.0,1.0]
 wand=[0,0,0,1.0]
 wandtip=[1,1,1,1.0]
+
+lists={}
+
+def MakeLists():
+
+    global lists
+    lists["broken brick"] = glGenLists(1)
+    print  "about to compile list"+str(lists["broken brick"])
+    glNewList(lists["broken brick"],GL_COMPILE)
+
+    glPushMatrix()
+    glTranslate(0.25,0.25,0.25)
+    glScale(0.4,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,0.25,0.25)
+    glScale(0.44,0.44,0.34)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,-0.25,0.25)
+    glScale(0.44,0.44,0.34)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,-0.25,0.25)
+    glScale(0.44,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,0.25,-0.25)
+    glScale(0.34,0.34,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,0.25,-0.25)
+    glScale(0.44,0.34,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,-0.25,-0.25)
+    glScale(0.24,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,-0.25,-0.25)
+    glScale(0.24,0.5,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+    
+    glEndList()
+
 
 
 
@@ -366,39 +426,19 @@ class Level:
         self.AG_twinklers.append("twinkle2",Action(func=self.singo2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
         
         
-    def detect(self,xx,yy):
+    def detect(self,xx,yy,collision_bound=None):
+        """ return "OK" message in test of a tuple of (character detected,x of char,y of char,distance float """
+        if collision_bound==None: collision_bound=self.solomon.bound
         
         detection=[]
         
-        #print (int(floor(yy)),int(ceil(yy)))
         for rr in range(int(floor(yy)),int(ceil(yy))+1):
-            #print rr
             for cc in range(int(floor(xx)),int(ceil(xx))+1):
-                #print "test "+str((cc,rr))
-                if (cc-xx)**2+(rr-yy)**2<(self.solomon.bound)**2:
+                test=(cc-xx)**2+(rr-yy)**2
+                if test<(collision_bound)**2:
                     c=self.grid[rr][cc]
-                    #print str(c)+" at "+str((cc,rr))+" "+str((cc-xx)**2+(rr-yy)**2)+" "+str((self.solomon.bound)**2)
                     if not c in ["@","."]:
-                        #print "*************************"
-                        detection.append(c)
-        
-        '''
-        rr=0
-        for r in self.grid:
-            cc=0
-            for c in r:
-                #(cc,rr)
-                
-                if (cc-xx)**2+(rr-yy)**2<(self.solomon.bound)**2:
-                    if not c in ["@","."]:
-                        #print str(c)+" at "+str((cc,rr))+" "+str((cc-xx)**2+(rr-yy)**2)+" "+str((self.solomon.bound)**2)
-                        #print "*************************"
-                        detection.append(c)
-                
-                cc+=1
-                
-            rr+=1
-        '''    
+                        detection.append((c,cc,rr,sqrt(test)))
         
         if len(detection)==0: return "OK"
         else: return detection
@@ -432,8 +472,6 @@ class Level:
             
             else: self.solomon.current_state="standing"
         
-    
-
     def draw(self):
         
         glPushMatrix()
@@ -483,7 +521,11 @@ class Level:
                     
                     color = [0.3,0.3,1.0,1.0]
                     glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                                    
+                    global lists
+                    glCallList(lists["broken brick"])
                     
+                    '''
                     glPushMatrix()
                     glTranslate(0.25,0.25,0.25)
                     glScale(0.4,0.44,0.44)
@@ -531,7 +573,7 @@ class Level:
                     glScale(0.24,0.5,0.44)
                     glutSolidCube(1)
                     glPopMatrix()
-
+                    '''
 
                     
                 glPopMatrix()
@@ -615,6 +657,7 @@ class SolomonsKey:
 
     def __init__(self):
 
+
         print bool(glutInit)
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH)
@@ -643,6 +686,8 @@ class SolomonsKey:
         glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.2)
         glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT1)
+        
+        MakeLists()
         
         glutIgnoreKeyRepeat(1)
         
