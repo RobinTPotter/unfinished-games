@@ -182,8 +182,6 @@ class Solomon:
         if self.current_state=="walking":
             self.AG_walk.do()
             
-
-
         #correction
         glTranslate(0,-0.2,0)
         
