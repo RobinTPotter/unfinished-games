@@ -62,7 +62,7 @@ class Action:
         if not self.working: return
         self.tick+=self.dir*self.speed
         
-        self.value=self.func((self.tick,self.value,self.min,self.max))   
+        self.value=self.func((self.tick,self.value,self.min,self.max))  
                 
         if self.cycle==True and self.reverseloop==False:
             if self.tick>=self.max: self.tick=self.min
@@ -76,7 +76,8 @@ class Action:
                 self.working=False
                 self.overide=False
                      
-        return self.value
+        if not self.value==None: return self.value
+        else: return 0.0
         
 
 #defines a set of actions to be done as one.
@@ -173,7 +174,7 @@ class Solomon:
          
         self.AG_walk.speed_scale(2) 
          
-        self.A_wandswish=Action(func=self.swish,min=-3,max=-1,cycle=False,reverseloop=False,init_tick=-3)
+        self.A_wandswish=Action(func=self.swish,min=-7,max=-1,cycle=False,reverseloop=False,init_tick=-7)
         
 
     def draw(self):
@@ -265,7 +266,9 @@ class Solomon:
         glPushMatrix()
         #glTranslate(0,-0.9,0)
         if self.current_state=="wandswish":
-            poo=float(self.A_wandswish.do()/0.05)
+            res=self.A_wandswish.do()
+            if res==None: poo=0.0
+            else: poo=float(res/0.05)
             print poo
             glTranslate(0,-0.9,0)
             glRotatef(poo,1,1,0)
@@ -409,7 +412,13 @@ class Level:
     
         if self.solomon.A_wandswish.overide==False:
         
-            if joystick.isRight(keys)==True:
+            if joystick.isFire(keys)==True and not self.solomon.current_state=="wandswish":
+            
+                self.solomon.A_wandswish.kick()
+                self.solomon.A_wandswish.overide=True
+                self.solomon.current_state="wandswish"
+        
+            elif joystick.isRight(keys)==True:
             
                 self.solomon.facing=1
                 result=self.detect(self.solomon.x+self.solomon.step,self.solomon.y)            
@@ -422,13 +431,7 @@ class Level:
                 result=self.detect(self.solomon.x-self.solomon.step,self.solomon.y)                
                 if result=="OK": self.solomon.x-=self.solomon.step        
                 self.solomon.current_state="walking"
-                
-            elif joystick.isFire(keys)==True and not self.solomon.current_state=="wandswish":
             
-                self.solomon.A_wandswish.kick()
-                self.solomon.A_wandswish.overide=True
-                self.solomon.current_state="wandswish"
-                
             else: self.solomon.current_state="standing"
         
     
