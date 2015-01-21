@@ -7,6 +7,8 @@ from OpenGL.GL import *
 import sys
 from time import time
 from math import sin, cos, pi, floor, ceil, sqrt
+import random
+
 X=46.0
 
 name = "solomon\'s key"
@@ -194,7 +196,7 @@ class Solomon:
     A_wandswish=None
     current_state={}
     
-    bound=0.8 #this is his bounding sphere 
+    bound=0.3 #this is his bounding sphere 
     step=0.05
     facing=1 #or -1
     level=None
@@ -268,11 +270,27 @@ class Solomon:
         glTranslate(0,-0.2,0)
         
         
-        glTranslate(self.x,self.y,0)
+        glTranslate(self.x,self.y,0) 
+        
+        glPushMatrix()
+        glTranslatef(self.facing*(self.step+self.bound),0,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,green)
+        #print "solomon add on "+str(self.facing*self.step)+" "+str(self.level.detect(self.x+self.facing*self.step,self.y))
+        glutSolidCube(0.1)
+        glPopMatrix()
+        
+        glPushMatrix()
+        glTranslatef(0,0,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,blue)
+        glutSolidCube(0.1)
+        glPopMatrix()
+        
+        global X
+        
+        
         glScale(0.25,0.25,0.25)
         
         
-        global X
         
         
         
@@ -282,24 +300,8 @@ class Solomon:
         
         if self.facing==-1: glRotatef(180,0,1,0)
         
-        
-        
         glRotatef(-90.0,1.0,0,0)   
         
-        
-        
-        glPushMatrix()
-        glTranslatef(self.x+self.facing*self.step,self.y,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,green)
-        print "solomon add on "+str(self.facing*self.step)+" "+str(self.level.detect(self.x+self.facing*self.step,self.y,collision_bound=0.0001))
-        glutSolidCube(0.3)
-        glPopMatrix()
-        
-        glPushMatrix()
-        glTranslatef(self.x,self.y,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,blue)
-        glutSolidCube(0.3)
-        glPopMatrix()
         
         
         
@@ -485,7 +487,7 @@ class Level:
         print "hi"+str(self.solomon)
         takeoff_for_crouching=0
         if self.solomon.state_test(["crouching"])>0 : takeoff_for_crouching=-0.8
-        res=self.detect(self.solomon.x+self.solomon.facing*0.8,self.solomon.y+takeoff_for_crouching,collision_bound=0.5)
+        res=self.detect(self.solomon.x+self.solomon.facing*1.0,self.solomon.y+takeoff_for_crouching,collision_bound=0.5)
                 
         if res=="OK": return
         
@@ -507,25 +509,36 @@ class Level:
         
         detection=[]
         
-        for rr in range(int(floor(yy)),int(ceil(yy))+1):
-            for cc in range(int(floor(xx)),int(ceil(xx))+1):
+        
+        for rr in range(int(floor(yy-collision_bound+0.5)),int(ceil(yy+collision_bound+0.5))): #didhave +1
+            list1=""
+            for cc in range(int(floor(xx-collision_bound+0.5)),int(ceil(xx+collision_bound+0.5))):
                 test=(cc-xx)**2+(rr-yy)**2
+                c=self.grid[rr][cc]
+                list1+=c
                 if test<(collision_bound)**2:
-                    c=self.grid[rr][cc]
                     detection.append((c,cc,rr,sqrt(test)))
-              
+                    
+            print list1  
+        
+        
+        '''
+        rr=int(floor(yy+0.5))
+        cc=int(floor(xx+0.5)) 
+        c=self.grid[rr][cc]
+        detection.append((c,cc,rr,0))
+        print str((c,cc,rr,0,"from",xx,yy))
+        '''
         
         detection=sorted(detection,key=lambda x: x[3])
         print "detection "+str(detection )
-        
+                
         return detection
         
     
     def evaluate(self,joystick,keys): 
         """ TODO redo current_state was rubbish anyway """
-        self.AG_twinklers.do()
-         
-            
+        self.AG_twinklers.do() 
     
         #for k in self.solomon.current_state:
         #    self.solomon.current_state[k]=0 
@@ -534,8 +547,7 @@ class Level:
                 
         if self.solomon.A_wandswish.overide==False:
         
-            self.solomon.current_state["wandswish"]=0
-             
+            self.solomon.current_state["wandswish"]=0             
         
             if joystick.isDown(keys)==True:                    
                 self.solomon.current_state["crouching"]=1                        
@@ -546,8 +558,8 @@ class Level:
                 if joystick.isRight(keys)==True:
                 
                     self.solomon.facing=1
-                    result=self.detect(self.solomon.x+self.solomon.step,self.solomon.y,collision_bound=0.1)     
-                    print result                      
+                    result=self.detect(self.solomon.x+self.solomon.step*12.0,self.solomon.y)     
+                    #print result                      
                     if len(result)==0 or result[0][0]==".":
                         self.solomon.x+=self.solomon.step
                         self.solomon.current_state["walking"]=1                 
@@ -556,18 +568,15 @@ class Level:
                 elif joystick.isLeft(keys)==True:
                 
                     self.solomon.facing=-1
-                    result=self.detect(self.solomon.x-self.solomon.step,self.solomon.y,collision_bound=0.1)   
+                    result=self.detect(self.solomon.x-self.solomon.step*12.0,self.solomon.y)   
                                 
                     if len(result)==0 or result[0][0]==".":
                         self.solomon.x-=self.solomon.step  
                         self.solomon.current_state["walking"]=1                   
-                        self.solomon.current_state["standing"]=0
-                        
+                        self.solomon.current_state["standing"]=0                        
                 else:
                         self.solomon.current_state["walking"]=0                
                         self.solomon.current_state["standing"]=1
-                    
-                
             
             if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
                 self.solomon.A_wandswish.kick()
@@ -575,9 +584,7 @@ class Level:
                 self.solomon.current_state["wandswish"]=1    
             
         
-            
-        
-        print ([k for k in self.solomon.current_state if self.solomon.current_state[k]==1])
+        #print ([k for k in self.solomon.current_state if self.solomon.current_state[k]==1])
         
     def draw(self):
         
@@ -684,7 +691,11 @@ class SolomonsKey:
 
     level=None
     keys={}
-    xx,yy,zz=2.5,3.0,4.5
+    cxx,cyy,czz=2.5,3.0,4.5
+    tcxx,tcyy,tczz=0,0,0    
+    fxx,fyy,fzz=0,0,0
+    tfxx,tfyy,tfzz=0,0,0
+    
     lastFrameTime=0
     topFPS=0
     joystick=Joystick()
@@ -710,7 +721,19 @@ class SolomonsKey:
 
         drawTime=currentTime-self.lastFrameTime
         self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)
+        if int(100*time())%100==0:
+            print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
+            self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
+		    
+        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,0
+            
+        self.cxx+=(self.tcxx-self.cxx)/1000
+        self.cyy+=(self.tcyy-self.cyy)/1000
+        self.czz+=(self.tczz-self.czz)/1000
+        
+        self.fxx+=(self.tfxx-self.fxx)/100
+        self.fyy+=(self.tfyy-self.fyy)/100
+        self.fzz+=(self.tfzz-self.fzz)/100
         
         self.lastFrameTime=time()
 
@@ -759,8 +782,6 @@ class SolomonsKey:
         glutDisplayFunc(self.display)
         #glutIdleFunc(self.display)
         
-        self.animate()
-        
         glMatrixMode(GL_PROJECTION)
         gluPerspective(60.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
@@ -801,6 +822,8 @@ class SolomonsKey:
         
         self.initkey("zxdcfvqaopm")
         
+        self.animate()
+        
         glutMainLoop()
 
         return
@@ -816,8 +839,8 @@ class SolomonsKey:
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         #print (self.xx,self.yy,self.zz)
-        gluLookAt(self.xx,self.yy,self.zz,
-                  self.xx,self.yy,self.zz-5,
+        gluLookAt(self.cxx,self.cyy,self.czz,
+                  self.fxx,self.fyy,self.fzz,
                   0,1,0)
                   
         glRotatef(10,0,1,0)
