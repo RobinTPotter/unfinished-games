@@ -270,20 +270,29 @@ class Solomon:
         glTranslate(0,-0.2,0)
         
         
-        glTranslate(self.x,self.y,0) 
         
+        '''
         glPushMatrix()
-        glTranslatef(self.facing*(self.step+self.bound),0,0)
+        glTranslatef(int(self.x+0.5+self.facing*(1)),self.y,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,green)
         #print "solomon add on "+str(self.facing*self.step)+" "+str(self.level.detect(self.x+self.facing*self.step,self.y))
-        glutSolidCube(0.1)
+        glutSolidCube(0.9)
         glPopMatrix()
+        '''
         
+        
+        glTranslate(self.x,self.y,0) 
+        
+        
+        
+        '''
         glPushMatrix()
         glTranslatef(0,0,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,blue)
         glutSolidCube(0.1)
         glPopMatrix()
+        '''
+        
         
         global X
         
@@ -510,8 +519,10 @@ class Level:
         detection=[]
         
         
+        
         for rr in range(int(floor(yy-collision_bound+0.5)),int(ceil(yy+collision_bound+0.5))): #didhave +1
             list1=""
+            
             for cc in range(int(floor(xx-collision_bound+0.5)),int(ceil(xx+collision_bound+0.5))):
                 test=(cc-xx)**2+(rr-yy)**2
                 c=self.grid[rr][cc]
@@ -590,7 +601,7 @@ class Level:
         
         glPushMatrix()
         glTranslate(7,5.5,-0.55)
-        glScale(15,12,0.1)
+        glScale(15,10,0.1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
         glutSolidCube(1)        
         glPopMatrix()
@@ -599,48 +610,52 @@ class Level:
         for r in self.grid:
             cc=0
             for c in r:
-                glPushMatrix()
-                glTranslate(cc,rr,0)
                 
-                if c in ["b","s"]: 
-                
-                    if c=="b": color = [0.3,0.3,1.0,1.0]
-                    elif c=="s": color = [1.0,1.0,0.0,1.0]
-                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                    glutSolidCube(1)
+                if rr>0 and rr<13 and cc>0 and cc<16:
                     
-                if c in ["d","6"]: 
-                
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-                    if c=="d": color = [0.8,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]
-                    elif c=="6": color = [10,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]  
-                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                    glutSolidCube( float(self.AG_twinklers.value("twinkle2"))*0.3+0.7)      
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-                    glDisable(GL_BLEND)
+                    glPushMatrix()
+                    glTranslate(cc,rr,0)
                     
-                if c in ["B"]: ##i.e changed to half a block because recieved bash
-                
-                    #originally had this going transparent - but since the advent of DangerCode changed this to a bunch of split cubes
-                    '''
-                    glEnable(GL_BLEND)
-                    glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-                    color =   [0.3,0.3,1.0, 0.3]
-                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                    glutSolidCube(1)      
-                    glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-                    glDisable(GL_BLEND)
-                    '''
+                    if c in ["b","s"]: 
                     
-                    color = [0.3,0.3,1.0,1.0]
-                    glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                                    
-                    global lists
-                    glCallList(lists["broken brick"])                   
+                        if c=="b": color = [0.3,0.3,1.0,1.0]
+                        elif c=="s": color = [1.0,1.0,0.0,1.0]
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                        glutSolidCube(1)
+                        
+                    if c in ["d","6"]: 
+                    
+                        glEnable(GL_BLEND)
+                        glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+                        if c=="d": color = [0.8,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]
+                        elif c=="6": color = [10,0.5,0.0, 0.1+0.2*float(self.AG_twinklers.value("twinkle1")) ]  
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                        glutSolidCube( float(self.AG_twinklers.value("twinkle2"))*0.3+0.7)      
+                        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+                        glDisable(GL_BLEND)
+                        
+                    if c in ["B"]: ##i.e changed to half a block because recieved bash
+                    
+                        #originally had this going transparent - but since the advent of DangerCode changed this to a bunch of split cubes
+                        '''
+                        glEnable(GL_BLEND)
+                        glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
+                        color =   [0.3,0.3,1.0, 0.3]
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                        glutSolidCube(1)      
+                        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+                        glDisable(GL_BLEND)
+                        '''
+                        
+                        color = [0.3,0.3,1.0,1.0]
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
+                                        
+                        global lists
+                        glCallList(lists["broken brick"])                   
 
-                    
-                glPopMatrix()
+                        
+                    glPopMatrix()
+						
                 cc+=1
                 
             rr+=1
@@ -691,7 +706,7 @@ class SolomonsKey:
 
     level=None
     keys={}
-    cxx,cyy,czz=2.5,3.0,4.5
+    cxx,cyy,czz=2.5,5.0,9.5
     tcxx,tcyy,tczz=0,0,0    
     fxx,fyy,fzz=0,0,0
     tfxx,tfyy,tfzz=0,0,0
@@ -724,8 +739,8 @@ class SolomonsKey:
         if int(100*time())%100==0:
             print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
             self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
-		    
-        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,0
+            
+        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y-5,10
             
         self.cxx+=(self.tcxx-self.cxx)/1000
         self.cyy+=(self.tcyy-self.cyy)/1000
@@ -789,33 +804,37 @@ class SolomonsKey:
         
         
         self.level=Level([
-            "b.............b",
-            ".......d.......",
-            ".5.............",
-            ".....sbbbs.....",
-            ".....b343b.....",
-            "..g..sbbbs..g..",
-            "......bbb......",
-            "...2.......2...",
-            "...sbs.1.sbs...",
-            "...b@Bbbbbkb...",
-            "...sbs...sbs...",
-            "b.............b"])
+            "sssssssssssssssss",
+            "s...............s",
+            "s.......d.......s",
+            "s.5.............s",
+            "s.....sbbbs.....s",
+            "s.....b343b.....s",
+            "s..g..sbbbs..g..s",
+            "s......bbb......s",
+            "s...2.......2...s",
+            "s...sbs.1.sbs...s",
+            "s...b@Bbbbbkb...s",
+            "s...sbs...sbs...s",
+            "s...............s",
+            "sssssssssssssssss"])
         
         '''
         self.level=Level([
-            "...............",
-            ".6.6...........",
-            ".......4.....k.",
-            ".ss.........bb.",
-            "...ss.....bb...",
-            ".....ss.bb.....",
-            "...............",
-            ".....bbbss.....",
-            ".@.bbbbbbbss.d.",
-            ".bb.........ss.",
-            "...............",
-            "..............."])
+            "sssssssssssssssss",
+            "s...............s",
+            "s.6.6...........s",
+            "s.......4.....k.s",
+            "s.ss.........bb.s",
+            "s...ss.....bb...s",
+            "s.....ss.bb.....s",
+            "s...............s",
+            "s.....bbbss.....s",
+            "s.@.bbbbbbbss.d.s",
+            "s.bb.........ss.s",
+            "s...............s",
+            "s...............s",
+            "sssssssssssssssss"]
             
         '''
         
