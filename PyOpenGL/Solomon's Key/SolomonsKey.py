@@ -555,11 +555,16 @@ class Level:
         #    self.solomon.current_state[k]=0 
         #    
         #self.solomon.current_state["standing"]=1
+
+        walkcheck=False
                 
         if self.solomon.A_wandswish.overide==False:
         
             self.solomon.current_state["wandswish"]=0             
         
+ 
+
+
             if joystick.isDown(keys)==True:                    
                 self.solomon.current_state["crouching"]=1                        
                 self.solomon.current_state["standing"]=0
@@ -567,28 +572,36 @@ class Level:
                 self.solomon.current_state["crouching"]=0               
                     
                 if joystick.isRight(keys)==True:
-                
-                    self.solomon.facing=1
-                    result=self.detect(self.solomon.x+self.solomon.step*12.0,self.solomon.y)     
-                    #print result                      
-                    if len(result)==0 or result[0][0]==".":
-                        self.solomon.x+=self.solomon.step
-                        self.solomon.current_state["walking"]=1                 
-                        self.solomon.current_state["standing"]=0
-                    
-                elif joystick.isLeft(keys)==True:
-                
-                    self.solomon.facing=-1
-                    result=self.detect(self.solomon.x-self.solomon.step*12.0,self.solomon.y)   
-                                
-                    if len(result)==0 or result[0][0]==".":
-                        self.solomon.x-=self.solomon.step  
-                        self.solomon.current_state["walking"]=1                   
-                        self.solomon.current_state["standing"]=0                        
+                    self.solomon.facing=1    
+                    self.solomon.current_state["walking"]=1
+                    self.solomon.current_state["standing"]=1
+                    walkcheck=True
+                elif joystick.isLeft(keys)==True:                
+                    self.solomon.facing=-1        
+                    walkcheck=True
+                    self.solomon.current_state["walking"]=1
+                    self.solomon.current_state["standing"]=0
                 else:
                         self.solomon.current_state["walking"]=0                
                         self.solomon.current_state["standing"]=1
             
+
+
+            if walkcheck:
+                result=self.detect(self.solomon.x+self.solomon.facing*self.solomon.step*12.0,self.solomon.y)                                 
+                if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==1:
+                    self.solomon.x+=self.solomon.step*self.solomon.facing                
+                    self.solomon.current_state["standing"]=0  
+                    self.solomon.current_state["walking"]=1 
+
+
+            result1=self.grid[int(self.solomon.y-0.5)][int(self.solomon.x+0.5+self.solomon.step*5*self.solomon.facing)]
+            result2=self.grid[int(self.solomon.y-0.5)][int(self.solomon.x+0.5-self.solomon.step*5*self.solomon.facing)]
+            print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
+            if result1=="." and result2==".":
+                self.solomon.y-=self.solomon.step
+
+
             if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
                 self.solomon.A_wandswish.kick()
                 self.solomon.A_wandswish.overide=True
@@ -655,7 +668,7 @@ class Level:
 
                         
                     glPopMatrix()
-						
+
                 cc+=1
                 
             rr+=1
@@ -740,11 +753,12 @@ class SolomonsKey:
             print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
             self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
             
-        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y-5,10
+        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,10
+        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,20
             
-        self.cxx+=(self.tcxx-self.cxx)/1000
-        self.cyy+=(self.tcyy-self.cyy)/1000
-        self.czz+=(self.tczz-self.czz)/1000
+        self.cxx+=(self.tcxx-self.cxx)/100
+        self.cyy+=(self.tcyy-self.cyy)/100
+        self.czz+=(self.tczz-self.czz)/100
         
         self.fxx+=(self.tfxx-self.fxx)/100
         self.fyy+=(self.tfyy-self.fyy)/100
@@ -816,7 +830,7 @@ class SolomonsKey:
             "s...sbs.1.sbs...s",
             "s...b@Bbbbbkb...s",
             "s...sbs...sbs...s",
-            "s...............s",
+            "sb..............s",
             "sssssssssssssssss"])
         
         '''
