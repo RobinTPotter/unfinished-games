@@ -15,10 +15,10 @@ name = "solomon\'s key"
 red=[1.0,0.0,0.0,1.0]
 green=[0.0,1.0,0.0,1.0]
 blue=[0.0,0.0,1.0,1.0]
-hat=[0.105,0.097,0.107,1.0]
+hat=[0.105,0.097,0.207,1.0]
 body=[0.093,0.02,0.0006071,1.0]
 arm=[0.24,0.007,0.0,1.0]
-shoe=[0.096,0.0,1.0]
+shoe=[0.096,0.3,1.0]
 wand=[0,0,0,1.0]
 wandtip=[1,1,1,1.0]
 
@@ -247,8 +247,8 @@ class Solomon:
         
         self.AG_walk=ActionGroup()
         self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
-        self.AG_walk.append("footR",Action(func=self.footR,max=20,cycle=True,min=0))
-        self.AG_walk.append("footL",Action(func=self.footL,max=20,cycle=True,min=0))
+        self.AG_walk.append("footR",Action(func=self.footR,max=26,cycle=True,min=0))
+        self.AG_walk.append("footL",Action(func=self.footL,max=26,cycle=True,min=0))
          
         self.AG_walk.speed_scale(2) 
          
@@ -260,6 +260,12 @@ class Solomon:
 
     def state_test(self,list):
         return len([l for l in list if self.current_state[l]==1])
+
+
+    def draw0(self):
+        glTranslate(self.x,self.y,0) 
+        glutSolidCube(0.1)
+        
 
     def draw(self):
             
@@ -297,7 +303,7 @@ class Solomon:
         global X
         
         
-        glScale(0.25,0.25,0.25)
+        glScale(0.3,0.3,0.3)
         
         
         
@@ -411,7 +417,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        if self.state_test(["walking"])>0: glRotatef(-3*float(self.AG_walk.value("footL")),0,1,0)
+        if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footL")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
@@ -426,7 +432,7 @@ class Solomon:
         glPushMatrix()
         
         glTranslate(-0.5,0,0)
-        if self.state_test(["walking"])>0: glRotatef(-3*float(self.AG_walk.value("footR")),0,1,0)
+        if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footR")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)    
     
@@ -477,10 +483,12 @@ class Level:
             cc=0
             for c in r:
                 if c=="@":
-                    self.solomon=Solomon(cc,rr,self)
+                    self.solomon=Solomon(cc,rr+0.3,self)
                     self.grid[rr][cc]="."
                     self.solomon.A_wandswish.callback=self.block_swap
-                
+                elif not c in ["b","B","s"]:
+                    self.grid[rr][cc]="."
+
                 cc+=1
                 
             rr+=1
@@ -586,20 +594,26 @@ class Level:
                         self.solomon.current_state["standing"]=1
             
 
-
+            canwalk=False
             if walkcheck:
                 result=self.detect(self.solomon.x+self.solomon.facing*self.solomon.step*12.0,self.solomon.y)                                 
                 if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==1:
-                    self.solomon.x+=self.solomon.step*self.solomon.facing                
+                    #self.solomon.x+=self.solomon.step*self.solomon.facing                
                     self.solomon.current_state["standing"]=0  
-                    self.solomon.current_state["walking"]=1 
+                    self.solomon.current_state["walking"]=1
+                    canwalk=True
+                #elif result[0][0] in ["]
 
 
-            result1=self.grid[int(self.solomon.y-0.5)][int(self.solomon.x+0.5+self.solomon.step*5*self.solomon.facing)]
-            result2=self.grid[int(self.solomon.y-0.5)][int(self.solomon.x+0.5-self.solomon.step*5*self.solomon.facing)]
+            result1=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5+self.solomon.step*5*self.solomon.facing)]
+            result2=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5-self.solomon.step*5*self.solomon.facing)]
             print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
             if result1=="." and result2==".":
                 self.solomon.y-=self.solomon.step
+                self.solomon.current_state["walking"]=0
+                canwalk=False
+
+            if canwalk==True: self.solomon.x+=self.solomon.step*self.solomon.facing 
 
 
             if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
@@ -613,8 +627,8 @@ class Level:
     def draw(self):
         
         glPushMatrix()
-        glTranslate(7,5.5,-0.55)
-        glScale(15,10,0.1)
+        glTranslate(8,6.5,-0.55)
+        glScale(18,15,0.1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
         glutSolidCube(1)        
         glPopMatrix()
@@ -623,8 +637,8 @@ class Level:
         for r in self.grid:
             cc=0
             for c in r:
-                
-                if rr>0 and rr<13 and cc>0 and cc<16:
+                if True:
+                #if rr>0 and rr<13 and cc>0 and cc<16:
                     
                     glPushMatrix()
                     glTranslate(cc,rr,0)
@@ -673,6 +687,7 @@ class Level:
                 
             rr+=1
          
+
         self.solomon.draw()  
         
         
@@ -719,26 +734,26 @@ class SolomonsKey:
 
     level=None
     keys={}
-    cxx,cyy,czz=2.5,5.0,9.5
+    cxx,cyy,czz=8,6.5,15 #2.5,5.0,7.5
     tcxx,tcyy,tczz=0,0,0    
-    fxx,fyy,fzz=0,0,0
+    fxx,fyy,fzz=8,6.5,0 #0,0,0
     tfxx,tfyy,tfzz=0,0,0
     
     lastFrameTime=0
     topFPS=0
     joystick=Joystick()
 
-    def animate(self,FPS=25):
+    def animate(self,FPS=30):
     
         currentTime=time()
     
         try:
-            if self.keys["x"]: self.xx+=0.1
-            if self.keys["z"]: self.xx-=0.1
-            if self.keys["d"]: self.yy+=0.1
-            if self.keys["c"]: self.yy-=0.1
-            if self.keys["f"]: self.zz+=0.1
-            if self.keys["v"]: self.zz-=0.1
+            if self.keys["x"]: self.fxx+=1
+            if self.keys["z"]: self.fxx-=1
+            if self.keys["d"]: self.fyy+=1
+            if self.keys["c"]: self.fyy-=1
+            if self.keys["f"]: self.fzz+=1
+            if self.keys["v"]: self.fzz-=1
         except:
             pass 
 
@@ -751,19 +766,23 @@ class SolomonsKey:
         self.topFPS=int(1000/drawTime)
         if int(100*time())%100==0:
             print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
-            self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
-            
-        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,10
-        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,20
-            
-        self.cxx+=(self.tcxx-self.cxx)/100
-        self.cyy+=(self.tcyy-self.cyy)/100
-        self.czz+=(self.tczz-self.czz)/100
+            #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
+           
+
+
         
-        self.fxx+=(self.tfxx-self.fxx)/100
-        self.fyy+=(self.tfyy-self.fyy)/100
-        self.fzz+=(self.tfzz-self.fzz)/100
+        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,5
+        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,8
+            
+        self.cxx+=(self.tcxx-self.cxx)/200
+        self.cyy+=(self.tcyy-self.cyy)/200
+        self.czz+=(self.tczz-self.czz)/200
         
+        self.fxx+=(self.tfxx-self.fxx)/200
+        self.fyy+=(self.tfyy-self.fyy)/200
+        self.fzz+=(self.tfzz-self.fzz)/200
+        
+
         self.lastFrameTime=time()
 
 
@@ -818,7 +837,23 @@ class SolomonsKey:
         
         
         self.level=Level([
-            "sssssssssssssssss",
+            ".sssssssssssssss.",
+            "s...............s",
+            "s.......d.......s",
+            "s......@........s",
+            "s....bsbbbs.....s",
+            "s...b.b343b.....s",
+            "s..b..sbbbs..g..s",
+            "s......bbb......s",
+            "s...2.......2...s",
+            "s.b.sbs.1.sbs...s",
+            "s.bbbb...b.bbb..s",
+            "s..b.bbbb.b.....s",
+            "sb.......b......s",
+            ".sssssssssssssss."])
+        '''
+        self.level=Level([
+            ".sssssssssssssss.",
             "s...............s",
             "s.......d.......s",
             "s.5.............s",
@@ -831,8 +866,8 @@ class SolomonsKey:
             "s...b@Bbbbbkb...s",
             "s...sbs...sbs...s",
             "sb..............s",
-            "sssssssssssssssss"])
-        
+            ".sssssssssssssss."])
+        '''
         '''
         self.level=Level([
             "sssssssssssssssss",
@@ -876,7 +911,7 @@ class SolomonsKey:
                   self.fxx,self.fyy,self.fzz,
                   0,1,0)
                   
-        glRotatef(10,0,1,0)
+        #glRotatef(10,0,1,0)
         
         self.level.draw()        
         
