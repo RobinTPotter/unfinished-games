@@ -197,7 +197,7 @@ class Solomon:
     current_state={}
     
     bound=0.3 #this is his bounding sphere 
-    step=0.05
+    step=0.1
     facing=1 #or -1
     level=None
   
@@ -247,8 +247,8 @@ class Solomon:
         
         self.AG_walk=ActionGroup()
         self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
-        self.AG_walk.append("footR",Action(func=self.footR,max=26,cycle=True,min=0))
-        self.AG_walk.append("footL",Action(func=self.footL,max=26,cycle=True,min=0))
+        self.AG_walk.append("footR",Action(func=self.footR,max=14,cycle=True,min=0))
+        self.AG_walk.append("footL",Action(func=self.footL,max=14,cycle=True,min=0))
          
         self.AG_walk.speed_scale(2) 
          
@@ -273,7 +273,7 @@ class Solomon:
             self.AG_walk.do()
             
         #correction
-        glTranslate(0,-0.2,0)
+        glTranslate(0,-0.1,0)
         
         
         
@@ -596,7 +596,7 @@ class Level:
 
             canwalk=False
             if walkcheck:
-                result=self.detect(self.solomon.x+self.solomon.facing*self.solomon.step*12.0,self.solomon.y)                                 
+                result=self.detect(self.solomon.x+self.solomon.facing*self.solomon.step*5.0,self.solomon.y)                                 
                 if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==1:
                     #self.solomon.x+=self.solomon.step*self.solomon.facing                
                     self.solomon.current_state["standing"]=0  
@@ -605,8 +605,8 @@ class Level:
                 #elif result[0][0] in ["]
 
 
-            result1=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5+self.solomon.step*5*self.solomon.facing)]
-            result2=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5-self.solomon.step*5*self.solomon.facing)]
+            result1=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5+self.solomon.step*2*self.solomon.facing)]
+            result2=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5-self.solomon.step*2*self.solomon.facing)]
             print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
             if result1=="." and result2==".":
                 self.solomon.y-=self.solomon.step
