@@ -82,8 +82,6 @@ def MakeLists():
     glEndList()
 
 
-
-
 class Baddie:
     def __init__(self,type):
         pass
@@ -143,7 +141,6 @@ class Action:
         if not self.value==None: return self.value
         else: return 0.0
         
-
 #defines a set of actions to be done as one.
 class ActionGroup:
 
@@ -185,9 +182,7 @@ class ActionGroup:
         else:
             raise Error("no such action registered "+action_name)
             
-
 class Solomon:
-
 
     x,y=None,None
     startx,starty=None,None
@@ -273,54 +268,27 @@ class Solomon:
             self.AG_walk.do()
             
         #correction
-        glTranslate(0,-0.1,0)
-        
-        
-        
-        '''
-        glPushMatrix()
-        glTranslatef(int(self.x+0.5+self.facing*(1)),self.y,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,green)
-        #print "solomon add on "+str(self.facing*self.step)+" "+str(self.level.detect(self.x+self.facing*self.step,self.y))
-        glutSolidCube(0.9)
-        glPopMatrix()
-        '''
-        
-        
+        glTranslate(0,-0.1,0)        
+
+        #main displacement
         glTranslate(self.x,self.y,0) 
-        
-        
-        
-        '''
-        glPushMatrix()
-        glTranslatef(0,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,blue)
-        glutSolidCube(0.1)
-        glPopMatrix()
-        '''
-        
-        
+
+        #for experiments
         global X
         
-        
-        glScale(0.3,0.3,0.3)
-        
-        
-        
-        
-        
-        #using wobble for whole object
-        #glRotatef(int( self.AG_walk.value("wobble") ),0,1,0)
-        #glRotatef(-int(X/50)*15,0,1,0)
-        
+        #scale down character
+        glScale(0.3,0.3,0.3) 
+               
+        #rotate to direction facing
         if self.facing==-1: glRotatef(180,0,1,0)
         
+        #correction for drawing character
         glRotatef(-90.0,1.0,0,0)   
         
         
         
         
-        
+        #############################entering crouch section###############################
         glPushMatrix()
         if "crouching" in self.state_test_on(): glTranslate(0,0,-0.3)
         
@@ -408,44 +376,35 @@ class Solomon:
         glutSolidSphere(0.3,24,12)            
         glPopMatrix()
         
-        
-        glPopMatrix()
-        
-        
-        
+        ##########################left crouch section##################################
+        glPopMatrix() #end of crouch
+                
+        #drawing rest of body (feet)
         #left foot
-        glPushMatrix()
-        
+        glPushMatrix()        
         glTranslate(-0.5,0,0)
+        #apply rotation if walking
         if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footL")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
-        glTranslate(0.5,0,0)    
-    
-        glScale(2,1,.5)
-        
+        glTranslate(0.5,0,0)        
+        glScale(2,1,.5)        
         glTranslate(0,0.5,-2)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
         #right foot
-        glPushMatrix()
-        
+        glPushMatrix()        
         glTranslate(-0.5,0,0)
+        #apply rotation if walking
         if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footR")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
-        glTranslate(0.5,0,0)    
-    
-          
+        glTranslate(0.5,0,0)             
         glScale(2,1,.5)      
-        glTranslate(0,-0.5,-2)
-        
+        glTranslate(0,-0.5,-2)        
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
-        
-        
-        
         
         X+=1
         #if (X % 40)==0: self.AG_walk.kick() #ok that works
@@ -468,11 +427,12 @@ class Level:
         t,v,s,l=tvsl
         v=0.5*(1+sin(4*pi*t/(l)))
         #print (t,v)
-        return v
-        
+        return v        
     
     def __init__(self,griddata):
+    
         griddata.reverse()
+        
         #self.grid=griddata
         self.grid=[]
         for line in griddata:
@@ -491,9 +451,7 @@ class Level:
 
                 cc+=1
                 
-            rr+=1
-            
-        
+            rr+=1                    
         
         self.AG_twinklers=ActionGroup()
         self.AG_twinklers.append("twinkle1",Action(func=self.singo,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
@@ -501,6 +459,7 @@ class Level:
         
         
     def block_swap(self):
+    
         print "hi"+str(self.solomon)
         takeoff_for_crouching=0
         if self.solomon.state_test(["crouching"])>0 : takeoff_for_crouching=-0.8
@@ -522,11 +481,10 @@ class Level:
         
     def detect(self,xx,yy,collision_bound=None):
         """ return "OK" message in test of a tuple of (character detected,x of char,y of char,distance float """
+        
         if collision_bound==None: collision_bound=self.solomon.bound
         
         detection=[]
-        
-        
         
         for rr in range(int(floor(yy-collision_bound+0.5)),int(ceil(yy+collision_bound+0.5))): #didhave +1
             list1=""
@@ -538,40 +496,23 @@ class Level:
                 if test<(collision_bound)**2:
                     detection.append((c,cc,rr,sqrt(test)))
                     
-            print list1  
+            #print list1  
         
-        
-        '''
-        rr=int(floor(yy+0.5))
-        cc=int(floor(xx+0.5)) 
-        c=self.grid[rr][cc]
-        detection.append((c,cc,rr,0))
-        print str((c,cc,rr,0,"from",xx,yy))
-        '''
-        
-        detection=sorted(detection,key=lambda x: x[3])
-        print "detection "+str(detection )
-                
+        detection=sorted(detection,key=lambda x: x[3])                
         return detection
         
     
     def evaluate(self,joystick,keys): 
-        """ TODO redo current_state was rubbish anyway """
-        self.AG_twinklers.do() 
     
-        #for k in self.solomon.current_state:
-        #    self.solomon.current_state[k]=0 
-        #    
-        #self.solomon.current_state["standing"]=1
+        """ TODO redo current_state was rubbish anyway """
+        
+        self.AG_twinklers.do() 
 
         walkcheck=False
                 
         if self.solomon.A_wandswish.overide==False:
         
-            self.solomon.current_state["wandswish"]=0             
-        
- 
-
+            self.solomon.current_state["wandswish"]=0  
 
             if joystick.isDown(keys)==True:                    
                 self.solomon.current_state["crouching"]=1                        
@@ -592,7 +533,6 @@ class Level:
                 else:
                         self.solomon.current_state["walking"]=0                
                         self.solomon.current_state["standing"]=1
-            
 
             canwalk=False
             if walkcheck:
@@ -604,31 +544,27 @@ class Level:
                     canwalk=True
                 #elif result[0][0] in ["]
 
-
             result1=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5+self.solomon.step*2*self.solomon.facing)]
             result2=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5-self.solomon.step*2*self.solomon.facing)]
-            print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
+            #print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
             if result1=="." and result2==".":
                 self.solomon.y-=self.solomon.step
                 self.solomon.current_state["walking"]=0
                 canwalk=False
 
-            if canwalk==True: self.solomon.x+=self.solomon.step*self.solomon.facing 
-
+            if canwalk==True: self.solomon.x+=self.solomon.step*self.solomon.facing
 
             if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
                 self.solomon.A_wandswish.kick()
                 self.solomon.A_wandswish.overide=True
                 self.solomon.current_state["wandswish"]=1    
-            
-        
-        #print ([k for k in self.solomon.current_state if self.solomon.current_state[k]==1])
-        
+
+
     def draw(self):
         
         glPushMatrix()
         glTranslate(8,6.5,-0.55)
-        glScale(18,15,0.1)
+        glScale(15,12,0.1)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
         glutSolidCube(1)        
         glPopMatrix()
@@ -637,8 +573,8 @@ class Level:
         for r in self.grid:
             cc=0
             for c in r:
-                if True:
-                #if rr>0 and rr<13 and cc>0 and cc<16:
+                #if True:
+                if rr>0 and rr<13 and cc>0 and cc<16:
                     
                     glPushMatrix()
                     glTranslate(cc,rr,0)
@@ -662,24 +598,11 @@ class Level:
                         glDisable(GL_BLEND)
                         
                     if c in ["B"]: ##i.e changed to half a block because recieved bash
-                    
-                        #originally had this going transparent - but since the advent of DangerCode changed this to a bunch of split cubes
-                        '''
-                        glEnable(GL_BLEND)
-                        glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
-                        color =   [0.3,0.3,1.0, 0.3]
-                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                        glutSolidCube(1)      
-                        glBlendFunc(GL_SRC_ALPHA, GL_ONE)
-                        glDisable(GL_BLEND)
-                        '''
                         
                         color = [0.3,0.3,1.0,1.0]
-                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                                        
+                        glMaterialfv(GL_FRONT,GL_DIFFUSE,color)                                        
                         global lists
-                        glCallList(lists["broken brick"])                   
-
+                        glCallList(lists["broken brick"])                  
                         
                     glPopMatrix()
 
@@ -687,11 +610,8 @@ class Level:
                 
             rr+=1
          
-
         self.solomon.draw()  
-        
-        
-        
+
 
 
 class Joystick:
@@ -725,16 +645,12 @@ class Joystick:
         if keys.has_key(self.fire): return keys[self.fire]
         else: return False
          
- 
-        
-        
-
-
+         
 class SolomonsKey:
 
     level=None
     keys={}
-    cxx,cyy,czz=8,6.5,15 #2.5,5.0,7.5
+    cxx,cyy,czz=8,6.5,15 #2.5,5.0,15
     tcxx,tcyy,tczz=0,0,0    
     fxx,fyy,fzz=8,6.5,0 #0,0,0
     tfxx,tfyy,tfzz=0,0,0
@@ -766,28 +682,23 @@ class SolomonsKey:
         self.topFPS=int(1000/drawTime)
         if int(100*time())%100==0:
             print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
-            #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)  
-           
-
-
+            #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)
+            
         
         self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,5
         self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,8
             
-        self.cxx+=(self.tcxx-self.cxx)/200
-        self.cyy+=(self.tcyy-self.cyy)/200
-        self.czz+=(self.tczz-self.czz)/200
+        self.cxx+=(self.tcxx-self.cxx)/25
+        self.cyy+=(self.tcyy-self.cyy)/25
+        self.czz+=(self.tczz-self.czz)/25
         
-        self.fxx+=(self.tfxx-self.fxx)/200
-        self.fyy+=(self.tfyy-self.fyy)/200
-        self.fzz+=(self.tfzz-self.fzz)/200
-        
+        self.fxx+=(self.tfxx-self.fxx)/25
+        self.fyy+=(self.tfyy-self.fyy)/25
+        self.fzz+=(self.tfzz-self.fzz)/25        
 
         self.lastFrameTime=time()
 
-
     def __init__(self):
-
 
         print bool(glutInit)
         glutInit(sys.argv)
@@ -835,7 +746,7 @@ class SolomonsKey:
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
         
-        
+        '''
         self.level=Level([
             ".sssssssssssssss.",
             "s...............s",
@@ -852,6 +763,7 @@ class SolomonsKey:
             "sb.......b......s",
             ".sssssssssssssss."])
         '''
+        
         self.level=Level([
             ".sssssssssssssss.",
             "s...............s",
@@ -865,9 +777,9 @@ class SolomonsKey:
             "s...sbs.1.sbs...s",
             "s...b@Bbbbbkb...s",
             "s...sbs...sbs...s",
-            "sb..............s",
+            "s...............s",
             ".sssssssssssssss."])
-        '''
+        
         '''
         self.level=Level([
             "sssssssssssssssss",
@@ -886,6 +798,24 @@ class SolomonsKey:
             "sssssssssssssssss"]
             
         '''
+        '''
+        self.level=Level([
+            "sssssssssssssssss",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "s.......@.......s",
+            "s...............s",
+            "s...............s",
+            "s...............s",
+            "sssssssssssssssss"]
+            
+        '''
         
         
         self.initkey("zxdcfvqaopm")
@@ -898,6 +828,7 @@ class SolomonsKey:
 
 
     def initkey(self,cl):   
+    
         for c in cl:
             self.keydownevent(c.lower(),0,0)        
             self.keyupevent(c.lower(),0,0)
@@ -906,29 +837,23 @@ class SolomonsKey:
 
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        #print (self.xx,self.yy,self.zz)
+        
         gluLookAt(self.cxx,self.cyy,self.czz,
                   self.fxx,self.fyy,self.fzz,
                   0,1,0)
-                  
-        #glRotatef(10,0,1,0)
         
-        self.level.draw()        
+        self.level.draw()
         
-        #print "."
         glutSwapBuffers()
-        #return
 
     def keydownevent(self,c,x,y):
-        #print (c,x,y)
+    
         self.keys[c.lower()]=True
         glutPostRedisplay()
         
-
     def keyupevent(self,c,x,y):
-        #print (c,x,y)
+    
         if self.keys.has_key(c.lower()): self.keys[c.lower()]=False
         glutPostRedisplay()
-
-
+        
 if __name__ == '__main__': SolomonsKey()
