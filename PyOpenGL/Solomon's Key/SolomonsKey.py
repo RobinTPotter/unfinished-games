@@ -204,17 +204,16 @@ class Solomon:
     
     def footR(self,tvsl):
         t,v,s,l=tvsl
-        if t<7: v+=2
-        elif t<10: v-=5
+        if t<7: v+=1
+        elif t<10: v-=2
         else: v=0
         #print (t,v,s,l)
         return v
         
     def footL(self,tvsl):
         t,v,s,l=tvsl
-        t=(t+10)%l
-        if t<7: v+=2
-        elif t<10: v-=5
+        if t<7: v+=1
+        elif t<10: v-=2
         else: v=0
         #print (t,v,s,l)
         return v
@@ -242,8 +241,8 @@ class Solomon:
         
         self.AG_walk=ActionGroup()
         self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
-        self.AG_walk.append("footR",Action(func=self.footR,max=14,cycle=True,min=0))
-        self.AG_walk.append("footL",Action(func=self.footL,max=14,cycle=True,min=0))
+        self.AG_walk.append("footR",Action(func=self.footR,max=13,cycle=True,min=0))
+        self.AG_walk.append("footL",Action(func=self.footL,max=13,cycle=True,min=0,init_tick=6))
          
         self.AG_walk.speed_scale(2) 
          
@@ -275,6 +274,7 @@ class Solomon:
 
         #for experiments
         global X
+        print (X,self.AG_walk.value("footL"),self.AG_walk.value("footR"))
         
         #scale down character
         glScale(0.3,0.3,0.3) 
@@ -309,7 +309,7 @@ class Solomon:
         
         #left arm
         glPushMatrix()
-        if self.state_test(["walking"])>0: glTranslate(0-float(self.AG_walk.value("wobble"))/20,0.9,0)
+        if self.state_test(["walking"])>0: glTranslate(0-float(self.AG_walk.value("footR"))/10,0.9,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glTranslate(0,0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
@@ -327,7 +327,7 @@ class Solomon:
             glTranslate(0,-0.9,0)
             glRotatef(poo,1,1,0)
             
-        elif self.state_test(["walking"])>0: glTranslate(float(self.AG_walk.value("wobble"))/20,-0.9,0)
+        elif self.state_test(["walking"])>0: glTranslate(float(self.AG_walk.value("footL"))/10,-0.9,0)
         elif self.state_test(["standing","crouching"])>0: glTranslate(0,-0.9,0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
         glutSolidSphere(0.5,24,12)            
@@ -384,10 +384,10 @@ class Solomon:
         glPushMatrix()        
         glTranslate(-0.5,0,0)
         #apply rotation if walking
-        if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footL")),0,1,0)
+        if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footL")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)        
-        glScale(2,1,.5)        
+        glScale(1.5,1,.5)        
         glTranslate(0,0.5,-2)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
@@ -397,10 +397,10 @@ class Solomon:
         glPushMatrix()        
         glTranslate(-0.5,0,0)
         #apply rotation if walking
-        if self.state_test(["walking"])>0: glRotatef(-5*float(self.AG_walk.value("footR")),0,1,0)
+        if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footR")),0,1,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
         glTranslate(0.5,0,0)             
-        glScale(2,1,.5)      
+        glScale(1.5,1,.5)      
         glTranslate(0,-0.5,-2)        
         glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
         glutSolidSphere(0.5,24,12)            
@@ -659,7 +659,7 @@ class SolomonsKey:
     topFPS=0
     joystick=Joystick()
 
-    def animate(self,FPS=30):
+    def animate(self,FPS=25):
     
         currentTime=time()
     
