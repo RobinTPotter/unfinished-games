@@ -120,6 +120,8 @@ class Action:
 
     def do(self):
         
+        #print str(("action",self.tick,self.value))
+        
         if not self.working: return
         self.tick+=self.dir*self.speed
         
@@ -166,8 +168,8 @@ class ActionGroup:
             
     def do(self):
         for a in self.actions.keys():
-            #print "do action "+str(a)
             self.actions[a].do()
+            print "do action "+str(a)+" "+str((self.actions[a].tick,self.actions[a].value))
             
     def value(self,action_name):
         if self.actions.has_key(action_name):
@@ -188,6 +190,7 @@ class Solomon:
     startx,starty=None,None
     #st_a=None
     AG_walk=None
+    AG_jump=None
     A_wandswish=None
     current_state={}
     
@@ -223,6 +226,17 @@ class Solomon:
         v=t
         #print (t,v)
         return v
+        
+    def jump_displacement(self,tvmm):
+        t,v,min,max=tvmm
+        if t<4: v+=2
+        else: v+=1
+        return v
+       
+      
+    def end_jump(self):
+        print "jump complete"
+        self.current_state["jumping"]=0
 
     def __init__(self,sx,sy, level):
     
@@ -231,6 +245,7 @@ class Solomon:
         self.current_state["standing"]=1
         self.current_state["crouching"]=0
         self.current_state["walking"]=0
+        self.current_state["jumping"]=0
         self.current_state["wandswish"]=0
     
         self.x=sx
@@ -243,6 +258,12 @@ class Solomon:
         self.AG_walk.append("wobble",Action(func=self.wobble,max=5,cycle=True,min=-5,reverseloop=True,init_tick=0))
         self.AG_walk.append("footR",Action(func=self.footR,max=13,cycle=True,min=0))
         self.AG_walk.append("footL",Action(func=self.footL,max=13,cycle=True,min=0,init_tick=6))
+        
+        self.AG_jump=ActionGroup()        
+        self.AG_jump.append("jump_displacement",Action(func=self.jump_displacement,max=10,min=0))        
+        self.AG_jump.action("jump_displacement").callback=self.end_jump
+         
+        print self.AG_jump.action("jump_displacement").callback
          
         self.AG_walk.speed_scale(2) 
          
@@ -267,7 +288,7 @@ class Solomon:
             self.AG_walk.do()
             
         #correction
-        glTranslate(0,-0.1,0)        
+        glTranslate(0,-0.15,0)        
 
         #main displacement
         glTranslate(self.x,self.y,0) 
@@ -507,6 +528,17 @@ class Level:
         """ TODO redo current_state was rubbish anyway """
         
         self.AG_twinklers.do() 
+        
+        
+        if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==0:                    
+            self.solomon.current_state["jumping"]=1  
+
+                    
+        if self.solomon.current_state["jumping"]==1:
+            self.solomon.AG_jump.do()
+            print "he's jumping"
+            print str(self.solomon.AG_jump.action("jump_displacement").tick)
+            self.solomon.y+=0.2
 
         walkcheck=False
                 
@@ -557,7 +589,9 @@ class Level:
             if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
                 self.solomon.A_wandswish.kick()
                 self.solomon.A_wandswish.overide=True
-                self.solomon.current_state["wandswish"]=1    
+                self.solomon.current_state["wandswish"]=1 
+
+            print "co-ordinates "+str((self.solomon.x,self.solomon.y))
 
 
     def draw(self):
