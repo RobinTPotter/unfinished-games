@@ -1,12 +1,11 @@
+
+
+
+from OpenGL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
-import random 
-import sys
-from time import time
-#import math
 
-name = "thing"
 
 colours={}
 
@@ -17,16 +16,76 @@ colours["blue"]=[0.0,0.0,1.0,1.0]
 colours["yellow"]=[1.0,1.0,0.0,1.0]
 colours["cyan"]=[0.0,1.0,1.0,1.0]
 colours["pink"]=[1.0,0.0,1.0,1.0]
-colours["white"]=[1.0,1.0,1.0,1.0]
-  
-  
-  
-  
+colours["white"]=[1.0,1.0,1.0,1.0]    
+colours["gold"]=[1.0,0.9,0.0,1.0]
+colours["hat"]=[0.105,0.097,0.207,1.0]
+colours["body"]=[0.093,0.02,0.0006071,1.0]
+colours["arm"]=[0.24,0.007,0.0,1.0]
+colours["shoe"]=[0.096,0.3,1.0]
+colours["wand"]=[0,0,0,1.0]
+colours["wandtip"]=[1,1,1,1.0]
+
+
+
 lists={}
 
 def MakeLists():
 
-    global lists
+    #global lists
+    lists["broken brick"] = glGenLists(1)
+    print  "about to compile list"+str(lists["broken brick"])
+    glNewList(lists["broken brick"],GL_COMPILE)
+
+    glPushMatrix()
+    glTranslate(0.25,0.25,0.25)
+    glScale(0.4,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,0.25,0.25)
+    glScale(0.44,0.44,0.34)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,-0.25,0.25)
+    glScale(0.44,0.44,0.34)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,-0.25,0.25)
+    glScale(0.44,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,0.25,-0.25)
+    glScale(0.34,0.34,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,0.25,-0.25)
+    glScale(0.44,0.34,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(0.25,-0.25,-0.25)
+    glScale(0.24,0.44,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glTranslate(-0.25,-0.25,-0.25)
+    glScale(0.24,0.5,0.44)
+    glutSolidCube(1)
+    glPopMatrix()
+    
+    glEndList()
+
 
     lists[" "] = glGenLists(1) 
     glNewList(lists[" "],GL_COMPILE) 
@@ -510,135 +569,201 @@ def MakeLists():
   
   
   
+    lists["blue_key"] = glGenLists(1) 
+    glNewList(lists["blue_key"],GL_COMPILE) 
+  
+      
+    q=gluNewQuadric()
+
+    glPushMatrix()
+
+
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["blue"])
+
+
+    #blue edge 1
+    glPushMatrix()
+    glScale(0.25,0.25,0.01)
+    glTranslate(0.7,-0.75,7.5)
+    # q, radius 1, radius 2, length, sub-div, sub div stacks
+    gluCylinder(q,1,1,1,10,1)  
+    glTranslate(0,0,1)  
+    gluDisk(q, 0.0, 1, 10, 1);     
+    #glTranslate(0,0,-1)  
+    #glRotate(180,1,0,0)
+    #gluDisk(q, 0.0,1, 10, 1);  
+    glPopMatrix()
+
+
+
+
+    #blue edge 2
+    glPushMatrix()
+    glScale(0.25,0.25,0.01)
+    glTranslate(0.7,-0.75,-9.5)
+    # q, radius 1, radius 2, length, sub-div, sub div stacks
+    gluCylinder(q,1,1,1,10,1)  
+    glTranslate(0,0,1)  
+    #gluDisk(q, 0.0, 1, 10, 1);     
+    glTranslate(0,0,-1)  
+    glRotate(180,1,0,0)
+    gluDisk(q, 0.0,1, 10, 1);     
+    glPopMatrix()
+
+
+
+
+
+    glPushMatrix()
+    glTranslate(0.17,-0.17,-0.013)
+    glRotate(45,1,0,0)
+    glRotate(45,0,1,0)
+    glutSolidCube(0.2)
+    glPopMatrix()
+
+
+
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["gold"])
+
+    glPushMatrix()
+
+
+    glScale(0.35,0.35,0.15)
+    glTranslate(0.5,-0.55,-0.5)
+
+    # q, radius 1, radius 2, length, sub-div, sub div stacks
+    gluCylinder(q,1,1,1,10,1)  
+
+    glTranslate(0,0,1)  
+    gluDisk(q, 0.0, 1, 10, 1);     
+
+    glTranslate(0,0,-1)  
+    glRotate(180,1,0,0)
+    gluDisk(q, 0.0,1, 10, 1);     
+
+    glPopMatrix()
+
+
+
+
+
+
+    glPushMatrix()
+    glRotatef(90,-1,0,0) 
+    glRotatef(-45,0,1,0) 
+
+    # q, radius 1, radius 2, length, sub-div, sub div stacks
+    gluCylinder(q,0.15,0.15,0.5,10,1)  
+
+    glTranslate(0,0,0.5)  
+    gluDisk(q, 0.0, 0.15, 10, 1);     
+
+    glTranslate(0,0,-0.5)  
+    glRotate(180,1,0,0)
+    gluDisk(q, 0.0, 0.15, 10, 1);     
+            
+    glPushMatrix()
+    glTranslate(-0.20,0,0)
+    glTranslate(0,0,-0.4)
+    glutSolidCube(0.1)
+    glPopMatrix()
+        
+    glPushMatrix()
+    glTranslate(-0.20,0,0)
+    glTranslate(0,0,-0.2)
+    glutSolidCube(0.1)
+    glPopMatrix()
+
+        
+    glPopMatrix()
+
+
+    glPopMatrix()
+  
+    glEndList()
   
   
   
-class Thing:
-
-    lastFrameTime=0
+  
+  
+      
+      
+    lists["green_key"] = glGenLists(1)
+    glNewList(lists["green_key"],GL_COMPILE)    
+      
+    glPushMatrix()
     
-    xx,yy,zz=0,0,40
-    cxx,cyy,czz=0,0,0
-    X=0
-    
-    xRot=0
-    yRot=0
-    mPos=[0,0]
-    speed=0.1
 
-    def animate(self,FPS=1):
-        
-        currentTime=time()         
-        
-        
-        self.X+=1
-        if self.X>1000: self.X=0
-               
-        #print "posting redisplay"
-        glutPostRedisplay()    
-        
-        tt=int(1000/FPS)
-        #print tt, FPS
-        glutTimerFunc(tt, self.animate, FPS)
-        drawTime=currentTime-self.lastFrameTime
-        self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)
-        
-    def draw(self):
-                
-        glTranslate(0,0,8)
-        glRotate(-self.yRot*2,1,0,0)
-        glRotate(-self.xRot*2,0,1,0)
-                                
-        global lists
-        string="ROBIN POTTER"
-        glScale(0.1,0.1,0.1)
-        for l in range(0,len(string)):
-            glTranslate(10.1,0,0)
-            glCallList(lists[string[l]])
-        
-        f=open("DangerCode.txt","r")
-        code=f.read()
-        #print "DC:"+code
-        exec(code)
-
-    def __init__(self):   
-     
-             
-    
-        glutInit(sys.argv)
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-        glutInitWindowSize(640,480)
-        glutCreateWindow(name)
-
-        glClearColor(0.,0.,0.,1.)
-        glShadeModel(GL_FLAT)
-        glEnable(GL_CULL_FACE)
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_LIGHTING)
-        lightZeroPosition = [10.,4.,10.,1.]
-        lightZeroColor = [0.8,1.0,0.8,1.0] #green tinged
-        glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition)
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor)
-        glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
-        glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
-        glEnable(GL_LIGHT0)
-        glutMotionFunc(self.mousedrag)
-        glutMouseFunc(self.mouse)
-        '''
-        glutSpecialFunc(self.keydownevent)
-        glutSpecialUpFunc(self.keyupevent)
-        glutKeyboardFunc(self.keydownevent)
-        glutKeyboardUpFunc(self.keyupevent)
-        '''
-        
-        glutDisplayFunc(self.display)
-        #glutIdleFunc(self.display)
-        glMatrixMode(GL_PROJECTION)
-        gluPerspective(60.0,640.0/480.,1.,50.)
-        glMatrixMode(GL_MODELVIEW)
-        glPushMatrix()
-        
-        self.animate(FPS=5)
-        
-        MakeLists()
-        glutMainLoop()
-        
-        
-        return
-
-    def mousedrag(self,x,y):
-        #print ((x,y))
-        self.xRot+=(self.mPos[0]-x)*self.speed
-        self.yRot+=(self.mPos[1]-y)*self.speed
-        self.mPos=[x,y]
-
-    def mouse(self,button,state,x,y):
-        #print ((button,state,x,y))
-        self.mPos=[x,y]
-
-    def display(self):
-
-        glEnable (GL_BLEND)
-        glEnable (GL_POLYGON_SMOOTH)
-        glLoadIdentity()
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        #print (self.xx,self.yy,self.zz)                 
-        
-        gluLookAt(self.xx,self.yy,self.zz,
-                  self.cxx,self.cyy,self.czz,
-                  0,1,0)          
-        
-        self.draw()
-        self.yRot+=0.5
-        self.xRot+=0.5
-    
-    
-        glutSwapBuffers()
-        #return
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["green"])
 
 
-"""
-Do this because if it gets put through pydoc or imported its automatically executed
-"""
-if __name__ == '__main__': Thing()
+
+    glPushMatrix()
+    glScale(.45,.45,0.01)
+    glTranslate(0.5,-0.5,5.5)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    glPushMatrix()
+    glScale(.45,.45,0.01)
+    glTranslate(0.5,-0.5,-5.5)
+    glutSolidCube(1)
+    glPopMatrix()
+
+
+
+
+    glPushMatrix()
+    glTranslate(0.25,-0.25,-0.0)
+    glRotate(45,1,0,0)
+    glRotate(45,0,1,0)
+    glutSolidCube(0.15)
+    glPopMatrix()
+
+
+
+
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["gold"])
+
+    glPushMatrix()
+    glScale(.55,.55,0.1)
+    glTranslate(0.4,-0.4,0)
+    glutSolidCube(1)
+    glPopMatrix()
+
+    q=gluNewQuadric()
+    glPushMatrix()
+    glRotatef(90,-1,0,0) 
+    glRotatef(-45,0,1,0) 
+
+    # q, radius 1, radius 2, length, sub-div, sub div stacks
+    gluCylinder(q,0.15,0.15,0.5,10,1)  
+
+    glTranslate(0,0,0.5)  
+    gluDisk(q, 0.0, 0.15, 10, 1);     
+
+    glTranslate(0,0,-0.5)  
+    glRotate(180,1,0,0)
+    gluDisk(q, 0.0, 0.15, 10, 1);     
+            
+    glPushMatrix()
+    glTranslate(-0.20,0,0)
+    glTranslate(0,0,-0.4)
+    glutSolidCube(0.1)
+    glPopMatrix()
+        
+    glPushMatrix()
+    glTranslate(-0.20,0,0)
+    glTranslate(0,0,-0.2)
+    glutSolidCube(0.1)
+    glPopMatrix()
+
+        
+    glPopMatrix()
+
+
+    glPopMatrix()
+
+  
+  
+    glEndList()

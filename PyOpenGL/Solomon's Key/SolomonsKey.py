@@ -8,84 +8,87 @@ import sys
 from time import time
 from math import sin, cos, pi, floor, ceil, sqrt
 import random
+from Models import lists, MakeLists, colours
 
 X=46.0
 
 name = "solomon\'s key"
-red=[1.0,0.0,0.0,1.0]
-gold=[1.0,0.9,0.0,1.0]
-green=[0.0,1.0,0.0,1.0]
-blue=[0.0,0.0,1.0,1.0]
-hat=[0.105,0.097,0.207,1.0]
-body=[0.093,0.02,0.0006071,1.0]
-arm=[0.24,0.007,0.0,1.0]
-shoe=[0.096,0.3,1.0]
-wand=[0,0,0,1.0]
-wandtip=[1,1,1,1.0]
 
-lists={}
 
-def MakeLists():
 
-    global lists
-    lists["broken brick"] = glGenLists(1)
-    print  "about to compile list"+str(lists["broken brick"])
-    glNewList(lists["broken brick"],GL_COMPILE)
 
-    glPushMatrix()
-    glTranslate(0.25,0.25,0.25)
-    glScale(0.4,0.44,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
+class Sprite:
 
-    glPushMatrix()
-    glTranslate(-0.25,0.25,0.25)
-    glScale(0.44,0.44,0.34)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(0.25,-0.25,0.25)
-    glScale(0.44,0.44,0.34)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(-0.25,-0.25,0.25)
-    glScale(0.44,0.44,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(0.25,0.25,-0.25)
-    glScale(0.34,0.34,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(-0.25,0.25,-0.25)
-    glScale(0.44,0.34,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(0.25,-0.25,-0.25)
-    glScale(0.24,0.44,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
-
-    glPushMatrix()
-    glTranslate(-0.25,-0.25,-0.25)
-    glScale(0.24,0.5,0.44)
-    glutSolidCube(1)
-    glPopMatrix()
+    collision_action=None
     
-    glEndList()
+    def __init__(self,x,y):
+        self.x=x
+        self.y=y
+        self.draw_func=self.temp_drawfunc        
+    
+        self.AG_move=ActionGroup()
+        
+        self.AG_move.append("x_action",Action(func=self.x_action,max=100,cycle=True,min=0))
+        self.AG_move.append("y_action",Action(func=self.y_action,max=100,cycle=True,min=0)) 
+        self.AG_move.append("z_action",Action(func=self.z_action,max=100,cycle=True,min=0)) 
 
+        self.AG_move.append("xrot_action",Action(func=self.xrot_action,max=360,cycle=True,min=0))
+        self.AG_move.append("yrot_action",Action(func=self.yrot_action,max=360,cycle=True,min=0)) 
+        self.AG_move.append("zrot_action",Action(func=self.zrot_action,max=360,cycle=True,min=0))        
 
-class Baddie:
-    def __init__(self,type):
-        pass
+    def setDrawFuncToList(self,listid): 
+        self.listnumber=listid
+        self.draw_func=self.drawList
+
+    def drawList(self):
+        glCallList(self.listnumber)  
+        
+
+    def draw(self):    
+    
+        #glPushMatrix()
+        #print str((self.x,self.y))
+        glTranslate(self.x,self.y,0)
+        glTranslate(float(self.AG_move.value("x_action")),float(self.AG_move.value("y_action")),float(self.AG_move.value("z_action")))
+        glRotate(float(self.AG_move.value("xrot_action")),1,0,0)
+        glRotate(float(self.AG_move.value("yrot_action")),0,1,0)
+        glRotate(float(self.AG_move.value("zrot_action")),0,0,1)   
+        #glRotate(15,1,0,0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+        #glutWireCube(1)
+        self.draw_func()
+        #glPopMatrix()
+        
+    def temp_drawfunc(self):    
+        glutSolidCube(0.8)
+        
+        
+    def do(self):
+        self.AG_move.do()
+        
+    def x_action(self,tvmm):
+        return 0
+        
+    def y_action(self,tvmm):
+        return 0
+        
+    def z_action(self,tvmm):
+        return 0
+               
+    def xrot_action(self,tvmm):
+        return 0
+        
+    def yrot_action(self,tvmm):
+
+        return 0
+        
+    def zrot_action(self,tvmm):
+        t,v,min,max=tvmm
+        v=t
+        return v
+               
+        
+        
 
 
 class Action:
@@ -170,7 +173,7 @@ class ActionGroup:
     def do(self):
         for a in self.actions.keys():
             self.actions[a].do()
-            print "do action "+str(a)+" "+str((self.actions[a].tick,self.actions[a].value))
+            #print "do action "+str(a)+" "+str((self.actions[a].tick,self.actions[a].value))
             
     def value(self,action_name):
         if self.actions.has_key(action_name):
@@ -296,7 +299,7 @@ class Solomon:
 
         #for experiments
         global X
-        print (X,self.AG_walk.value("footL"),self.AG_walk.value("footR"))
+        #print (X,self.AG_walk.value("footL"),self.AG_walk.value("footR"))
         
         #scale down character
         glScale(0.3,0.3,0.3) 
@@ -318,14 +321,14 @@ class Solomon:
         glPushMatrix()
         if "walking" in self.state_test_on(): glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
         glTranslate(0,0,0.5)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,hat)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["hat"])
         glutSolidCone(1,2,12,6)
         glPopMatrix()
         
         #head/body
         glPushMatrix()
         glTranslate(0,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,body)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["body"])
         glutSolidSphere(1,12,12)            
         glPopMatrix()
         
@@ -333,7 +336,7 @@ class Solomon:
         glPushMatrix()
         if self.state_test(["walking"])>0: glTranslate(0-float(self.AG_walk.value("footR"))/10,0.9,0)
         elif self.state_test(["standing","crouching","wandswish"])>0: glTranslate(0,0.9,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
@@ -351,7 +354,7 @@ class Solomon:
             
         elif self.state_test(["walking"])>0: glTranslate(float(self.AG_walk.value("footL"))/10,-0.9,0)
         elif self.state_test(["standing","crouching"])>0: glTranslate(0,-0.9,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
         glutSolidSphere(0.5,24,12)            
         #move pop to end to keep arm local system
         
@@ -360,14 +363,14 @@ class Solomon:
         
         glPushMatrix()
         glTranslate(1.1,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])
         glRotatef(90,0,1,0) 
         gluCylinder(q,0.1,0.1,0.2,12,1)            
         glPopMatrix()
         
         glPushMatrix()
         glTranslate(0.5,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,wand)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wand"])
         glRotatef(90,0,1,0) 
         gluCylinder(q,0.1,0.1,0.6,12,1)            
         glPopMatrix()
@@ -379,14 +382,14 @@ class Solomon:
         glPushMatrix()
         glTranslate(1,.2,.1)
         glRotatef(90,0,1,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
         gluDisk(q,0.05,0.2,12,12)           
         glPopMatrix()
         
         glPushMatrix()    
         glTranslate(1,-.2,.1)
         glRotatef(90,0,1,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,wandtip)    
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
         gluDisk(q,0.05,0.2,12,12)           
         glPopMatrix()
         
@@ -394,7 +397,7 @@ class Solomon:
         glPushMatrix()
         glTranslate(1,0,-.1)
         glScale(1,1,0.5)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,arm)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
         glutSolidSphere(0.3,24,12)            
         glPopMatrix()
         
@@ -411,7 +414,7 @@ class Solomon:
         glTranslate(0.5,0,0)        
         glScale(1.5,1,.5)        
         glTranslate(0,0.5,-2)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
@@ -424,7 +427,7 @@ class Solomon:
         glTranslate(0.5,0,0)             
         glScale(1.5,1,.5)      
         glTranslate(0,-0.5,-2)        
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,shoe)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
         glutSolidSphere(0.5,24,12)            
         glPopMatrix()
         
@@ -436,6 +439,7 @@ class Level:
     grid=None
     baddies=[]
     solomon=None
+    sprites=[]
     
     AG_twinklers=None
     
@@ -468,6 +472,13 @@ class Level:
                     self.solomon=Solomon(cc,rr+0.3,self)
                     self.grid[rr][cc]="."
                     self.solomon.A_wandswish.callback=self.block_swap
+                    
+                elif c=="k":
+                    ns=Sprite(cc,rr)
+                    ns.setDrawFuncToList(lists["green_key"])
+                    self.sprites.append(ns)
+                    
+                
                 elif not c in ["b","B","s"]:
                     self.grid[rr][cc]="."
 
@@ -592,15 +603,18 @@ class Level:
                 self.solomon.A_wandswish.overide=True
                 self.solomon.current_state["wandswish"]=1 
 
-            print "co-ordinates "+str((self.solomon.x,self.solomon.y))
+            #print "co-ordinates "+str((self.solomon.x,self.solomon.y))
 
 
     def draw(self):
+    
+        #global X
+        #glRotate(X,1,0,0)
         
         glPushMatrix()
         glTranslate(8,6.5,-0.55)
         glScale(15,12,0.1)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,red)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["red"])
         glutSolidCube(1)        
         glPopMatrix()
         
@@ -621,7 +635,7 @@ class Level:
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
                         glutSolidCube(1)
                         
-                    if c in ["d","6"]: 
+                    elif c in ["d","6"]: 
                     
                         glEnable(GL_BLEND)
                         glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
@@ -632,12 +646,16 @@ class Level:
                         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
                         glDisable(GL_BLEND)
                         
-                    if c in ["B"]: ##i.e changed to half a block because recieved bash
+                    elif c in ["B"]: ##i.e changed to half a block because recieved bash
                         
                         color = [0.3,0.3,1.0,1.0]
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,color)                                        
-                        global lists
-                        glCallList(lists["broken brick"])                  
+                        #global lists
+                        glCallList(lists["broken brick"])        
+
+                   
+
+          
                         
                     glPopMatrix()
 
@@ -645,8 +663,17 @@ class Level:
                 
             rr+=1
          
+        glPushMatrix()
         self.solomon.draw()  
+        glPopMatrix()
 
+        
+        for s in self.sprites:
+            glPushMatrix()
+            s.draw()
+            glPopMatrix()
+            s.do()
+    
 
 
 class Joystick:
@@ -721,7 +748,7 @@ class SolomonsKey:
             
         
         self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,5
-        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,8
+        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,18
             
         self.cxx+=(self.tcxx-self.cxx)/25
         self.cyy+=(self.tcyy-self.cyy)/25
