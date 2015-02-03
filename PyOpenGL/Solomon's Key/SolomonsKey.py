@@ -15,6 +15,9 @@ X=46.0
 name = "solomon\'s key"
 
 
+def key_detected_something_test(stuff):
+    #print str(stuff)
+    pass
 
 
 class Sprite:
@@ -43,6 +46,10 @@ class Sprite:
     def drawList(self):
         glCallList(self.listnumber)  
         
+    def runDetection(self,level):
+        level.detect(self.x,self.y,collision_bound=2.0,callback=self.collision_action,ignoreDots=True,ignoreTheseSprites=[self])
+        
+    
 
     def draw(self):    
     
@@ -84,7 +91,7 @@ class Sprite:
         
     def zrot_action(self,tvmm):
         t,v,min,max=tvmm
-        v=t
+        v=t*2
         return v
                
         
@@ -476,7 +483,9 @@ class Level:
                 elif c=="k":
                     ns=Sprite(cc,rr)
                     ns.setDrawFuncToList(lists["green_key"])
+                    ns.collision_action=key_detected_something_test
                     self.sprites.append(ns)
+                    self.grid[rr][cc]="."
                     
                 
                 elif not c in ["b","B","s"]:
@@ -512,7 +521,7 @@ class Level:
             self.grid[yy][xx]="b"
             
         
-    def detect(self,xx,yy,collision_bound=None):
+    def detect(self,xx,yy,collision_bound=None,callback=None,ignoreDots=False,ignoreTheseSprites=[]):
         """ return "OK" message in test of a tuple of (character detected,x of char,y of char,distance float """
         
         if collision_bound==None: collision_bound=self.solomon.bound
@@ -523,15 +532,26 @@ class Level:
             list1=""
             
             for cc in range(int(floor(xx-collision_bound+0.5)),int(ceil(xx+collision_bound+0.5))):
-                test=(cc-xx)**2+(rr-yy)**2
                 c=self.grid[rr][cc]
-                list1+=c
-                if test<(collision_bound)**2:
-                    detection.append((c,cc,rr,sqrt(test)))
-                    
+                if not (c=="." and ignoreDots==True):
+                    test=(cc-xx)**2+(rr-yy)**2
+                    list1+=c
+                    if test<(collision_bound)**2:
+                        detection.append((c,cc,rr,sqrt(test)))
+                        
             #print list1  
         
-        detection=sorted(detection,key=lambda x: x[3])                
+        for s in self.sprites:
+            if not s in ignoreTheseSprites:
+                test=(s.x-xx)**2+(s.y-yy)**2
+                if test<(collision_bound)**2:
+                    detection.append((s,s.x,s.y,sqrt(test)))
+                    
+        
+        detection=sorted(detection,key=lambda x: x[3])  
+
+        if not callback==None: callback(detection)
+              
         return detection
         
     
@@ -545,12 +565,6 @@ class Level:
         if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==0:                    
             self.solomon.current_state["jumping"]=1  
 
-                    
-        if self.solomon.current_state["jumping"]==1:
-            self.solomon.AG_jump.do()
-            print "he's jumping"
-            print str(self.solomon.AG_jump.action("jump_displacement").tick)
-            self.solomon.y+=0.2
 
         walkcheck=False
                 
@@ -603,6 +617,12 @@ class Level:
                 self.solomon.A_wandswish.overide=True
                 self.solomon.current_state["wandswish"]=1 
 
+                    
+        if self.solomon.current_state["jumping"]==1:
+            self.solomon.AG_jump.do()
+            print "he's jumping"
+            print str(self.solomon.AG_jump.action("jump_displacement").tick)
+            self.solomon.y+=0.2
             #print "co-ordinates "+str((self.solomon.x,self.solomon.y))
 
 
@@ -670,6 +690,7 @@ class Level:
         
         for s in self.sprites:
             glPushMatrix()
+            s.runDetection(self)
             s.draw()
             glPopMatrix()
             s.do()
