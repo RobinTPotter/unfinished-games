@@ -23,18 +23,42 @@ colours["white"]=[1.0,1.0,1.0,1.0]
 file_name=sys.argv[0]
 if file_name=="":
     file_name="DangerCode"+str(strftime("%Y%m%d_%H%M%S"))+".txt"
- 
+
+temp=""
+
+
+
+'''
+
+browse:
+
+list of push-pops
+
+up/down scroll
+right - select > list transforms etc
+esc - list of push-pops
+
+
+
+a - add > list
+    cube
+    sphere
+    cone
+    
+    > name it
+'''
 
 class Joystick:
     
     keys={}
     up,down,left,right,fire="","","","",""
 
-    def __init__(self,up="q",down="a",left="o",right="p",fire="m"):
+    def __init__(self,up=101,down=103,left=100,right=102,fire="m"):
         self.up=up
         self.down=down
         self.left=left
         self.right=right
+        self.fire=fire
         self.fire=fire
         self.keys[self.up]=False
         self.keys[self.down]=False
@@ -43,7 +67,15 @@ class Joystick:
         self.keys[self.fire]=False   
 
     def register(self,ch,down):
+        extra=""
+        if type(ch) is str: extra=str(ord(ch))
+        if not self.keys.has_key(ch): print str(ch)+" "+extra
         self.keys[ch]=down
+        
+    def isKey(self,ch):
+        if self.keys.has_key(ch): 
+            return self.keys[ch]
+        else: return False        
         
     def isUp(self):
         if self.keys.has_key(self.up): 
@@ -70,8 +102,10 @@ class Joystick:
 class Thing:
 
     lastFrameTime=0
+
+    state="browse"
     
-    xx,yy,zz=0,0,40
+    xx,yy,zz=0,0,5
     cxx,cyy,czz=0,0,0
     X=0
     
@@ -79,12 +113,48 @@ class Thing:
     yRot=0
     mPos=[0,0]
     speed=0.1
+    
+    menu=[""]
+    menuindex=0
 
     joystick=Joystick()
 
     def animate(self,FPS=1):
         
+        
         currentTime=time()
+        
+        
+        if self.state=="browse" and self.joystick.isKey("a"):
+            self.state="add"
+            self.menu=["CUBE","SPHERE","CONE","DISC"]
+            self.menuindex=0
+            
+            
+            
+        if self.joystick.isUp():
+            self.menuindex-=1
+            if self.menuindex<0: self.menuindex=0
+            
+        if self.joystick.isDown():
+            self.menuindex+=1
+            if self.menuindex>(len(self.menu)-1): self.menuindex=len(self.menu)-1
+            
+        
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         self.X+=1
         if self.X>1000: self.X=0
@@ -103,12 +173,11 @@ class Thing:
                 
            
         glPushMatrix()
-        glTranslate(0,0,8)
+        glTranslate(0,0,3)
         glRotate(-self.yRot*2,1,0,0)
         glRotate(-self.xRot*2,0,1,0)                                
-        
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["green"])
-        glutSolidCube(1)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+        glutWireCube(1)
         
         
         glPopMatrix()
@@ -117,22 +186,39 @@ class Thing:
         code=f.read()
         exec(code)
         '''
+        exec(temp)
         
-        string=""
-        if self.joystick.isUp(): string="UP"
-        elif self.joystick.isDown(): string="DOWN"
-        elif self.joystick.isLeft(): string="LEFT"
-        elif self.joystick.isRight(): string="RIGHT"
-        elif self.joystick.isFire(): string="FIRE"
+        #string=""
+        #if self.joystick.isUp(): string="UP"
+        #elif self.joystick.isDown(): string="DOWN"
+        #elif self.joystick.isLeft(): string="LEFT"
+        #elif self.joystick.isRight(): string="RIGHT"
+        #elif self.joystick.isFire(): string="FIRE"
         
-        glPushMatrix()
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
-        glTranslate(10,0,0)
-        glScale(0.2,0.2,0.2)
-        for l in range(0,len(string)):
-            glTranslate(10.1,0,0)
-            glCallList(lists[string[l]])
+        glDisable(GL_LIGHTING)
+        glPushMatrix()  
+        glLineWidth(2.0)
+        glTranslate(0,0,3.8)
+        glScale(0.003,0.003,0.003)
+        glTranslate(100,0,0)
+        mn=0
+        for mi in self.menu:
+            string=mi
+            #print mi
+            if mn==self.menuindex:
+                #print "yo!"
+                string="*"+mi
+            #glTranslate(10,0,0)
+            glTranslate(0,-11,0)
+            glPushMatrix()
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+            for l in range(0,len(string)):
+                glTranslate(11,0,0)
+                glCallList(lists[string[l].upper()])  
+            glPopMatrix()
+            mn+=1
         glPopMatrix()
+        glEnable(GL_LIGHTING)
 
     def __init__(self):   
      
@@ -172,7 +258,7 @@ class Thing:
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
         
-        self.animate(FPS=5)
+        self.animate(FPS=10)
         
         MakeLists()
         glutMainLoop()
@@ -181,11 +267,14 @@ class Thing:
         return
 
     def keydownevent(self,c,x,y):
-        self.joystick.register(c.lower(),True)
+        if type(c) is str: self.joystick.register(c.lower(),True)
+        else: self.joystick.register(c,True)
+        
         glutPostRedisplay()
         
     def keyupevent(self,c,x,y):    
-        self.joystick.register(c.lower(),False)
+        if type(c) is str: self.joystick.register(c.lower(),False)
+        else: self.joystick.register(c,False)
         glutPostRedisplay()
         
     def mousedrag(self,x,y):
@@ -211,8 +300,8 @@ class Thing:
                   0,1,0)          
         
         self.draw()
-        self.yRot+=0.5
-        self.xRot+=0.5
+        #self.yRot+=0.5
+        #self.xRot+=0.5
     
     
         glutSwapBuffers()
