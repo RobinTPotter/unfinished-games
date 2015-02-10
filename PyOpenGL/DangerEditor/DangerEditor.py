@@ -24,7 +24,6 @@ file_name=sys.argv[0]
 if file_name=="":
     file_name="DangerCode"+str(strftime("%Y%m%d_%H%M%S"))+".txt"
 
-temp=""
 
 
 
@@ -120,12 +119,13 @@ class Thing:
     
     menu=[]
     menuindex=0
+    
+    temp=[]
 
     joystick=Joystick()
 
     def animate(self,FPS=1):
         
-        global temp
         
         currentTime=time()
         
@@ -147,16 +147,13 @@ class Thing:
             
         if self.state=="add" and self.joystick.isKey(13):
             print "bello"
-            if self.menu[self.menuindex]=="CUBE": temp+="glPushMatrix()\nglutSolidCube(1)\nglPopMatrix()\n"
-            elif self.menu[self.menuindex]=="SPHERE": temp+="glPushMatrix()\nglutSolidSphere(1,8,8)\nglPopMatrix()\n"
+            if self.menu[self.menuindex]=="CUBE":
+                self.temp.insert(self.menuindex-1,"glutSolidCube(0.5)")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
+                self.state="browse"
+            elif self.menu[self.menuindex]=="SPHERE":
+                self.temp.insert(self.menuindex-1,"glutSolidSphere(0.5,12,12)")  
+                self.state="browse"
             
-        
-        
-        
-        
-        
-        
-        
         
         
         
@@ -193,7 +190,7 @@ class Thing:
         code=f.read()
         exec(code)
         '''
-        exec(temp)
+        for t in self.temp: exec(t)
         
         
         
@@ -210,28 +207,32 @@ class Thing:
         glDisable(GL_LIGHTING)
         glPushMatrix()  
         glLineWidth(2.0)
-        glTranslate(0,0,3.8)
         glScale(0.003,0.003,0.003)
-        glTranslate(100,0,0)
+        glTranslate(0,0,1295)
+        glTranslate(20,0,0)
         mn=0
         
         
         self.drawString(self.state.upper())
         glTranslate(0,-11,0)
         
-        if len(self.menu)==0:
-            self.drawString("NO ITEMS")
-        else:
-            for mi in self.menu:
-                string=mi
-                #print mi
-                if mn==self.menuindex:
-                    #print "yo!"
-                    string="*"+mi
-                #glTranslate(10,0,0)
-                glTranslate(0,-11,0)
-                self.drawString(string)
-                mn+=1
+        if self.state=="browse":
+            if len(self.menu)==0:
+                self.menu=["NO ITEMS"]
+            else:
+                self.menu=self.temp        
+        
+        
+        for mi in self.menu:
+            string=mi
+            #print mi
+            if mn==self.menuindex:
+                #print "yo!"
+                string="*"+mi
+            #glTranslate(10,0,0)
+            glTranslate(0,-11,0)
+            self.drawString(string)
+            mn+=1
                 
         glPopMatrix()
         glEnable(GL_LIGHTING)
@@ -243,7 +244,8 @@ class Thing:
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
         for l in range(0,len(string)):
             glTranslate(11,0,0)
-            glCallList(lists[string[l].upper()])  
+            if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
+            else:  glCallList(lists[" "])  
         glPopMatrix()
 
 
