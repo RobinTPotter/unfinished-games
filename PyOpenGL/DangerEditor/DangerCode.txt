@@ -1,4 +1,0 @@
-glPushMatrix()
-
-
-glPopMatrix()
