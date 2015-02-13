@@ -7,10 +7,13 @@ from time import time
 #import math
 from Letters import lists, MakeLists
 
+import re
+
 name = "thing"
 
 colours={}
 
+colours["black"]=[0.1,0.1,0.1,1.0]
 colours["gold"]=[1.0,0.9,0.0,1.0]
 colours["red"]=[1.0,0.0,0.0,1.0]
 colours["green"]=[0.0,1.0,0.0,1.0]
@@ -51,6 +54,7 @@ class Joystick:
     
     keys={}
     up,down,left,right,fire="","","","",""
+    isPressed=False
 
     def __init__(self,up=101,down=103,left=100,right=102,fire="m"):
         self.up=up
@@ -66,13 +70,13 @@ class Joystick:
         self.keys[self.fire]=False   
 
     def register(self,ch,down):
-        print "register "+str(ch)+str(type(ch))
+        #print "register "+str(ch)+str(type(ch))
         extra=""
         if type(ch) is str:
             extra=str(ord(ch))
-            if extra=="13": ch=13
+            if extra in ["13","27","8"]: ch=int(extra)
             
-        if not self.keys.has_key(ch): print str(ch)+" "+extra
+        #if not self.keys.has_key(ch): print str(ch)+" "+extra
         self.keys[ch]=down
         
     def isKey(self,ch):
@@ -121,38 +125,105 @@ class Thing:
     menuindex=0
     
     temp=[]
+    editing=None
+    edititem=None
 
     joystick=Joystick()
 
     def animate(self,FPS=1):
-        
+    
         
         currentTime=time()
         
         
-        if self.state=="browse" and self.joystick.isKey("a"):
-            self.state="add"
-            self.menu=["CUBE","SPHERE","CONE","DISC"]
-            self.menuindex=0
+        if self.state=="browse":
+        
+            if self.joystick.isKey("a"):
+                self.state="add"
+                self.menu=["CUBE","SPHERE","CONE","DISC","ROTATE","TRANSLATE","SCALE","COLOR"]
+                self.edititem=self.menuindex
+                self.menuindex=0
+                
+            if self.joystick.isKey("u"):
+                if len(self.temp)>1: self.temp.insert((self.menuindex-1)%(len(self.temp)),self.temp.pop(self.menuindex))
+                if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
+                
+            elif self.joystick.isKey("d"):
+                if len(self.temp)>1: self.temp.insert((self.menuindex+1)%(len(self.temp)),self.temp.pop(self.menuindex))
+                if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
+                
+            elif self.joystick.isKey(13) and len(self.temp)>0:            
+                self.state="edit"
+                self.editing=self.temp[self.menuindex]
+                self.edititem=self.menuindex
+                commands=self.editing.split("###")[1:]
+                values=re.findall("[0-9\.]+",self.editing)
+                print "commands "+str(commands)
+                print "values "+str(values)
+                self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
+                self.menuindex=0
+            
+            elif self.joystick.isKey(8) and len(self.temp)>0:            
+                print "delete!"
+                self.temp.pop(self.menuindex)
+                if self.menuindex>=len(self.temp): self.menuindex=len(self.temp)-1
             
             
             
         if self.joystick.isUp():
-            self.menuindex-=1
-            if self.menuindex<0: self.menuindex=0
+            print "menu length: "+str(len(self.menu))
+            if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
+            print self.menuindex
+            
             
         if self.joystick.isDown():
-            self.menuindex+=1
-            if self.menuindex>(len(self.menu)-1): self.menuindex=len(self.menu)-1
+            print "menu length: "+str(len(self.menu))
+            if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
+            print self.menuindex
             
-        if self.state=="add" and self.joystick.isKey(13):
-            print "bello"
-            if self.menu[self.menuindex]=="CUBE":
-                self.temp.insert(self.menuindex-1,"glutSolidCube(0.5)")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
-                self.state="browse"
-            elif self.menu[self.menuindex]=="SPHERE":
-                self.temp.insert(self.menuindex-1,"glutSolidSphere(0.5,12,12)")  
-                self.state="browse"
+        if self.joystick.isKey(13):
+        
+            if self.state=="add":
+            
+                if self.menu[self.menuindex]=="CUBE":
+                    self.temp.insert(self.edititem,"glutSolidCube(0.5) ###size")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="SPHERE":
+                    self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="CONE":
+                    ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="DISC":
+                    ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="COLOR":
+                    self.temp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###col_r###col_g###col_b")   
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="ROTATE":
+                    self.temp.insert(self.edititem,"glRotate(0.0,0,1,0) ###value###axis_x###axis_y###axis_z")  
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="TRANSLATE":
+                    self.temp.insert(self.edititem,"glTranslate(0.0,0.0,0.0) ###trans_x###trans_y###trans_z")   
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="SCALE":
+                    self.temp.insert(self.edititem,"glScale(1.0,1.0,1.0) ###scale_x###scale_y###scale_z")    
+                    self.state="browse"
+                    #self.menuindex=0
+            
+        
+
+            
+        
+            
+        if self.joystick.isKey(27): self.state="browse"
             
         
         
@@ -205,8 +276,9 @@ class Thing:
         
         
         glDisable(GL_LIGHTING)
+        
         glPushMatrix()  
-        glLineWidth(2.0)
+        glTranslate(-0.7,0,0)
         glScale(0.003,0.003,0.003)
         glTranslate(0,0,1295)
         glTranslate(20,0,0)
@@ -216,9 +288,13 @@ class Thing:
         self.drawString(self.state.upper())
         glTranslate(0,-11,0)
         
+        temponly=False
+                
+        
         if self.state=="browse":
             if len(self.menu)==0:
                 self.menu=["NO ITEMS"]
+                temponly=True
             else:
                 self.menu=self.temp        
         
@@ -230,22 +306,45 @@ class Thing:
                 #print "yo!"
                 string="*"+mi
             #glTranslate(10,0,0)
-            glTranslate(0,-11,0)
+            glTranslate(0,-14,0)
             self.drawString(string)
             mn+=1
                 
+                
+        if temponly==True: self.menu=[]
+          
         glPopMatrix()
+        
         glEnable(GL_LIGHTING)
 
 
 
     def drawString(self,string):
         glPushMatrix()
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
         for l in range(0,len(string)):
-            glTranslate(11,0,0)
+            if string[l].upper()=="#": break
+            glTranslate(14,0,0)
+            
+            
+            
+            glPushMatrix()
+            glColor(colours["black"])
+            glLineWidth(5.0)
             if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
-            else:  glCallList(lists[" "])  
+            else:  glCallList(lists[" "])              
+            glPopMatrix()
+            
+            
+            glPushMatrix()
+            glTranslate(0,0,1)
+            glColor(colours["white"])
+            glLineWidth(0.5)
+            if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
+            else:  glCallList(lists[" "])            
+            glPopMatrix()
+            
+            
+            
         glPopMatrix()
 
 
@@ -271,6 +370,8 @@ class Thing:
         glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
+        
+        
         glutMotionFunc(self.mousedrag)
         glutMouseFunc(self.mouse)
         
@@ -295,13 +396,12 @@ class Thing:
         
         return
 
-    def keydownevent(self,c,x,y):
+    def keydownevent(self,c,x,y):        
         if type(c) is str: self.joystick.register(c.lower(),True)
         else: self.joystick.register(c,True)
-        
         glutPostRedisplay()
         
-    def keyupevent(self,c,x,y):    
+    def keyupevent(self,c,x,y):  
         if type(c) is str: self.joystick.register(c.lower(),False)
         else: self.joystick.register(c,False)
         glutPostRedisplay()

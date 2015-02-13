@@ -12,6 +12,20 @@ def MakeLists():
     glNewList(lists[" "],GL_COMPILE) 
     glEndList()
 
+    lists["."] = glGenLists(1) 
+    glNewList(lists["."],GL_COMPILE) 
+    glBegin(GL_LINE_STRIP)
+    glVertex2f(4.0, 1.0)
+    glVertex2f(6.0, 1.0)
+    glVertex2f(6.0, 3.0)
+    glVertex2f(4.0, 3.0)
+    glVertex2f(4.0, 1.0)
+    
+    
+    glEnd()
+    glEndList()
+
+
     lists["*"] = glGenLists(1) 
     glNewList(lists["*"],GL_COMPILE) 
     glBegin(GL_LINE_STRIP)
