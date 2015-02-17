@@ -508,8 +508,10 @@ class Level:
         
         ch,xx,yy,dist=res[0]
         if ch=="b":
-            print "break block"
-            self.grid[yy][xx]="B"            
+            #print "break block"
+            #self.grid[yy][xx]="B"   
+            print "destroy block"
+            self.grid[yy][xx]="."            
         elif ch=="B":
             print "destroy block"
             self.grid[yy][xx]="."      

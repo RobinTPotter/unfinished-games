@@ -194,10 +194,14 @@ class Thing:
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="CONE":
+                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
+                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###segs###stacks")                           
                     ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
+                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
+                    self.temp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###segments###stacks")  
                     ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
