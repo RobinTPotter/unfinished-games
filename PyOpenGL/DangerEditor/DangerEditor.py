@@ -145,7 +145,7 @@ class Thing:
         
         
         if self.state=="browse":
-        
+
             if self.joystick.isKey("a"):
                 self.state="add"
                 self.menu=["CUBE","SPHERE","CONE","DISC","ROTATE","TRANSLATE","SCALE","COLOR"]
@@ -160,23 +160,32 @@ class Thing:
                 if len(self.temp)>1: self.temp.insert((self.menuindex+1)%(len(self.temp)),self.temp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
                 
-            elif self.joystick.isKey(13) and len(self.temp)>0:            
-                self.state="edit"
-                
-                if self.menuindex<len(self.menu): self.editing=self.menu[self.menuindex]
-                else: self.menuindex=0
-                
-                self.edititem=self.menuindex
-                commands=self.editing.split("###")[1:]
-                if len(commands)>0:
-                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
-                    print "commands "+str(commands)
-                    print "values "+str(values)
-                    self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
-                    self.menuindex=0
-                else:         
-                    self.state="browse"
-                
+            elif self.joystick.isKey(13) and len(self.temp)>0:  
+                if self.joystick.isControl==True:
+                    f.open(fille_name,"w")
+                    for ll in self.temp:
+                        f.write(ll+"\n")
+                    f.write("\n")
+                    f.close()
+                    print "written out file "+str(file_name)
+          
+                else:
+                    self.state="edit"
+                    
+                    if self.menuindex<len(self.menu): self.editing=self.menu[self.menuindex]
+                    else: self.menuindex=0
+                    
+                    self.edititem=self.menuindex
+                    commands=self.editing.split("###")[1:]
+                    if len(commands)>0:
+                        values=re.findall("-{0,1}[0-9\.]+",self.editing)
+                        print "commands "+str(commands)
+                        print "values "+str(values)
+                        self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
+                        self.menuindex=0
+                    else:         
+                        self.state="browse"
+                    
             
             elif self.joystick.isKey(8) and len(self.temp)>0:            
                 print "delete!"
@@ -249,6 +258,8 @@ class Thing:
                 print str(self.menuindex)
                 print "left"                
                 
+                if self.edititem>=len(self.menu): self.edititem=0
+
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
                     values=re.findall("-{0,1}[0-9\.]+",self.editing)
