@@ -55,8 +55,13 @@ class Joystick:
     keys={}
     up,down,left,right,fire="","","","",""
     isPressed=False
+    
 
     def __init__(self,up=101,down=103,left=100,right=102,fire="m"):
+
+        self.isAlt=False
+        self.isShift=False     
+        self.isControl=False
         self.up=up
         self.down=down
         self.left=left
@@ -133,6 +138,7 @@ class Thing:
     def animate(self,FPS=1):
     
         
+        
         currentTime=time()
         
         
@@ -163,7 +169,7 @@ class Thing:
                 self.edititem=self.menuindex
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
-                    values=re.findall("[0-9\.]+",self.editing)
+                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
                     print "commands "+str(commands)
                     print "values "+str(values)
                     self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
@@ -241,37 +247,34 @@ class Thing:
                 print str(self.editing)
                 print str(self.edititem)
                 print str(self.menuindex)
-                print "left"
-                
+                print "left"                
                 
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
-                    values=re.findall("[0-9\.]+",self.editing)
+                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
                   
                 editing_command=commands[self.menuindex]
                 editing_value=float(values[self.menuindex])
                     
-                editing_value-=0.1
+                val=0.1
+                if self.joystick.isShift: val=1
+                elif self.joystick.isControl: val=0.01
+                editing_value-=val
                 
                 old=self.editing
                 m=None
-                mit=re.finditer("[0-9\.]+",old)
+                mit=re.finditer("-{0,1}[0-9\.]+",old)
                 for i in range(0,self.menuindex+1):
                     m=mit.next()
                     
-                print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
+                #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
                 
                 neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
                 self.temp[self.edititem]=neww
+                self.menu[self.edititem]=str(editing_command)+" "+str(editing_value)
+                self.editing=neww        
                 
-                
-                
-                
-                print "was "+old+" now "+neww
-                
-                ##self.edititem=self.menuindex
-                ##self.menu[self.menuindex]
             
             if self.joystick.isRight():
                 print "editting"
@@ -282,30 +285,31 @@ class Thing:
                 
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
-                    values=re.findall("[0-9\.]+",self.editing)
+                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
                   
                 editing_command=commands[self.menuindex]
                 editing_value=float(values[self.menuindex])
                     
-                editing_value+=0.1
-                    
+                val=0.1
+                if self.joystick.isShift: val=1
+                elif self.joystick.isControl: val=0.01
+
+                editing_value+=val                  
                 
                 old=self.editing
                 m=None
-                mit=re.finditer("[0-9\.]+",old)
+                mit=re.finditer("-{0,1}[0-9\.]+",old)
                 for i in range(0,self.menuindex+1):
                     m=mit.next()
                     
-                print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
+                #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
                 
                 neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
                 self.temp[self.edititem]=neww
+                self.menu[self.edititem]=str(editing_command)+" "+str(editing_value)
+                self.editing=neww
                 
-                
-            
-                
-            
             
         
             
@@ -486,12 +490,35 @@ class Thing:
         
         return
 
-    def keydownevent(self,c,x,y):        
+    def keydownevent(self,c,x,y):    
+
+        mod = glutGetModifiers()
+
+        self.joystick.isControl=False
+        self.joystick.isAlt=False
+        self.joystick.isShift=False
+
+        if mod&GLUT_ACTIVE_CTRL==GLUT_ACTIVE_CTRL: self.joystick.isControl=True
+        if mod&GLUT_ACTIVE_ALT==GLUT_ACTIVE_ALT: self.joystick.isAlt=True
+        if mod&GLUT_ACTIVE_SHIFT==GLUT_ACTIVE_SHIFT: self.joystick.isShift=True
+
+        print str(c)
         if type(c) is str: self.joystick.register(c.lower(),True)
         else: self.joystick.register(c,True)
         glutPostRedisplay()
         
     def keyupevent(self,c,x,y):  
+
+        mod = glutGetModifiers()
+
+        self.joystick.isControl=False
+        self.joystick.isAlt=False
+        self.joystick.isShift=False
+
+        if mod&GLUT_ACTIVE_CTRL==GLUT_ACTIVE_CTRL: self.joystick.isControl=True
+        if mod&GLUT_ACTIVE_CTRL==GLUT_ACTIVE_ALT: self.joystick.isAlt=True
+        if mod&GLUT_ACTIVE_CTRL==GLUT_ACTIVE_SHIFT: self.joystick.isShift=True
+
         if type(c) is str: self.joystick.register(c.lower(),False)
         else: self.joystick.register(c,False)
         glutPostRedisplay()
