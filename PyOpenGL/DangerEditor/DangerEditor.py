@@ -135,30 +135,48 @@ class Thing:
 
     joystick=Joystick()
 
-    def animate(self,FPS=1):
-    
+
+
+
+
+
+    def logic(self):   
         
         
-        currentTime=time()
-        
-        
-        
+        if self.joystick.isUp():
+            print "menu length: "+str(len(self.menu))
+            if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
+            print self.menuindex
+            return
+            
+        if self.joystick.isDown():
+            print "menu length: "+str(len(self.menu))
+            if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
+            print self.menuindex
+            return
+            
+        if self.joystick.isKey(27):
+            self.state="browse"
+            return        
         
         if self.state=="browse":
 
             if self.joystick.isKey("a"):
                 self.state="add"
-                self.menu=["CUBE","SPHERE","CONE","DISC","ROTATE","TRANSLATE","SCALE","COLOR"]
+                self.menu=["PUSH-POP","TRANSLATE","SCALE","COLOR","CUBE","SPHERE","CONE","DISC","ROTATE"]
                 self.edititem=self.menuindex
                 self.menuindex=0
+                return
                 
             if self.joystick.isKey("u"):
                 if len(self.temp)>1: self.temp.insert((self.menuindex-1)%(len(self.temp)),self.temp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
+                return
                 
             elif self.joystick.isKey("d"):
                 if len(self.temp)>1: self.temp.insert((self.menuindex+1)%(len(self.temp)),self.temp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
+                return
                 
             elif self.joystick.isKey(13) and len(self.temp)>0:  
                 if self.joystick.isControl==True:
@@ -168,71 +186,70 @@ class Thing:
                     f.write("\n")
                     f.close()
                     print "written out file "+str(file_name)
-          
+                    return
                 else:
-                    self.state="edit"
-                    
-                    if self.menuindex<len(self.menu): self.editing=self.menu[self.menuindex]
-                    else: self.menuindex=0
+                    self.state="edit"                    
+                    if self.menuindex>=len(self.menu): self.menuindex=0
+                    self.editing=self.menu[self.menuindex]
                     
                     self.edititem=self.menuindex
                     commands=self.editing.split("###")[1:]
+                    for cc in range(0,len(commands)):
+                        if commands[cc][0]=="I":
+                            commands[cc]=commands[cc][1:]
+                    
                     if len(commands)>0:
                         values=re.findall("-{0,1}[0-9\.]+",self.editing)
                         print "commands "+str(commands)
                         print "values "+str(values)
                         self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
                         self.menuindex=0
+                        return
                     else:         
                         self.state="browse"
+                        return
                     
             
             elif self.joystick.isKey(8) and len(self.temp)>0:            
                 print "delete!"
                 self.temp.pop(self.menuindex)
                 if self.menuindex>=len(self.temp): self.menuindex=len(self.temp)-1
+                return
             
             
-            
-        if self.joystick.isUp():
-            print "menu length: "+str(len(self.menu))
-            if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
-            print self.menuindex
-            
-            
-        if self.joystick.isDown():
-            print "menu length: "+str(len(self.menu))
-            if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
-            print self.menuindex
-            
-        if self.joystick.isKey(13):
+                  
+        elif self.state=="add":
         
-            if self.state=="add":
+            if self.joystick.isKey(13):  
             
                 if self.menu[self.menuindex]=="CUBE":
                     self.temp.insert(self.edititem,"glutSolidCube(0.5) ###size")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
                     self.state="browse"
                     #self.menuindex=0
+                elif self.menu[self.menuindex]=="PUSH-POP":
+                    ##note there are two item to add so this is back to front
+                    self.temp.insert(self.edititem,"glPopMatrix()")
+                    self.temp.insert(self.edititem,"glPushMatrix()")
+                    self.state="browse"
+                    #self.menuindex=0
                 elif self.menu[self.menuindex]=="SPHERE":
-                    self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
+                    self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###Isegments###Istacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="CONE":                    
                     ##note there are two item to add so this is back to front
-                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###segs###stacks")   
+                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks")   
                     self.temp.insert(self.edititem,"q=gluNewQuadric()")                        
-                    ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
                     ##note there are two item to add so this is back to front
-                    self.temp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###segments###stacks")  
+                    self.temp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###Isegments###Istacks")  
                     self.temp.insert(self.edititem,"q=gluNewQuadric()")
-                    ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="COLOR":
-                    self.temp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###col_r###col_g###col_b")   
+                    self.temp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")   
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="ROTATE":
@@ -250,7 +267,8 @@ class Thing:
             
         
 
-        if self.state=="edit":
+        elif self.state=="edit":
+        
             if self.joystick.isLeft():
                 print "editting"
                 print str(self.editing)
@@ -272,6 +290,8 @@ class Thing:
                 elif self.joystick.isControl: val=0.01
                 editing_value-=val
                 
+                
+                
                 old=self.editing
                 m=None
                 mit=re.finditer("-{0,1}[0-9\.]+",old)
@@ -280,11 +300,20 @@ class Thing:
                     
                 #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
                 
-                neww=old[0:m.start()]+str(editing_value)+old[m.end():]
+                if editing_command[0]=="I":
+                    neww=old[0:m.start()]+str(int(editing_value))+old[m.end():]
+                    editing_command=editing_command[1:]                    
+                else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
                 self.temp[self.edititem]=neww
-                self.menu[self.edititem]=str(editing_command)+" "+str(editing_value)
-                self.editing=neww        
+                self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
+                self.editing=neww  
+                
+                print str(self.editing)
+                print str(self.edititem)
+                print str(self.menuindex)
+
+                
                 
             
             if self.joystick.isRight():
@@ -315,21 +344,42 @@ class Thing:
                     
                 #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
                 
-                neww=old[0:m.start()]+str(editing_value)+old[m.end():]
+                if editing_command[0]=="I":
+                    neww=old[0:m.start()]+str(int(editing_value))+old[m.end():]
+                    editing_command=editing_command[1:]                    
+                else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
                 self.temp[self.edititem]=neww
-                self.menu[self.edititem]=str(editing_command)+" "+str(editing_value)
+                self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
                 self.editing=neww
                 
+                
+                print str(self.editing)
+                print str(self.edititem)
+                print str(self.menuindex)
             
         
             
-        if self.joystick.isKey(27): self.state="browse"
-            
         
         
         
         
+
+
+
+
+
+
+
+
+    def animate(self,FPS=1):
+    
+        
+        
+        currentTime=time()
+        
+        
+        self.logic()
         
         
         
@@ -353,75 +403,90 @@ class Thing:
     def draw(self):
                 
            
-        glPushMatrix()
-        glTranslate(0,0,3)
-        glRotate(-self.yRot*2,1,0,0)
-        glRotate(-self.xRot*2,0,1,0)                                
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
-        glutWireCube(1)
-        
-        
-        '''
-        f=open(file_name,"r")
-        code=f.read()
-        exec(code)
-        '''
-        for t in self.temp: exec(t)
-        
-        
-        
-        glPopMatrix()
-        
-        #string=""
-        #if self.joystick.isUp(): string="UP"
-        #elif self.joystick.isDown(): string="DOWN"
-        #elif self.joystick.isLeft(): string="LEFT"
-        #elif self.joystick.isRight(): string="RIGHT"
-        #elif self.joystick.isFire(): string="FIRE"
-        
-        
-        glDisable(GL_LIGHTING)
-        
-        glPushMatrix()  
-        glTranslate(-0.7,0,0)
-        glScale(0.003,0.003,0.003)
-        glTranslate(0,0,1295)
-        glTranslate(20,0,0)
-        mn=0
-        
-        
-        self.drawString(self.state.upper())
-        glTranslate(0,-11,0)
-        
-        temponly=False
-                
-        
-        if self.state=="browse":
-            if len(self.menu)==0:
-                self.menu=["NO ITEMS"]
-                temponly=True
-            else:
-                self.menu=self.temp        
-        
-        
-        for mi in self.menu:
-            string=mi
-            #print mi
-            if mn==self.menuindex:
-                #print "yo!"
-                string="*"+mi
-            #glTranslate(10,0,0)
-            glTranslate(0,-14,0)
-            self.drawString(string)
-            mn+=1
-                
-                
-        if temponly==True: self.menu=[]
-          
-        glPopMatrix()
-        
-        glEnable(GL_LIGHTING)
+        try:
+               
+            glPushMatrix()
+            glTranslate(0,0,3)
+            glRotate(-self.yRot*2,1,0,0)
+            glRotate(-self.xRot*2,0,1,0)                                
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+            glutWireCube(1)
+            
+            
+            '''
+            f=open(file_name,"r")
+            code=f.read()
+            exec(code)
+            '''
+            for t in self.temp: exec(t)
+            
+            
+            
+            glPopMatrix()
+            
+            #string=""
+            #if self.joystick.isUp(): string="UP"
+            #elif self.joystick.isDown(): string="DOWN"
+            #elif self.joystick.isLeft(): string="LEFT"
+            #elif self.joystick.isRight(): string="RIGHT"
+            #elif self.joystick.isFire(): string="FIRE"
+            
+            
+            glDisable(GL_LIGHTING)
+            
+            glPushMatrix()  
+            glTranslate(-0.7,0,0)
+            glScale(0.003,0.003,0.003)
+            glTranslate(0,0,1295)
+            
+            
+            glTranslate(10,0,0)
+            
+            mn=0
+            
+            
+            self.drawString(self.state.upper())
+            
+            glTranslate(0,-11,0)
 
+            
+            temponly=False
+                    
+            
+            if self.state=="browse":
+                if len(self.menu)==0:
+                    self.menu=["NO ITEMS"]
+                    temponly=True
+                else:
+                    self.menu=self.temp        
+            
+            
+            for mi in self.menu:
+                string=mi
+                #print mi
+                if mn==self.menuindex:
+                    #print "yo!"
+                    string="*"+mi
+                #glTranslate(10,0,0)
+                glTranslate(0,-14,0)
+                self.drawString(string)
+                mn+=1
+                    
+                    
+            if temponly==True: self.menu=[]
+              
+            glPopMatrix()
+            
+            glEnable(GL_LIGHTING)
+            
+        except:
+            print "Bollocks! Dumping\n----------------------------\n\n"
+            for f in self.temp:
+                print f
+            
+            print "\n----------------------------\nBollocks! Dumped!\n\n"
+        finally:
+            pass
 
 
     def drawString(self,string):
