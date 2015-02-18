@@ -136,6 +136,8 @@ class Thing:
         currentTime=time()
         
         
+        
+        
         if self.state=="browse":
         
             if self.joystick.isKey("a"):
@@ -154,14 +156,21 @@ class Thing:
                 
             elif self.joystick.isKey(13) and len(self.temp)>0:            
                 self.state="edit"
-                self.editing=self.temp[self.menuindex]
+                
+                if self.menuindex<len(self.menu): self.editing=self.menu[self.menuindex]
+                else: self.menuindex=0
+                
                 self.edititem=self.menuindex
                 commands=self.editing.split("###")[1:]
-                values=re.findall("[0-9\.]+",self.editing)
-                print "commands "+str(commands)
-                print "values "+str(values)
-                self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
-                self.menuindex=0
+                if len(commands)>0:
+                    values=re.findall("[0-9\.]+",self.editing)
+                    print "commands "+str(commands)
+                    print "values "+str(values)
+                    self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
+                    self.menuindex=0
+                else:         
+                    self.state="browse"
+                
             
             elif self.joystick.isKey(8) and len(self.temp)>0:            
                 print "delete!"
@@ -193,15 +202,17 @@ class Thing:
                     self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
-                elif self.menu[self.menuindex]=="CONE":
-                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
-                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###segs###stacks")                           
+                elif self.menu[self.menuindex]=="CONE":                    
+                    ##note there are two item to add so this is back to front
+                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###segs###stacks")   
+                    self.temp.insert(self.edititem,"q=gluNewQuadric()")                        
                     ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
-                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
+                    ##note there are two item to add so this is back to front
                     self.temp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###segments###stacks")  
+                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
                     ####self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###segments###stacks")  
                     self.state="browse"
                     #self.menuindex=0
@@ -224,6 +235,77 @@ class Thing:
             
         
 
+        if self.state=="edit":
+            if self.joystick.isLeft():
+                print "editting"
+                print str(self.editing)
+                print str(self.edititem)
+                print str(self.menuindex)
+                print "left"
+                
+                
+                commands=self.editing.split("###")[1:]
+                if len(commands)>0:
+                    values=re.findall("[0-9\.]+",self.editing)
+                  
+                editing_command=commands[self.menuindex]
+                editing_value=float(values[self.menuindex])
+                    
+                editing_value-=0.1
+                
+                old=self.editing
+                m=None
+                mit=re.finditer("[0-9\.]+",old)
+                for i in range(0,self.menuindex+1):
+                    m=mit.next()
+                    
+                print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
+                
+                neww=old[0:m.start()]+str(editing_value)+old[m.end():]
+                
+                self.temp[self.edititem]=neww
+                
+                
+                
+                
+                print "was "+old+" now "+neww
+                
+                ##self.edititem=self.menuindex
+                ##self.menu[self.menuindex]
+            
+            if self.joystick.isRight():
+                print "editting"
+                print str(self.editing)
+                print str(self.edititem)
+                print str(self.menuindex)
+                print "right"
+                
+                commands=self.editing.split("###")[1:]
+                if len(commands)>0:
+                    values=re.findall("[0-9\.]+",self.editing)
+                  
+                editing_command=commands[self.menuindex]
+                editing_value=float(values[self.menuindex])
+                    
+                editing_value+=0.1
+                    
+                
+                old=self.editing
+                m=None
+                mit=re.finditer("[0-9\.]+",old)
+                for i in range(0,self.menuindex+1):
+                    m=mit.next()
+                    
+                print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
+                
+                neww=old[0:m.start()]+str(editing_value)+old[m.end():]
+                
+                self.temp[self.edititem]=neww
+                
+                
+            
+                
+            
             
         
             
@@ -247,7 +329,11 @@ class Thing:
         glutTimerFunc(tt, self.animate, FPS)
         drawTime=currentTime-self.lastFrameTime
         self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)
+        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)+str((self.temp))
+        
+        
+        
+        
         
     def draw(self):
                 
