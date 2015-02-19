@@ -1,9 +1,13 @@
+
+
+import sys, traceback
+
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 import random 
 import sys
-from time import time
+from time import time,strftime
 #import math
 from Letters import lists, MakeLists
 
@@ -23,9 +27,17 @@ colours["cyan"]=[0.0,1.0,1.0,1.0]
 colours["pink"]=[1.0,0.0,1.0,1.0]
 colours["white"]=[1.0,1.0,1.0,1.0]
   
-file_name=sys.argv[0]
-if file_name=="":
-    file_name="DangerCode"+str(strftime("%Y%m%d_%H%M%S"))+".txt"
+file_name=""
+  
+try:
+
+    file_name=sys.argv[1]
+
+
+except:
+
+    if file_name=="":
+        file_name="DangerCode"+str(strftime("%Y%m%d_%H%M%S"))+".txt"
 
 
 
@@ -141,80 +153,87 @@ class Thing:
 
 
     def logic(self):   
+    
+        self.lock=True
         
+        tmp=self.temp
         
         if self.joystick.isUp():
             print "menu length: "+str(len(self.menu))
             if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
-            print self.menuindex
-            return
+            #print self.menuindex
             
-        if self.joystick.isDown():
-            print "menu length: "+str(len(self.menu))
+            #return
+            
+        elif self.joystick.isDown():
+            #print "menu length: "+str(len(self.menu))
             if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
-            print self.menuindex
-            return
+            #print self.menuindex
+            #return
             
-        if self.joystick.isKey(27):
+        elif self.joystick.isKey(27):
             self.state="browse"
-            return        
+            #return        
         
-        if self.state=="browse":
+        elif self.state=="browse":
+        
+        
+            if self.joystick.isKey("w"):
+            
+                f=open(file_name,"w")
+                for ll in tmp:
+                    f.write(ll+"\n")
+                f.write("\n")
+                f.close()
+                print "written out file "+str(file_name)
+                #return
 
-            if self.joystick.isKey("a"):
+            elif self.joystick.isKey("a"):
                 self.state="add"
                 self.menu=["PUSH-POP","TRANSLATE","SCALE","COLOR","CUBE","SPHERE","CONE","DISC","ROTATE"]
                 self.edititem=self.menuindex
                 self.menuindex=0
-                return
+                #return
                 
-            if self.joystick.isKey("u"):
-                if len(self.temp)>1: self.temp.insert((self.menuindex-1)%(len(self.temp)),self.temp.pop(self.menuindex))
+            elif self.joystick.isKey("u"):
+                if len(tmp)>1: tmp.insert((self.menuindex-1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
-                return
+                #return
                 
             elif self.joystick.isKey("d"):
-                if len(self.temp)>1: self.temp.insert((self.menuindex+1)%(len(self.temp)),self.temp.pop(self.menuindex))
+                if len(tmp)>1: tmp.insert((self.menuindex+1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
-                return
+                #return
                 
-            elif self.joystick.isKey(13) and len(self.temp)>0:  
-                if self.joystick.isControl==True:
-                    f.open(fille_name,"w")
-                    for ll in self.temp:
-                        f.write(ll+"\n")
-                    f.write("\n")
-                    f.close()
-                    print "written out file "+str(file_name)
-                    return
-                else:
-                    self.state="edit"                    
-                    if self.menuindex>=len(self.menu): self.menuindex=0
-                    self.editing=self.menu[self.menuindex]
-                    
-                    self.edititem=self.menuindex
-                    commands=self.editing.split("###")[1:]
-                    for cc in range(0,len(commands)):
-                        if commands[cc][0]=="I":
-                            commands[cc]=commands[cc][1:]
-                    
-                    if len(commands)>0:
-                        values=re.findall("-{0,1}[0-9\.]+",self.editing)
-                        print "commands "+str(commands)
-                        print "values "+str(values)
-                        self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
-                        self.menuindex=0
-                        return
-                    else:         
-                        self.state="browse"
-                        return
+            elif self.joystick.isKey(13) and len(tmp)>0: 
+            
+                self.state="edit"                    
+                if self.menuindex>=len(self.menu): self.menuindex=0
+                self.editing=self.menu[self.menuindex]
+                
+                self.edititem=self.menuindex
+                commands=self.editing.split("###")[1:]
+                for cc in range(0,len(commands)):
+                    if commands[cc][0]=="I":
+                        commands[cc]=commands[cc][1:]
+                
+                if len(commands)>0:
+                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
+                    print "commands "+str(commands)
+                    print "values "+str(values)
+                    self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
+                    self.menuindex=0
+                    #return
+                else:         
+                    self.state="browse"
+                    #return
                     
             
-            elif self.joystick.isKey(8) and len(self.temp)>0:            
+            elif self.joystick.isKey(8) and len(tmp)>0:            
                 print "delete!"
-                self.temp.pop(self.menuindex)
-                if self.menuindex>=len(self.temp): self.menuindex=len(self.temp)-1
-                return
+                tmp.pop(self.menuindex)
+                if self.menuindex>=len(tmp): self.menuindex=len(tmp)-1
+                #return
             
             
                   
@@ -223,45 +242,45 @@ class Thing:
             if self.joystick.isKey(13):  
             
                 if self.menu[self.menuindex]=="CUBE":
-                    self.temp.insert(self.edititem,"glutSolidCube(0.5) ###size")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
+                    tmp.insert(self.edititem,"glutSolidCube(0.5) ###size")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="PUSH-POP":
                     ##note there are two item to add so this is back to front
-                    self.temp.insert(self.edititem,"glPopMatrix()")
-                    self.temp.insert(self.edititem,"glPushMatrix()")
+                    tmp.insert(self.edititem,"glPopMatrix()")
+                    tmp.insert(self.edititem,"glPushMatrix()")
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="SPHERE":
-                    self.temp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###Isegments###Istacks")  
+                    tmp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###Isegments###Istacks")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="CONE":                    
                     ##note there are two item to add so this is back to front
-                    self.temp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks")   
-                    self.temp.insert(self.edititem,"q=gluNewQuadric()")                        
+                    tmp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks")   
+                    tmp.insert(self.edititem,"q=gluNewQuadric()")                        
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
                     ##note there are two item to add so this is back to front
-                    self.temp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###Isegments###Istacks")  
-                    self.temp.insert(self.edititem,"q=gluNewQuadric()")
+                    tmp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###Isegments###Istacks")  
+                    tmp.insert(self.edititem,"q=gluNewQuadric()")
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="COLOR":
-                    self.temp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")   
+                    tmp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")   
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="ROTATE":
-                    self.temp.insert(self.edititem,"glRotate(0.0,0,1,0) ###value###axis_x###axis_y###axis_z")  
+                    tmp.insert(self.edititem,"glRotate(0.0,0,1,0) ###value###axis_x###axis_y###axis_z")  
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="TRANSLATE":
-                    self.temp.insert(self.edititem,"glTranslate(0.0,0.0,0.0) ###trans_x###trans_y###trans_z")   
+                    tmp.insert(self.edititem,"glTranslate(0.0,0.0,0.0) ###trans_x###trans_y###trans_z")   
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="SCALE":
-                    self.temp.insert(self.edititem,"glScale(1.0,1.0,1.0) ###scale_x###scale_y###scale_z")    
+                    tmp.insert(self.edititem,"glScale(1.0,1.0,1.0) ###scale_x###scale_y###scale_z")    
                     self.state="browse"
                     #self.menuindex=0
             
@@ -276,7 +295,7 @@ class Thing:
                 print str(self.menuindex)
                 print "left"                
                 
-                if self.edititem>=len(self.menu): self.edititem=0
+                #if self.edititem>=len(self.menu): self.edititem=0
 
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
@@ -305,7 +324,8 @@ class Thing:
                     editing_command=editing_command[1:]                    
                 else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
-                self.temp[self.edititem]=neww
+                print "swapping left "+str(tmp[self.edititem])+" for "+str(neww)
+                tmp[self.edititem]=neww
                 self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
                 self.editing=neww  
                 
@@ -316,7 +336,7 @@ class Thing:
                 
                 
             
-            if self.joystick.isRight():
+            elif self.joystick.isRight():
                 print "editting"
                 print str(self.editing)
                 print str(self.edititem)
@@ -349,7 +369,8 @@ class Thing:
                     editing_command=editing_command[1:]                    
                 else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
-                self.temp[self.edititem]=neww
+                print "swapping right "+str(tmp[self.edititem])+" for "+str(neww)
+                tmp[self.edititem]=neww
                 self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
                 self.editing=neww
                 
@@ -359,9 +380,9 @@ class Thing:
                 print str(self.menuindex)
             
         
+        self.temp=tmp
             
-        
-        
+        self.lock=False
         
         
 
@@ -374,7 +395,7 @@ class Thing:
 
     def animate(self,FPS=1):
     
-        
+        if self.lock==True: return
         
         currentTime=time()
         
@@ -401,7 +422,8 @@ class Thing:
         
         
     def draw(self):
-                
+        
+        if self.lock==True: return    
            
         try:
                
@@ -479,12 +501,17 @@ class Thing:
             
             glEnable(GL_LIGHTING)
             
-        except:
+        except Exception as e:
+        
+            print str(traceback.print_exc(file=sys.stdout))
+        
             print "Bollocks! Dumping\n----------------------------\n\n"
             for f in self.temp:
                 print f
-            
+                
             print "\n----------------------------\nBollocks! Dumped!\n\n"
+            sys.exit(0)
+            
         finally:
             pass
 
@@ -521,6 +548,7 @@ class Thing:
     def __init__(self):   
      
              
+        self.lock=False     
         MakeLists()
     
         glutInit(sys.argv)
