@@ -159,7 +159,7 @@ class Thing:
         tmp=self.temp
         
         if self.joystick.isUp():
-            print "menu length: "+str(len(self.menu))
+            #print "menu length: "+str(len(self.menu))
             if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
             #print self.menuindex
             
@@ -190,7 +190,7 @@ class Thing:
 
             elif self.joystick.isKey("a"):
                 self.state="add"
-                self.menu=["PUSH-POP","TRANSLATE","SCALE","COLOR","CUBE","SPHERE","CONE","DISC","ROTATE"]
+                self.menu=["PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","CONE","DISC","ROTATE"]
                 self.edititem=self.menuindex
                 self.menuindex=0
                 #return
@@ -219,8 +219,8 @@ class Thing:
                 
                 if len(commands)>0:
                     values=re.findall("-{0,1}[0-9\.]+",self.editing)
-                    print "commands "+str(commands)
-                    print "values "+str(values)
+                    #print "commands "+str(commands)
+                    #print "values "+str(values)
                     self.menu=[str(k)+" "+str(v) for k,v in zip(commands,values)]
                     self.menuindex=0
                     #return
@@ -267,10 +267,11 @@ class Thing:
                     tmp.insert(self.edititem,"q=gluNewQuadric()")
                     self.state="browse"
                     #self.menuindex=0
-                elif self.menu[self.menuindex]=="COLOR":
-                    tmp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")   
-                    self.state="browse"
-                    #self.menuindex=0
+                #lif self.menu[self.menuindex]=="COLOR":
+                #    tmp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")   
+                #    self.state="browse"
+                #    #self.menuindex=0
+                # 
                 elif self.menu[self.menuindex]=="ROTATE":
                     tmp.insert(self.edititem,"glRotate(0.0,0,1,0) ###value###axis_x###axis_y###axis_z")  
                     self.state="browse"
@@ -289,11 +290,11 @@ class Thing:
         elif self.state=="edit":
         
             if self.joystick.isLeft():
-                print "editting"
-                print str(self.editing)
-                print str(self.edititem)
-                print str(self.menuindex)
-                print "left"                
+                #print "editting"
+                #print str(self.editing)
+                #print str(self.edititem)
+                #print str(self.menuindex)
+                #print "left"                
                 
                 #if self.edititem>=len(self.menu): self.edititem=0
 
@@ -305,8 +306,9 @@ class Thing:
                 editing_value=float(values[self.menuindex])
                     
                 val=0.1
-                if self.joystick.isShift: val=1
-                elif self.joystick.isControl: val=0.01
+                if self.joystick.isShift and not self.joystick.isControl: val=1
+                elif self.joystick.isControl and not self.joystick.isShift: val=0.01
+                elif self.joystick.isControl and self.joystick.isShift: val=10
                 editing_value-=val
                 
                 
@@ -324,24 +326,24 @@ class Thing:
                     editing_command=editing_command[1:]                    
                 else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
-                print "swapping left "+str(tmp[self.edititem])+" for "+str(neww)
+                #print "swapping left "+str(tmp[self.edititem])+" for "+str(neww)
                 tmp[self.edititem]=neww
                 self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
                 self.editing=neww  
                 
-                print str(self.editing)
-                print str(self.edititem)
-                print str(self.menuindex)
+                #print str(self.editing)
+                #print str(self.edititem)
+                #print str(self.menuindex)
 
                 
                 
             
             elif self.joystick.isRight():
-                print "editting"
-                print str(self.editing)
-                print str(self.edititem)
-                print str(self.menuindex)
-                print "right"
+                #print "editting"
+                #print str(self.editing)
+                #print str(self.edititem)
+                #print str(self.menuindex)
+                #print "right"
                 
                 commands=self.editing.split("###")[1:]
                 if len(commands)>0:
@@ -351,8 +353,9 @@ class Thing:
                 editing_value=float(values[self.menuindex])
                     
                 val=0.1
-                if self.joystick.isShift: val=1
-                elif self.joystick.isControl: val=0.01
+                if self.joystick.isShift and not self.joystick.isControl: val=1
+                elif self.joystick.isControl and not self.joystick.isShift: val=0.01
+                elif self.joystick.isControl and self.joystick.isShift: val=10
 
                 editing_value+=val                  
                 
@@ -369,15 +372,15 @@ class Thing:
                     editing_command=editing_command[1:]                    
                 else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
                 
-                print "swapping right "+str(tmp[self.edititem])+" for "+str(neww)
+                #print "swapping right "+str(tmp[self.edititem])+" for "+str(neww)
                 tmp[self.edititem]=neww
                 self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
                 self.editing=neww
                 
                 
-                print str(self.editing)
-                print str(self.edititem)
-                print str(self.menuindex)
+                #print str(self.editing)
+                #print str(self.edititem)
+                #print str(self.menuindex)
             
         
         self.temp=tmp
@@ -415,7 +418,8 @@ class Thing:
         glutTimerFunc(tt, self.animate, FPS)
         drawTime=currentTime-self.lastFrameTime
         self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)+str((self.temp))
+        
+        #if int(100*time())%100==0: print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)+str((self.temp))
         
         
         
@@ -466,10 +470,12 @@ class Thing:
             
             mn=0
             
-            
+            glPushMatrix()
+            glTranslate(-70,200,0)
             self.drawString(self.state.upper())
+            glPopMatrix()
             
-            glTranslate(0,-11,0)
+            glTranslate(0,11*self.menuindex,0)
 
             
             temponly=False
@@ -548,7 +554,7 @@ class Thing:
     def __init__(self):   
      
              
-        self.lock=False     
+        self.lock=False  
         MakeLists()
     
         glutInit(sys.argv)
@@ -596,6 +602,7 @@ class Thing:
 
     def keydownevent(self,c,x,y):    
 
+        
         mod = glutGetModifiers()
 
         self.joystick.isControl=False
@@ -606,9 +613,11 @@ class Thing:
         if mod&GLUT_ACTIVE_ALT==GLUT_ACTIVE_ALT: self.joystick.isAlt=True
         if mod&GLUT_ACTIVE_SHIFT==GLUT_ACTIVE_SHIFT: self.joystick.isShift=True
 
-        print str(c)
+        #print str(c)
         if type(c) is str: self.joystick.register(c.lower(),True)
         else: self.joystick.register(c,True)
+        
+        #self.logic()
         glutPostRedisplay()
         
     def keyupevent(self,c,x,y):  
@@ -625,6 +634,8 @@ class Thing:
 
         if type(c) is str: self.joystick.register(c.lower(),False)
         else: self.joystick.register(c,False)
+        
+        self.logic()
         glutPostRedisplay()
         
     def mousedrag(self,x,y):
