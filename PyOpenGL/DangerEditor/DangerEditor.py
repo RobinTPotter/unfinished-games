@@ -147,7 +147,7 @@ class Thing:
 
     joystick=Joystick()
 
-
+    zoom=5
 
 
 
@@ -172,7 +172,9 @@ class Thing:
             #return
             
         elif self.joystick.isKey(27):
-            self.state="browse"
+            self.state="browse"                
+            if self.state=="edit": self.menuindex=self.edititem
+            print str(self.menuindex)
             #return        
         
         elif self.state=="browse":
@@ -385,6 +387,8 @@ class Thing:
         
         self.temp=tmp
             
+            
+        if self.menuindex>=len(self.menu): self.menuindex=len(self.menu)-1    
         self.lock=False
         
         
@@ -432,11 +436,34 @@ class Thing:
         try:
                
             glPushMatrix()
+            
+            glTranslate(0,0,5-self.zoom)
+            
             glTranslate(0,0,3)
             glRotate(-self.yRot*2,1,0,0)
             glRotate(-self.xRot*2,0,1,0)                                
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
             glutWireCube(1)
+            
+            '''
+            glBegin(GL_LINES)
+            
+            ex=1
+            for xxx in range(-ex,ex):                
+                for yyy in range(-ex,ex):                
+                    for zzz in range(-ex,ex):                       
+                        
+                        glVertex3f(xxx+0, yyy+0, zzz+0)
+                        glVertex3f(xxx+1, yyy+0, zzz+0)
+                        
+                        glVertex3f(xxx+0, yyy+0, zzz+0)
+                        glVertex3f(xxx+0, yyy+1, zzz+0)
+                        
+                        glVertex3f(xxx+0, yyy+0, zzz+0)
+                        glVertex3f(xxx+0, yyy+0, zzz+1)
+                        
+            glEnd()
+            '''
             
             
             '''
@@ -495,6 +522,8 @@ class Thing:
                 if mn==self.menuindex:
                     #print "yo!"
                     string="*"+mi
+                else:
+                    string=" "+mi                    
                 #glTranslate(10,0,0)
                 glTranslate(0,-14,0)
                 self.drawString(string)
@@ -555,6 +584,8 @@ class Thing:
      
              
         self.lock=False  
+        self.mbutton=-1
+        self.mstate=-1
         MakeLists()
     
         glutInit(sys.argv)
@@ -578,12 +609,12 @@ class Thing:
         
         glutMotionFunc(self.mousedrag)
         glutMouseFunc(self.mouse)
-        
         glutSpecialFunc(self.keydownevent)
         glutSpecialUpFunc(self.keyupevent)
         glutKeyboardFunc(self.keydownevent)
         glutKeyboardUpFunc(self.keyupevent)
         
+        glutPassiveMotionFunc(self.mousedrag)
         
         glutDisplayFunc(self.display)
         #glutIdleFunc(self.display)
@@ -640,13 +671,26 @@ class Thing:
         
     def mousedrag(self,x,y):
         #print ((x,y))
-        self.xRot+=(self.mPos[0]-x)*self.speed
-        self.yRot+=(self.mPos[1]-y)*self.speed
+        if self.mbutton==0 and self.mstate==0:
+            self.xRot+=(self.mPos[0]-x)*self.speed
+            self.yRot+=(self.mPos[1]-y)*self.speed  
+            
+        if self.mbutton==1 and self.mstate==0:
+            self.zoom+=(self.mPos[0]-x)*self.speed
+            if self.zoom<5: self.zoom=5
+            
         self.mPos=[x,y]
+        #print str(x)+"-"+str(y)+"  "+str(self.mbutton)+"-"+str(self.mstate)
 
     def mouse(self,button,state,x,y):
         #print ((button,state,x,y))
+        #print "button"+str(button)
+        #print "state"+str(state)        
         self.mPos=[x,y]
+        self.mbutton=button
+        self.mstate=state
+        
+        
 
     def display(self):
 
