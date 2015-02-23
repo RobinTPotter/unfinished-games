@@ -13,7 +13,7 @@ from Letters import lists, MakeLists
 
 import re
 
-name = "thing"
+name = "danger editor - pyopengl code manipulator"
 
 colours={}
 
@@ -435,79 +435,75 @@ class Thing:
            
         try:
                
-            glPushMatrix()
+            glPushMatrix()            
             
-            glTranslate(0,0,5-self.zoom)
-            
+            #tweaks to set up and a white wired cube for 1,1,1 scale help
+            glTranslate(0,0,5-self.zoom)            
             glTranslate(0,0,3)
             glRotate(-self.yRot*2,1,0,0)
             glRotate(-self.xRot*2,0,1,0)                                
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
             glutWireCube(1)
             
-            '''
-            glBegin(GL_LINES)
             
-            ex=1
-            for xxx in range(-ex,ex):                
-                for yyy in range(-ex,ex):                
-                    for zzz in range(-ex,ex):                       
-                        
-                        glVertex3f(xxx+0, yyy+0, zzz+0)
-                        glVertex3f(xxx+1, yyy+0, zzz+0)
-                        
-                        glVertex3f(xxx+0, yyy+0, zzz+0)
-                        glVertex3f(xxx+0, yyy+1, zzz+0)
-                        
-                        glVertex3f(xxx+0, yyy+0, zzz+0)
-                        glVertex3f(xxx+0, yyy+0, zzz+1)
-                        
-            glEnd()
-            '''
+            ##axes            
+            glBegin(GL_LINES)        
             
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["red"])
+            for xxx in range(1,10):            
+                glVertex3f(0.5*(xxx-1), 0, 0)
+                glVertex3f(0.5*(xxx), 0, 0)
+                  
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["green"])
+            for xxx in range(1,10):            
+                glVertex3f(0,0.5*(xxx-1), 0)
+                glVertex3f(0,0.5*(xxx), 0)
+                  
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["blue"])
+            for xxx in range(1,10):            
+                glVertex3f(0,0,0.5*(xxx-1))
+                glVertex3f(0,0,0.5*(xxx))            
             
-            '''
-            f=open(file_name,"r")
-            code=f.read()
-            exec(code)
-            '''
+            glEnd()       
+            
+            ##set colour to white
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+           
+           
+            ##danger code! - literally dump python script into scene 
             for t in self.temp: exec(t)
             
             
             
-            glPopMatrix()
+            glPopMatrix()            
             
-            #string=""
-            #if self.joystick.isUp(): string="UP"
-            #elif self.joystick.isDown(): string="DOWN"
-            #elif self.joystick.isLeft(): string="LEFT"
-            #elif self.joystick.isRight(): string="RIGHT"
-            #elif self.joystick.isFire(): string="FIRE"
-            
-            
-            glDisable(GL_LIGHTING)
-            
+            #disable lights for the text etc
+            glDisable(GL_LIGHTING)          
+                        
             glPushMatrix()  
             glTranslate(-0.7,0,0)
             glScale(0.003,0.003,0.003)
-            glTranslate(0,0,1295)
-            
+            glTranslate(0,0,1295)            
             
             glTranslate(10,0,0)
             
-            mn=0
             
+            ##draw the editor state word top left
             glPushMatrix()
             glTranslate(-70,200,0)
             self.drawString(self.state.upper())
             glPopMatrix()
             
+            
+            mn=0
+            
+            ##shift everything so the cursor is always at the centre screen
             glTranslate(0,11*self.menuindex,0)
 
             
             temponly=False
                     
-            
+            ##check to see if menu has anything in it - overwrite temporarily if so
             if self.state=="browse":
                 if len(self.menu)==0:
                     self.menu=["NO ITEMS"]
@@ -515,7 +511,7 @@ class Thing:
                 else:
                     self.menu=self.temp        
             
-            
+            ##draw the menu
             for mi in self.menu:
                 string=mi
                 #print mi
@@ -530,6 +526,7 @@ class Thing:
                 mn+=1
                     
                     
+            ##put back normal menu       
             if temponly==True: self.menu=[]
               
             glPopMatrix()
@@ -553,11 +550,10 @@ class Thing:
 
     def drawString(self,string):
         glPushMatrix()
+        
         for l in range(0,len(string)):
             if string[l].upper()=="#": break
-            glTranslate(14,0,0)
-            
-            
+            glTranslate(14,0,0)   
             
             glPushMatrix()
             glColor(colours["black"])
@@ -566,7 +562,6 @@ class Thing:
             else:  glCallList(lists[" "])              
             glPopMatrix()
             
-            
             glPushMatrix()
             glTranslate(0,0,1)
             glColor(colours["white"])
@@ -574,8 +569,6 @@ class Thing:
             if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
             else:  glCallList(lists[" "])            
             glPopMatrix()
-            
-            
             
         glPopMatrix()
 
@@ -598,13 +591,41 @@ class Thing:
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
-        lightZeroPosition = [10.,4.,10.,1.]
-        lightZeroColor = [0.8,1.0,0.8,1.0] #green tinged
+        
+        lightZeroPosition = [1,0,0]   #[10.,4.,10.,1.]
+        lightZeroColor = [1,1,1] # [0.8,1.0,0.8,1.0] #green tinged
         glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition)
         glLightfv(GL_LIGHT0, GL_DIFFUSE, lightZeroColor)
         glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
+        
+        lightZeroPosition = [-1,0,0]   #[10.,4.,10.,1.]
+        #lightZeroColor = [1,1,1] # [0.8,1.0,0.8,1.0] #green tinged
+        glLightfv(GL_LIGHT1, GL_POSITION, lightZeroPosition)
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, lightZeroColor)
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.1)
+        glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
+        glEnable(GL_LIGHT1)
+        
+        lightZeroPosition = [0,0,1]   #[10.,4.,10.,1.]
+        #lightZeroColor = [1,1,1] # [0.8,1.0,0.8,1.0] #green tinged
+        glLightfv(GL_LIGHT2, GL_POSITION, lightZeroPosition)
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, lightZeroColor)
+        glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 0.1)
+        glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0.05)
+        glEnable(GL_LIGHT2)
+        
+        '''
+        lightZeroPosition = [0,0,-1]   #[10.,4.,10.,1.]
+        #lightZeroColor = [1,1,1] # [0.8,1.0,0.8,1.0] #green tinged
+        glLightfv(GL_LIGHT3, GL_POSITION, lightZeroPosition)
+        glLightfv(GL_LIGHT3, GL_DIFFUSE, lightZeroColor)
+        glLightf(GL_LIGHT3, GL_CONSTANT_ATTENUATION, 0.1)
+        glLightf(GL_LIGHT3, GL_LINEAR_ATTENUATION, 0.05)
+        glEnable(GL_LIGHT3)
+        '''
+        
         
         
         glutMotionFunc(self.mousedrag)
