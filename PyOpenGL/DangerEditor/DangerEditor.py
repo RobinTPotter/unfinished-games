@@ -25,8 +25,11 @@ colours["blue"]=[0.0,0.0,1.0,1.0]
 colours["yellow"]=[1.0,1.0,0.0,1.0]
 colours["cyan"]=[0.0,1.0,1.0,1.0]
 colours["pink"]=[1.0,0.0,1.0,1.0]
-colours["white"]=[1.0,1.0,1.0,1.0]
-  
+colours["white"]=[1.0,1.0,1.0,1.0]  
+colours["brown"]=[0.24,0.007,0.0,1.0]
+colours["black"]=[0,0,0,1.0]
+
+
 file_name=""
   
 try:
@@ -193,6 +196,7 @@ class Thing:
             elif self.joystick.isKey("a"):
                 self.state="add"
                 self.menu=["PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","CONE","DISC","ROTATE"]
+                for cc in colours.keys(): self.menu.append("COLOUR_"+cc.upper())
                 self.edititem=self.menuindex
                 self.menuindex=0
                 #return
@@ -284,6 +288,11 @@ class Thing:
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="SCALE":
                     tmp.insert(self.edititem,"glScale(1.0,1.0,1.0) ###scale_x###scale_y###scale_z")    
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex].startswith("COLOUR_"):
+                    col=self.menu[self.menuindex][7:].lower()            
+                    tmp.insert(self.edititem,"glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[\""+str(col)+"\"])")    
                     self.state="browse"
                     #self.menuindex=0
             
@@ -483,14 +492,14 @@ class Thing:
             glPushMatrix()  
             glTranslate(-0.7,0,0)
             glScale(0.003,0.003,0.003)
-            glTranslate(0,0,1295)            
+            glTranslate(0,0,1225)            
             
-            glTranslate(10,0,0)
+            glTranslate(-110,0,0)
             
             
             ##draw the editor state word top left
             glPushMatrix()
-            glTranslate(-70,200,0)
+            glTranslate(0,200,0)
             self.drawString(self.state.upper())
             glPopMatrix()
             
