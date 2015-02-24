@@ -35,7 +35,7 @@ file_name=""
 try:
 
     file_name=sys.argv[1]
-
+    
 
 except:
 
@@ -183,14 +183,42 @@ class Thing:
         elif self.state=="browse":
         
         
+    
+    
             if self.joystick.isKey("w"):
             
-                f=open(file_name,"w")
-                for ll in tmp:
-                    f.write(ll+"\n")
-                f.write("\n")
-                f.close()
-                print "written out file "+str(file_name)
+                try:                
+                    f=open(file_name,"w")
+                    for ll in tmp:
+                        f.write(ll+"\n")
+                    f.write("\n")
+                    f.close()
+                    print "written out file "+str(file_name)
+                    #return
+                    
+                except Exception as ex:
+                    print "bugger, "+str(file_name)+" not written out"
+                
+            elif self.joystick.isKey("l"):
+            
+                try:                
+                    f=open(file_name,"r")
+                    data=f.read()
+                    for ll in data.split("\n"):
+                        if not (len(ll)==0 or ll==""): tmp.append(ll)
+                        
+                    f.close()
+                    print "successfully read "+str(file_name)
+                    
+                    ##had to to this wasn't updateing other wise
+                    self.menuindex=0
+                    self.temp=tmp
+                    self.menu=self.temp
+                    
+                    
+                except Exception as ex:
+                    print "bugger, file "+str(file_name)+" not read"
+                
                 #return
 
             elif self.joystick.isKey("a"):
@@ -395,6 +423,8 @@ class Thing:
             
         
         self.temp=tmp
+        ##print str(self.temp)
+        ##print "done tmp to temp"
             
             
         if self.menuindex>=len(self.menu): self.menuindex=len(self.menu)-1    
