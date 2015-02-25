@@ -1,8 +1,0 @@
-glPushMatrix()
-glRotate(-90.0,1.0,0.0,0) ###value###axis_x###axis_y###axis_z
-q=gluNewQuadric()
-glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks
-glRotate(180.0,0,1,0) ###value###axis_x###axis_y###axis_z
-gluDisk(q,0.0,0.5,12,12) ###xxx###yyy###Isegments###Istacks
-glPopMatrix()
-

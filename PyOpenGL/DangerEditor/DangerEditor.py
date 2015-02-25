@@ -292,7 +292,7 @@ class Thing:
                 elif self.menu[self.menuindex]=="CONE":                    
                     ##note there are two item to add so this is back to front
                     tmp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks")   
-                    tmp.insert(self.edititem,"q=gluNewQuadric()")                        
+                    if tmp.index("q=gluNewQuadric()")==-1: tmp.insert(self.edititem,"q=gluNewQuadric()")                        
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
@@ -521,10 +521,10 @@ class Thing:
                         
             glPushMatrix()  
             glTranslate(-0.7,0,0)
-            glScale(0.003,0.003,0.003)
-            glTranslate(0,0,1225)            
+            glScale(0.0028,0.003,0.003)
+            glTranslate(0,0,1255)            
             
-            glTranslate(-110,0,0)
+            glTranslate(-100,0,0)
             
             
             ##draw the editor state word top left
@@ -537,7 +537,7 @@ class Thing:
             mn=0
             
             ##shift everything so the cursor is always at the centre screen
-            glTranslate(0,11*self.menuindex,0)
+            glTranslate(0,14*self.menuindex,0)
 
             
             temponly=False
@@ -551,19 +551,31 @@ class Thing:
                     self.menu=self.temp        
             
             ##draw the menu
-            for mi in self.menu:
-                string=mi
+            ##push offset
+            offset=0
+            
+            for mi in self.menu:      
+          
+                if mi=="glPopMatrix()": offset-=1
+                
+                string=""
+                offsetspaces=""
+                for oo in range(0,offset):
+                    offsetspaces+=" "                    
+                
                 #print mi
                 if mn==self.menuindex:
                     #print "yo!"
-                    string="*"+mi
+                    string="*"+offsetspaces+mi
                 else:
-                    string=" "+mi                    
+                    string=" "+offsetspaces+mi                    
                 #glTranslate(10,0,0)
                 glTranslate(0,-14,0)
                 self.drawString(string)
                 mn+=1
                     
+                if mi=="glPushMatrix()": offset+=1
+                
                     
             ##put back normal menu       
             if temponly==True: self.menu=[]
@@ -596,14 +608,14 @@ class Thing:
             
             glPushMatrix()
             glColor(colours["black"])
-            glLineWidth(5.0)
+            glLineWidth(3.0)
             if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
             else:  glCallList(lists[" "])              
             glPopMatrix()
             
             glPushMatrix()
-            glTranslate(0,0,1)
-            glColor(colours["white"])
+            glTranslate(0,0,.1)
+            glColor(colours["yellow"])
             glLineWidth(0.5)
             if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])  
             else:  glCallList(lists[" "])            
@@ -618,7 +630,7 @@ class Thing:
         self.lock=False  
         self.mbutton=-1
         self.mstate=-1
-        MakeLists()
+        
     
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)

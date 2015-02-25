@@ -2,8 +2,60 @@ from OpenGL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
+from math import sqrt
 
 lists={}
+DIVS=2
+
+
+def SubDivLineString(list_of_vectors,total_sub_divs=DIVS):
+
+    final_list_of_vectors=[]
+
+    divs=0
+
+    while divs<total_sub_divs:
+        divs+=1
+        print divs
+        i=1
+        while i<len(list_of_vectors):
+            ave=(0.5*(list_of_vectors[i][0]+list_of_vectors[i-1][0]),0.5*(list_of_vectors[i][1]+list_of_vectors[i-1][1]),)
+            list_of_vectors.insert(i,ave)       
+            i+=2
+        
+    list_of_vectors 
+    #print "divs:"
+    #print divs
+    #print "len list_of_vectors"
+    #print str(len(list_of_vectors))
+    lln=0
+    for ll in list_of_vectors:
+        flag=""
+        #print str(lln *  (0.5**total_sub_divs))
+        if lln *  (0.5**total_sub_divs)==int(lln *  (0.5**total_sub_divs)): flag="*"
+        #print str(lln)+": "+flag+str(ll)
+        if flag=="" or lln==0 or lln==len(list_of_vectors)-1: final_list_of_vectors.append(ll)
+        lln+=1
+
+
+    return final_list_of_vectors
+
+
+
+
+def DoLetter(letter,vector_list):
+
+    print "doing "+letter
+    lists[letter] = glGenLists(1) 
+    list=SubDivLineString(vector_list)    
+    glNewList(lists[letter],GL_COMPILE) 
+    glBegin(GL_LINE_STRIP)    
+    for li in list:
+        glVertex2f(li[0],li[1])     
+    
+    glEnd()
+    glEndList()
+
 
 def MakeLists():
 
@@ -58,43 +110,17 @@ def MakeLists():
     glEndList()
 
 
-    lists["A"] = glGenLists(1) 
-    glNewList(lists["A"],GL_COMPILE) 
-    glBegin(GL_LINE_STRIP)
-    glVertex2f(0.0, 0.0)
-    glVertex2f(0.0, 10.0)
-    glVertex2f(10.0, 10.0)
-    glVertex2f(10.0, 0.0)
-    glVertex2f(10.0, 5.0)
-    glVertex2f(0.0, 5.0) 
-    glEnd()
-    glEndList()
+    DoLetter("A",[(0.0, 0.0),(0.0, 10.0),(10.0, 10.0),(10.0, 0.0),(10.0, 5.0),(0.0, 5.0)])
+    DoLetter("B",[(0.0, 0.0)  ,(0.0, 10.0)    ,(8.0, 10.0)    ,(8.0, 5.0)    ,(0.0, 5.0)    ,(10.0, 5.0)    ,(10.0, 0.0)    ,(0.0, 0.0)])
+    DoLetter("C",[(10.0, 0.0)    ,(0.0, 0.0)    ,(0.0, 10.0)    ,(10.0, 10.0)])    
 
 
-    lists["B"] = glGenLists(1) 
-    glNewList(lists["B"],GL_COMPILE) 
-    glBegin(GL_LINE_STRIP)
-    glVertex2f(0.0, 0.0)
-    glVertex2f(0.0, 10.0)
-    glVertex2f(8.0, 10.0)
-    glVertex2f(8.0, 5.0)
-    glVertex2f(0.0, 5.0)
-    glVertex2f(10.0, 5.0)
-    glVertex2f(10.0, 0.0)
-    glVertex2f(0.0, 0.0) 
-    glEnd()
-    glEndList()
+    
+    
+    
+    
+    
 
-
-    lists["C"] = glGenLists(1) 
-    glNewList(lists["C"],GL_COMPILE) 
-    glBegin(GL_LINE_STRIP)
-    glVertex2f(10.0, 0.0)
-    glVertex2f(0.0, 0.0)
-    glVertex2f(0.0, 10.0)
-    glVertex2f(10.0, 10.0) 
-    glEnd()
-    glEndList()
 
 
     lists["D"] = glGenLists(1) 
