@@ -63,6 +63,7 @@ def MakeLists():
     lists[" "] = glGenLists(1) 
     glNewList(lists[" "],GL_COMPILE) 
     glEndList()
+    
 
     lists["."] = glGenLists(1) 
     glNewList(lists["."],GL_COMPILE) 
@@ -71,22 +72,31 @@ def MakeLists():
     glVertex2f(6.0, 1.0)
     glVertex2f(6.0, 3.0)
     glVertex2f(4.0, 3.0)
-    glVertex2f(4.0, 1.0)
-    
-    
+    glVertex2f(4.0, 1.0)    
     glEnd()
     glEndList()
+
 
 
     lists["-"] = glGenLists(1) 
     glNewList(lists["-"],GL_COMPILE) 
     glBegin(GL_LINE_STRIP)
     glVertex2f(1.0, 5.0)
-    glVertex2f(9.0, 5.0)
-    
-    
+    glVertex2f(9.0, 5.0)    
     glEnd()
     glEndList()
+
+
+
+
+    lists["/"] = glGenLists(1) 
+    glNewList(lists["/"],GL_COMPILE) 
+    glBegin(GL_LINE_STRIP)
+    glVertex2f(10, 10)
+    glVertex2f(0.0, 0.0)    
+    glEnd()
+    glEndList()
+
 
 
     lists["*"] = glGenLists(1) 
@@ -104,8 +114,6 @@ def MakeLists():
     glVertex2f(5.0, 5.0)
     glVertex2f(10.0, 0.0)
     glVertex2f(0.0, 10.0)
-    
-    
     glEnd()
     glEndList()
 
@@ -113,29 +121,8 @@ def MakeLists():
     DoLetter("A",[(0.0, 0.0),(0.0, 10.0),(10.0, 10.0),(10.0, 0.0),(10.0, 5.0),(0.0, 5.0)])
     DoLetter("B",[(0.0, 0.0)  ,(0.0, 10.0)    ,(8.0, 10.0)    ,(8.0, 5.0)    ,(0.0, 5.0)    ,(10.0, 5.0)    ,(10.0, 0.0)    ,(0.0, 0.0)])
     DoLetter("C",[(10.0, 0.0)    ,(0.0, 0.0)    ,(0.0, 10.0)    ,(10.0, 10.0)])    
-
-
+    DoLetter("D",[(0.0, 0.0),   (0.0, 10.0),    (8.0, 10.0),    (10.0, 8.0),    (10.0, 2.0),    (8.0, 0.0),    (0.0, 0.0) ])
     
-    
-    
-    
-    
-
-
-
-    lists["D"] = glGenLists(1) 
-    glNewList(lists["D"],GL_COMPILE) 
-    glBegin(GL_LINE_STRIP)
-    glVertex2f(0.0, 0.0)
-    glVertex2f(0.0, 10.0)
-    glVertex2f(8.0, 10.0)
-    glVertex2f(10.0, 8.0)
-    glVertex2f(10.0, 2.0)
-    glVertex2f(8.0, 0.0)
-    glVertex2f(0.0, 0.0) 
-    glEnd()
-    glEndList()
-
 
     lists["E"] = glGenLists(1) 
     glNewList(lists["E"],GL_COMPILE) 

@@ -126,9 +126,12 @@ class Thing:
     WIDTH=640.0
     HEIGHT=480.0
 
-
+    lastMenu=""
 
     def logic(self):
+
+
+        
 
         self.lock=True
 
@@ -196,7 +199,7 @@ class Thing:
 
             elif self.joystick.isKey("a"):
                 self.state="add"
-                self.menu=["PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","CONE","DISC","ROTATE"]
+                self.menu=["COMMENT","PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","CONE","DISC","ROTATE"]
                 for cc in colours.keys(): self.menu.append("COLOUR_"+cc.upper())
                 self.edititem=self.menuindex
                 self.menuindex=0
@@ -237,7 +240,9 @@ class Thing:
 
 
             elif self.joystick.isKey(8) and len(tmp)>0:
-                print "delete!"
+                print "delete! started"
+                print "delete! "+str(self.menuindex)
+                print "delete! "+str(self.menu[self.menuindex])
                 tmp.pop(self.menuindex)
                 if self.menuindex>=len(tmp): self.menuindex=len(tmp)-1
                 #return
@@ -250,6 +255,11 @@ class Thing:
 
                 if self.menu[self.menuindex]=="CUBE":
                     tmp.insert(self.edititem,"glutSolidCube(0.5) ###size")  #+="glPushMatrix()\nglutSolidCube(0.5)\nglPopMatrix()\n"
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="COMMENT":
+                    ##note there are two item to add so this is back to front
+                    tmp.insert(self.edititem,"#COMMENT /*                  */")
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="PUSH-POP":
@@ -507,84 +517,144 @@ class Thing:
             
             #glScale(self.WIDTH/640.0,self.WIDTH/640.0,1)
             
+            textOn=True
+            #if self.X %2 == 0: textOn=False
+            
+            if textOn==True:
 
-            #disable lights for the text etc
-            glDisable(GL_LIGHTING)
+                #disable lights for the text etc
+                glDisable(GL_LIGHTING)
 
-            #for xxx in range(0,5): #int(self.WIDTH),10):
-            #    for yyy in range(0,5): #int(self.HEIGHT),10):                
-            #        glPushMatrix()
-            #        glTranslate(xxx,yyy,0)
-            #        #glutWireCube(.5)
-            #        self.drawString("*")
-            #        glPopMatrix()
+                #for xxx in range(0,5): #int(self.WIDTH),10):
+                #    for yyy in range(0,5): #int(self.HEIGHT),10):                
+                #        glPushMatrix()
+                #        glTranslate(xxx,yyy,0)
+                #        #glutWireCube(.5)
+                #        self.drawString("*")
+                #        glPopMatrix()
 
-            #glPushMatrix()
-            #glTranslate(-0.7,0,0)
-            #glScale(0.0028,0.003,0.003)
-            #glTranslate(0,0,1255)
+                #glPushMatrix()
+                #glTranslate(-0.7,0,0)
+                #glScale(0.0028,0.003,0.003)
+                #glTranslate(0,0,1255)
 
-            #glTranslate(-100,0,0)
-
-
-            #draw the editor state word top left
-            glPushMatrix()
-            glTranslate(20,self.HEIGHT-20,0)   
-            self.drawString(self.state.upper())
-            glPopMatrix()
-
-            mn=0
+                #glTranslate(-100,0,0)
 
 
-            glTranslate(20,self.HEIGHT/2,0)
+                #draw the editor state word top left
+                glPushMatrix()
+                glTranslate(20,self.HEIGHT-20,0)   
+                self.drawString(self.state.upper())
+                glPopMatrix()
 
-            ##shift everything so the cursor is always at the centre screen
-            glTranslate(0,14*self.menuindex,0)
+                mn=0
 
 
-            temponly=False
+                glTranslate(20,self.HEIGHT/2,0)
 
-            ##check to see if menu has anything in it - overwrite temporarily if so
-            if self.state=="browse":
-                if len(self.menu)==0:
-                    self.menu=["NO ITEMS"]
-                    temponly=True
+
+
+                glTranslate(0,-15,0)
+                if len(self.menu)>0: self.drawString("*")
+                        
+                glTranslate(0,15,0)
+
+                
+                ##shift everything so the cursor is always at the centre screen
+                glTranslate(0,14*self.menuindex,0)
+
+
+                temponly=False
+
+
+
+
+
+
+
+                ##check to see if menu has anything in it - overwrite temporarily if so
+                if self.state=="browse":
+                    if len(self.menu)==0:
+                        self.menu=["NO ITEMS"]
+                        temponly=True
+                    else:
+                        self.menu=self.temp
+
+
+
+
+
+
+
+                #this block is to compile or draw menu
+                
+                
+                '''            
+                lists["menu"] = glGenLists(1) 
+                glNewList(lists["menu"],GL_COMPILE) 
+                    #....
+                glEndList()
+                '''
+                
+                '''                
+                if lists.has_key("menu"): glCallList(lists["menu"])
+                '''
+
+
+
+                
+                if self.lastMenu==self.menu:
+                    if lists.has_key("menu"): glCallList(lists["menu"])
                 else:
-                    self.menu=self.temp
-
-            ##draw the menu
-            ##push offset
-            offset=0
-
-            for mi in self.menu:
-
-                if mi=="glPopMatrix()": offset-=1
-
-                string=""
-                offsetspaces=""
-                for oo in range(0,offset):
-                    offsetspaces+=" "
-
-                #print mi
-                if mn==self.menuindex:
-                    #print "yo!"
-                    string="*"+offsetspaces+mi
-                else:
-                    string=" "+offsetspaces+mi
-                #glTranslate(10,0,0)
-                glTranslate(0,-14,0)
-                self.drawString(string)
-                mn+=1
-
-                if mi=="glPushMatrix()": offset+=1
+                
+                    lists["menu"] = glGenLists(1) 
+                    glNewList(lists["menu"],GL_COMPILE) 
 
 
-            ##put back normal menu
-            if temponly==True: self.menu=[]
+                    ##draw the menu
+                    ##push offset
+                    offset=0
 
-            #glPopMatrix()
+                    for mi in self.menu:
 
-            glEnable(GL_LIGHTING)
+                        if mi=="glPopMatrix()": offset-=1
+
+                        string=""
+                        offsetspaces=""
+                        for oo in range(0,offset):
+                            offsetspaces+=" "
+
+                        
+                        #print mi
+                        if mn==self.menuindex:
+                            #print "yo!"
+                            string=" "+offsetspaces+mi
+                        else:
+                            string=" "+offsetspaces+mi
+                        
+        
+                        #glTranslate(10,0,0)
+                        glTranslate(0,-14,0)
+                        self.drawString(string)
+                        mn+=1
+
+                        if mi=="glPushMatrix()": offset+=1
+
+
+                    glEndList()
+
+
+
+
+                self.lastMenu=self.menu
+
+
+                ##put back normal menu
+                if temponly==True: self.menu=[]
+
+                #glPopMatrix()
+
+                glEnable(GL_LIGHTING)
 
         except Exception as e:
 
@@ -605,7 +675,10 @@ class Thing:
         glPushMatrix()
 
         for l in range(0,len(string)):
-            if string[l].upper()=="#": break
+            
+            if string[l].upper()=="#":
+                if len(string[l:])>2:
+                    if string[l:l+3]=="###": break
             
             glPushMatrix()
             glTranslate(0,0,0.5)
@@ -700,7 +773,7 @@ class Thing:
         #glPushMatrix()
 
         self.reshape(640,480)
-        self.animate(FPS=10)
+        self.animate(FPS=15)
 
         MakeLists()
         glutMainLoop()
