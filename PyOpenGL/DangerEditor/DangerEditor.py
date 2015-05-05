@@ -312,97 +312,17 @@ class Thing:
         elif self.state=="edit":
 
             if self.joystick.isLeft():
-                #print "editting"
-                #print str(self.editing)
-                #print str(self.edititem)
-                #print str(self.menuindex)
-                #print "left"
+            
+                tmp=self.gogoEdit(-1,tmp)        
+                self.lastMenu=" "
 
-                #if self.edititem>=len(self.menu): self.edititem=0
-
-                commands=self.editing.split("###")[1:]
-                if len(commands)>0:
-                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
-
-                editing_command=commands[self.menuindex]
-                editing_value=float(values[self.menuindex])
-
-                val=0.1
-                if self.joystick.isShift and not self.joystick.isControl: val=1
-                elif self.joystick.isControl and not self.joystick.isShift: val=0.01
-                elif self.joystick.isControl and self.joystick.isShift: val=10
-                editing_value-=val
-
-
-
-                old=self.editing
-                m=None
-                mit=re.finditer("-{0,1}[0-9\.]+",old)
-                for i in range(0,self.menuindex+1):
-                    m=mit.next()
-
-                #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
-
-                if editing_command[0]=="I":
-                    neww=old[0:m.start()]+str(int(editing_value))+old[m.end():]
-                    editing_command=editing_command[1:]
-                else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
-
-                #print "swapping left "+str(tmp[self.edititem])+" for "+str(neww)
-                tmp[self.edititem]=neww
-                self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
-                self.editing=neww
-
-                #print str(self.editing)
-                #print str(self.edititem)
-                #print str(self.menuindex)
-
-
-
+                
 
             elif self.joystick.isRight():
-                #print "editting"
-                #print str(self.editing)
-                #print str(self.edititem)
-                #print str(self.menuindex)
-                #print "right"
+            
+                tmp=self.gogoEdit(1,tmp)        
+                self.lastMenu=" "
 
-                commands=self.editing.split("###")[1:]
-                if len(commands)>0:
-                    values=re.findall("-{0,1}[0-9\.]+",self.editing)
-
-                editing_command=commands[self.menuindex]
-                editing_value=float(values[self.menuindex])
-
-                val=0.1
-                if self.joystick.isShift and not self.joystick.isControl: val=1
-                elif self.joystick.isControl and not self.joystick.isShift: val=0.01
-                elif self.joystick.isControl and self.joystick.isShift: val=10
-
-                editing_value+=val
-
-                old=self.editing
-                m=None
-                mit=re.finditer("-{0,1}[0-9\.]+",old)
-                for i in range(0,self.menuindex+1):
-                    m=mit.next()
-
-                #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
-
-                if editing_command[0]=="I":
-                    neww=old[0:m.start()]+str(int(editing_value))+old[m.end():]
-                    editing_command=editing_command[1:]
-                else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
-
-                #print "swapping right "+str(tmp[self.edititem])+" for "+str(neww)
-                tmp[self.edititem]=neww
-                self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
-                self.editing=neww
-
-
-                #print str(self.editing)
-                #print str(self.edititem)
-                #print str(self.menuindex)
 
 
         self.temp=tmp
@@ -415,8 +335,55 @@ class Thing:
 
 
 
+    def gogoEdit(self,direction,tmp):
+    
 
 
+        #print "editting"
+        #print str(self.editing)
+        #print str(self.edititem)
+        #print str(self.menuindex)
+        #print "left"
+
+        #if self.edititem>=len(self.menu): self.edititem=0
+
+
+        
+        commands=self.editing.split("###")[1:]
+        if len(commands)>0:
+            values=re.findall("-{0,1}[0-9\.]+",self.editing)
+            
+        editing_command=commands[self.menuindex]
+        editing_value=float(values[self.menuindex])
+
+        val=0.1
+        if self.joystick.isShift and not self.joystick.isControl: val=1
+        elif self.joystick.isControl and not self.joystick.isShift: val=0.01
+        elif self.joystick.isControl and self.joystick.isShift: val=10
+        editing_value+=val*direction
+
+        old=self.editing
+        m=None
+        mit=re.finditer("-{0,1}[0-9\.]+",old)
+        for i in range(0,self.menuindex+1):
+            m=mit.next()
+
+        #print "m: "+str(m)+" "+str(dir(m))+" "+str(m.group())+" ms:"+str(m.start())+ "me:"+str(m.end())
+
+        if editing_command[0]=="I":
+            neww=old[0:m.start()]+str(int(editing_value))+old[m.end():]
+            editing_command=editing_command[1:]
+        else: neww=old[0:m.start()]+str(editing_value)+old[m.end():]
+
+        #print "swapping left "+str(tmp[self.edititem])+" for "+str(neww)
+        tmp[self.edititem]=neww
+        self.menu[self.menuindex]=str(editing_command)+" "+str(editing_value)
+        self.editing=neww
+
+        return tmp
+        #print str(self.editing)
+        #print str(self.edititem)
+        #print str(self.menuindex)
 
 
 
@@ -605,8 +572,10 @@ class Thing:
                 
                 if self.lastMenu==self.menu:
                     if lists.has_key("menu"): glCallList(lists["menu"])
+                    print("menu called")
                 else:
-                
+                    print("menu generated") 
+                    
                     lists["menu"] = glGenLists(1) 
                     glNewList(lists["menu"],GL_COMPILE) 
 
