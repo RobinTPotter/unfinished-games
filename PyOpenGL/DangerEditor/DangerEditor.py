@@ -15,10 +15,14 @@ name = "danger editor - pyopengl code manipulator"
 
 colours={}
 
-colours["black"]=[0.1,0.1,0.1,1.0]
+colours["dark_grey"]=[0.2,0.2,0.2,1.0]
+colours["grey"]=[0.5,0.5,0.5,1.0]
+colours["light_grey"]=[0.8,0.8,0.8,1.0]
 colours["gold"]=[1.0,0.9,0.0,1.0]
 colours["red"]=[1.0,0.0,0.0,1.0]
+colours["dark_red"]=[0.4,0.0,0.0,1.0]
 colours["green"]=[0.0,1.0,0.0,1.0]
+colours["dark_green"]=[0.0,0.4,0.0,1.0]
 colours["blue"]=[0.0,0.0,1.0,1.0]
 colours["yellow"]=[1.0,1.0,0.0,1.0]
 colours["cyan"]=[0.0,1.0,1.0,1.0]
