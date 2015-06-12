@@ -203,16 +203,19 @@ class Thing:
                 for cc in colours.keys(): self.menu.append("COLOUR_"+cc.upper())
                 self.edititem=self.menuindex
                 self.menuindex=0
+                self.lastMenu=" "
                 #return
 
             elif self.joystick.isKey("u"):
                 if len(tmp)>1: tmp.insert((self.menuindex-1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
+                self.lastMenu=" "
                 #return
 
             elif self.joystick.isKey("d"):
                 if len(tmp)>1: tmp.insert((self.menuindex+1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
+                self.lastMenu=" "
                 #return
 
             elif self.joystick.isKey(13) and len(tmp)>0:
@@ -243,8 +246,30 @@ class Thing:
                 print "delete! started"
                 print "delete! "+str(self.menuindex)
                 print "delete! "+str(self.menu[self.menuindex])
+                print "delete! "+str(tmp[self.menuindex])
+                
+                
+                if str(self.menu[self.menuindex])=="glPopMatrix()": 
+                    self.lastMenu=" "
+                    #do nothing
+                    return
+                
+                if str(self.menu[self.menuindex])=="glPushMatrix()":
+                    #delete next pop then this
+                    ii=self.menuindex+1
+                    doneit=False
+                    while doneit==False:
+                        if self.menu[ii]=="glPopMatrix()":
+                            tmp.pop(ii)
+                            doneit=True
+                        ii+=1
+                    
+                    
+  
                 tmp.pop(self.menuindex)
-                if self.menuindex>=len(tmp): self.menuindex=len(tmp)-1
+                    
+                if self.menuindex>=len(tmp): self.menuindex=len(tmp)-1 
+                self.lastMenu=" "
                 #return
 
 
@@ -275,13 +300,19 @@ class Thing:
                 elif self.menu[self.menuindex]=="CONE":
                     ##note there are two item to add so this is back to front
                     tmp.insert(self.edititem,"glutSolidCone(0.5,0.5,12,1) ###radius###size###Isegs###Istacks")
-                    if tmp.index("q=gluNewQuadric()")==-1: tmp.insert(self.edititem,"q=gluNewQuadric()")
+                    try:
+                        test=tmp.index("q=gluNewQuadric()")
+                    except:
+                        tmp.insert(self.edititem,"q=gluNewQuadric()")
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="DISC":
                     ##note there are two item to add so this is back to front
                     tmp.insert(self.edititem,"gluDisk(q,0.05,0.2,12,12) ###xxx###yyy###Isegments###Istacks")
-                    tmp.insert(self.edititem,"q=gluNewQuadric()")
+                    try:
+                        test=tmp.index("q=gluNewQuadric()")
+                    except:
+                        tmp.insert(self.edititem,"q=gluNewQuadric()")
                     self.state="browse"
                     #self.menuindex=0
                 #lif self.menu[self.menuindex]=="COLOR":
@@ -467,8 +498,24 @@ class Thing:
             ##set colour to white
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
 
-            ##danger code! - literally dump python script into scene
-            for t in self.temp: exec(t)
+            try:
+                ERROR_MESSAGE=""
+                ##danger code! - literally dump python script into scene
+                offset=0
+                for t in self.temp:
+                    if t=="glPopMatrix()": offset-=1
+                    exec(t)
+                    if t=="glPushMatrix()": offset+=1
+                
+            except Exception as e:                    
+                ERROR_MESSAGE=str(e).upper()
+                #print ERROR_MESSAGE
+                while offset>0:
+                    glPopMatrix()
+                    offset-=1
+                    
+                
+            
             glPopMatrix()
             
             
@@ -512,6 +559,12 @@ class Thing:
                 glPushMatrix()
                 glTranslate(20,self.HEIGHT-20,0)   
                 self.drawString(self.state.upper())
+                
+                if not ERROR_MESSAGE=="":
+                    #print "argrgrg"
+                    glTranslate(0,-30,0)   
+                    self.drawString(ERROR_MESSAGE,"red")
+                
                 glPopMatrix()
 
                 mn=0
@@ -572,7 +625,7 @@ class Thing:
                 
                 if self.lastMenu==self.menu:
                     if lists.has_key("menu"): glCallList(lists["menu"])
-                    print("menu called")
+                    #print("menu called")
                 else:
                     print("menu generated") 
                     
@@ -615,6 +668,8 @@ class Thing:
 
 
 
+
+
                 self.lastMenu=self.menu
 
 
@@ -640,7 +695,7 @@ class Thing:
             pass
 
 
-    def drawString(self,string):
+    def drawString(self,string,col="yellow"):
         glPushMatrix()
 
         for l in range(0,len(string)):
@@ -659,7 +714,7 @@ class Thing:
             
             glPushMatrix()
             glTranslate(0,0,0)
-            glColor(colours["yellow"])
+            glColor(colours[col])
             glLineWidth(0.5)
             if lists.has_key(string[l].upper()): glCallList(lists[string[l].upper()])
             else:  glCallList(lists[" "])
