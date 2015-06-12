@@ -258,7 +258,7 @@ class Thing:
                 print "delete! "+str(tmp[self.menuindex])
                 
                 
-                if str(self.menu[self.menuindex])=="glPopMatrix()": 
+                if str(self.menu[self.menuindex])=="glPopMatrix()" or str(self.menu[self.menuindex])=="glEnd()": 
                     self.lastMenu=" "
                     #do nothing
                     return
@@ -272,6 +272,19 @@ class Thing:
                             tmp.pop(ii)
                             doneit=True
                         ii+=1
+                    
+                    
+                
+                if str(self.menu[self.menuindex])=="glBegin(GL_POLYGON)":
+                    #delete next pop then this
+                    ii=self.menuindex+1
+                    doneit=False
+                    while doneit==False:
+                        if self.menu[ii]=="glEnd()":
+                            tmp.pop(ii)
+                            doneit=True
+                        ii+=1
+                    
                     
                     
   
