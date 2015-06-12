@@ -150,7 +150,7 @@ class Thing:
             #print self.menuindex
             #return
 
-        elif self.joystick.isKey(27):
+        elif self.joystick.isKey(27): ##escape edit mode
             self.state="browse"
             if self.state=="edit": self.menuindex=self.edititem
             print str(self.menuindex)
@@ -161,7 +161,7 @@ class Thing:
 
 
 
-            if self.joystick.isKey("w"):
+            if self.joystick.isKey("w"): ##write out
 
                 try:
                     f=open(file_name,"w")
@@ -175,7 +175,7 @@ class Thing:
                 except Exception as ex:
                     print "bugger, "+str(file_name)+" not written out"
 
-            elif self.joystick.isKey("l"):
+            elif self.joystick.isKey("l"): ##load in 
 
                 try:
                     f=open(file_name,"r")
@@ -197,28 +197,33 @@ class Thing:
 
                 #return
 
-            elif self.joystick.isKey("a"):
+            elif self.joystick.isKey("a"): ##add object
                 self.state="add"
-                self.menu=["COMMENT","PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","CONE","DISC","ROTATE"]
+                self.menu=["COMMENT","PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","POLYGON","POINT","CONE","DISC","ROTATE"]
                 for cc in colours.keys(): self.menu.append("COLOUR_"+cc.upper())
                 self.edititem=self.menuindex
                 self.menuindex=0
                 self.lastMenu=" "
                 #return
 
-            elif self.joystick.isKey("u"):
+            elif self.joystick.isKey("u"): ##move up
                 if len(tmp)>1: tmp.insert((self.menuindex-1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex-1 ) % len(self.menu)
                 self.lastMenu=" "
                 #return
 
-            elif self.joystick.isKey("d"):
+            elif self.joystick.isKey("d"): ##move down
                 if len(tmp)>1: tmp.insert((self.menuindex+1)%(len(tmp)),tmp.pop(self.menuindex))
                 if len(self.menu)>0: self.menuindex=( self.menuindex+1 ) % len(self.menu)
                 self.lastMenu=" "
                 #return
 
-            elif self.joystick.isKey(13) and len(tmp)>0:
+            elif self.joystick.isKey("c"): ##copy in place
+                tmp.insert(self.menuindex,tmp[self.menuindex])
+                self.lastMenu=" "
+                #return
+
+            elif self.joystick.isKey(13) and len(tmp)>0: ##edit mode
 
                 self.state="edit"
                 if self.menuindex>=len(self.menu): self.menuindex=0
@@ -242,7 +247,7 @@ class Thing:
                     #return
 
 
-            elif self.joystick.isKey(8) and len(tmp)>0:
+            elif self.joystick.isKey(8) and len(tmp)>0: ##delete
                 print "delete! started"
                 print "delete! "+str(self.menuindex)
                 print "delete! "+str(self.menu[self.menuindex])
@@ -295,6 +300,18 @@ class Thing:
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="SPHERE":
                     tmp.insert(self.edititem,"glutSolidSphere(0.5,12,12) ###size###Isegments###Istacks")
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="POLYGON":
+                    tmp.insert(self.edititem,"glEnd()")
+                    tmp.insert(self.edititem,"glBegin(GL_POLYGON)")
+                    tmp.insert(self.edititem,"glVertex3f(1.00,0.00,0.00) ###NO###XXX###YYY###ZZZ")
+                    tmp.insert(self.edititem,"glVertex3f(0.00,1.00,0.00) ###NO###XXX###YYY###ZZZ")
+                    tmp.insert(self.edititem,"glVertex3f(0.00,0.00,1.00) ###NO###XXX###YYY###ZZZ")    
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="POINT":
+                    tmp.insert(self.edititem,"glVertex3f(0.00,0.00,1.00) ###NO###XXX###YYY###ZZZ")   
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="CONE":
@@ -385,6 +402,9 @@ class Thing:
             values=re.findall("-{0,1}[0-9\.]+",self.editing)
             
         editing_command=commands[self.menuindex]
+        
+        if editing_command=="NO": return tmp
+        
         editing_value=float(values[self.menuindex])
 
         val=0.1
@@ -627,7 +647,7 @@ class Thing:
                     if lists.has_key("menu"): glCallList(lists["menu"])
                     #print("menu called")
                 else:
-                    print("menu generated") 
+                    #print("menu generated") 
                     
                     lists["menu"] = glGenLists(1) 
                     glNewList(lists["menu"],GL_COMPILE) 
