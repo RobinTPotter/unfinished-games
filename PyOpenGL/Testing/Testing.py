@@ -16,8 +16,80 @@ X=46.0
 
 name = "testing"
 
+'''
+
+#stolen code for reading/writing binary files
+
+import struct
+
+f = open('file.bin', 'wb')
+value = 1.23456
+data = struct.pack('f',value)
+f.write(data)
+f.close()
+
+f = open('file.bin', 'rb')
+print struct.unpack('f',f.read(4))
+f.close()
+'''
 
 
+
+'''
+
+##intereswting stuff on file sizes 
+
+
+$ ls -la chardet-1.0.1.tgz
+-rwxr-xr-x 1 vinko vinko 179218 2008-10-20 17:49 chardet-1.0.1.tgz
+$ python
+Python 2.5.1 (r251:54863, Jul 31 2008, 22:53:39)
+[GCC 4.1.2 (Ubuntu 4.1.2-0ubuntu4)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> f = open('chardet-1.0.1.tgz','rb')
+>>> f.seek(0,2)
+>>> f.tell()
+179218L
+Adding ChrisJY's idea to the example
+
+>>> import os
+>>> os.fstat(f.fileno()).st_size
+179218L
+>>>      
+
+'''
+
+
+'''
+>>> fp=open("sdjfvsdjf.dat","r")
+>>> del(z)
+>>> z
+>>> z.fromfile(fp,10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'z' is not defined
+>>> z=array.array("c")
+>>> fp.seek(0)
+>>> z.fromfile(fp,10)
+>>> z
+array('c', 'Neil said ')
+>>> fp.seek(0)
+>>> z.fromfile(fp,10)
+>>> z
+array('c', 'Neil said Neil said ')
+>>> fp.seek(0)
+>>> z.fromfile(fp,10)
+>>> z
+array('c', 'Neil said Neil said Neil said ')
+>>> z.fromfile(fp,20)
+>>> z
+array('c', 'Neil said Neil said Neil said to use a SUSE machin')
+>>> fp.size()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+
+
+'''
 
 class Sprite:
 
@@ -271,7 +343,7 @@ class Testing:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
     
         glClearColor(0.,0.,0.,1.)
-        glShadeModel(GL_FLAT)
+        glShadeModel(GL_SMOOTH)
         glEnable(GL_CULL_FACE)
         glCullFace(GL_BACK) 
         glEnable(GL_DEPTH_TEST)
@@ -352,7 +424,7 @@ class Testing:
             glDisableClientState(GL_COLOR_ARRAY)
             glDisableClientState(GL_NORMAL_ARRAY)
             
-            X+=10
+            X+=3
 
         except:
             pass
@@ -1814,9 +1886,9 @@ for nn in range(0,len(n),9):
 cols=[]
         
 for nn in range(0,len(n),9):
-    cols+=[random.random()*0.5,1.0,random.random()*0.5]
-    cols+=[random.random()*0.5,1.0,random.random()*0.5]
-    cols+=[random.random()*0.5,1.0,random.random()*0.5]
+    cols+=[0,1,0]
+    cols+=[random.random()*0.1,1.0,random.random()*0.1]
+    cols+=[0,1,0]
     
     
             
