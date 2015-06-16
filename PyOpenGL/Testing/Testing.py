@@ -277,6 +277,10 @@ class Testing:
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
         
+        # // track material ambient and diffuse from surface color, call it before glEnable(GL_COLOR_MATERIAL)
+        glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE)
+        glEnable(GL_COLOR_MATERIAL)
+            
         glEnable(GL_LIGHTING)
         lightZeroPosition = [10.,4.,10.,1.]
         lightZeroColor = [0.9,1.0,0.9,1.0] #green tinged
@@ -286,13 +290,13 @@ class Testing:
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
         
-        lightZeroPosition2 = [-10.,-4.,10.,1.]
-        lightZeroColor2 = [1.0,0.9,0.9,1.0] #green tinged
-        glLightfv(GL_LIGHT1, GL_POSITION, lightZeroPosition2)
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, lightZeroColor2)
-        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.2)
-        glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
-        glEnable(GL_LIGHT1)
+        #lightZeroPosition2 = [-10.,-4.,10.,1.]
+        #lightZeroColor2 = [1.0,0.9,0.9,1.0] #green tinged
+        #glLightfv(GL_LIGHT1, GL_POSITION, lightZeroPosition2)
+        #glLightfv(GL_LIGHT1, GL_DIFFUSE, lightZeroColor2)
+        #glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 0.2)
+        #glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
+        #glEnable(GL_LIGHT1)
         
         MakeLists()
         
@@ -329,20 +333,23 @@ class Testing:
         
         try:
      
-            global X,n, nm
+            global X,n, nm,cols
             glTranslate(0,0,0.0)
             glRotate(X,0,1,0)
             #glutSolidCube(1)
             #glScale(2,2,2) 
             
             glEnableClientState(GL_NORMAL_ARRAY)
+            glEnableClientState(GL_COLOR_ARRAY)
             glEnableClientState(GL_VERTEX_ARRAY) 
             glNormalPointer(GL_FLOAT, 0, nm)    
+            glColorPointer(3, GL_FLOAT, 0, cols)   
             glVertexPointer(3, GL_FLOAT, 0, n)   
             glPushMatrix()    
             glDrawArrays(GL_TRIANGLES,0,len(n)/3 )
             glPopMatrix()
             glDisableClientState(GL_VERTEX_ARRAY)
+            glDisableClientState(GL_COLOR_ARRAY)
             glDisableClientState(GL_NORMAL_ARRAY)
             
             X+=10
@@ -1798,14 +1805,28 @@ for nn in range(0,len(n),9):
     a=[bx-ax,by-ay,bz-az]
     b=[cx-ax,cy-ay,cz-az]   
     nh=norm(a,b)
+    ##each vertex has a normal we are spanning 3 above to get those that make a triange
+    ##we are giving the same normal to each vertex in the triangle
     nm+=nh
     nm+=nh
     nm+=nh
+
+cols=[]
+        
+for nn in range(0,len(n),9):
+    cols+=[random.random()*0.5,1.0,random.random()*0.5]
+    cols+=[random.random()*0.5,1.0,random.random()*0.5]
+    cols+=[random.random()*0.5,1.0,random.random()*0.5]
+    
+    
             
 
-print n
+print n[:10]
 print
-print nm
+print nm[:10]
+print
+print cols[:10]
+print
 
 
 
