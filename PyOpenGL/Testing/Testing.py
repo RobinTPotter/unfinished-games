@@ -478,10 +478,10 @@ class Testing:
 
 
 
-fp=open("../../../dragon.dat","rb")
+fp=open("dragon.dat","rb")
 
 fp.seek(0,2)
-flength=int(fp.tell())/48
+flength=int(fp.tell())/48 #length in triangles 48=2 lots of coords for vertices and colours  *3 for how many components for coord  *8 and for nunber of bytes to store a double
 print (("file",flength))
 
 
