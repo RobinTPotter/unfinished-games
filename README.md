@@ -6,15 +6,19 @@ this is a test.
 
 this is for idiots who can't remember stuff like me:
 
-git add . (to add stuff)
-git commit -m "commit message"
-git push (update online repo)
+  git add . (to add stuff)
+
+  git commit -m "commit message"
+
+  git push (update online repo)
+
 
 also needed to do:
 
-git remote set-url origin https://{username}:{password}@github.com/RobinTPotter/unfinished-games.git
+  git remote set-url origin https://{username}:{password}@github.com/RobinTPotter/unfinished-games.git
 
 before it would work. presumably only once.
+
 
 Oh and pyopengl you need to iNstall numpy Somehow
 
