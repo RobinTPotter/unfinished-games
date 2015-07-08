@@ -9,7 +9,7 @@ from time import time
 from math import sin, cos, pi, floor, ceil, sqrt
 import random
 from Models import lists, MakeLists, colours
-from CheapModel import Model
+
 
 import array, struct
 
@@ -375,27 +375,7 @@ class Testing:
         
         MakeLists()
         
-        
         glutIgnoreKeyRepeat(1)
-        
-        
-        
-        self.cheapModelTest1=Model()
-        self.cheapModelTest1.loader("piece1.dat")
-        
-        self.cheapModelTest2=Model()
-        self.cheapModelTest2.loader("piece2.dat")
-        
-        self.cheapModelTest3=Model()
-        self.cheapModelTest3.loader("piece3.dat")
-        
-        self.cheapModelTest4=Model()
-        self.cheapModelTest4.loader("piece4.dat")
-        
-        self.cheapModelTest5=Model()
-        self.cheapModelTest5.loader("piece5.dat")
-        
-        
         
         glutSpecialFunc(self.keydownevent)
         glutSpecialUpFunc(self.keyupevent)
@@ -425,21 +405,27 @@ class Testing:
     def draw(self):
         
         self.lock=True
-        global X
         
         try:
      
+            global X,n, nm,cols
             glTranslate(0,0,0.0)
             glRotate(X,1,1,0)
             #glutSolidCube(1)
             #glScale(2,2,2) 
             
-            #print(("hello"))
-            self.cheapModelTest1.drawMe()
-            self.cheapModelTest2.drawMe()
-            self.cheapModelTest3.drawMe()
-            self.cheapModelTest4.drawMe()
-            self.cheapModelTest5.drawMe()
+            glEnableClientState(GL_NORMAL_ARRAY)
+            glEnableClientState(GL_COLOR_ARRAY)
+            glEnableClientState(GL_VERTEX_ARRAY) 
+            glNormalPointer(GL_FLOAT, 0, nm)    
+            glColorPointer(3, GL_FLOAT, 0, cols)   
+            glVertexPointer(3, GL_FLOAT, 0, n)   
+            glPushMatrix()    
+            glDrawArrays(GL_TRIANGLES,0,len(n)/3 )
+            glPopMatrix()
+            glDisableClientState(GL_VERTEX_ARRAY)
+            glDisableClientState(GL_COLOR_ARRAY)
+            glDisableClientState(GL_NORMAL_ARRAY)
             
             X+=3
 
@@ -489,6 +475,88 @@ class Testing:
 
 
 
+
+
+
+fp=open("piece1.dat","rb")
+
+fp.seek(0,2)
+flength=int(fp.tell())/48 #length in triangles 48=2 lots of coords for vertices and colours  *3 for how many components for coord  *8 and for nunber of bytes to store a double
+print (("file",flength))
+
+
+z=array.array("d")
+fp.seek(0)
+z.fromfile(fp,flength*3)
+n=z.tolist()
+print ("hello",len(n),n[:10])
+
+cc=array.array("d")
+#fp.seek(0)
+cc.fromfile(fp,flength*3)
+cols=cc.tolist()
+print ("hello",len(cols),cols[:10])
+
+def norm(u0,v0):        
+    
+    mu=sqrt(u0[0]**2 + u0[1]**2 + u0[2]**2)    
+    if mu==0: mu=1        
+    u=[x/mu for x in u0]    
+    mv=sqrt(v0[0]**2 + v0[1]**2 + v0[2]**2)    
+    if mv==0: mv=1        
+    v=[x/mv for x in v0]       
+    
+    n= [
+        u[1]*v[2]-u[2]*v[1],
+        u[2]*v[0]-u[0]*v[2],
+        u[0]*v[1]-u[1]*v[0]
+    ]
+    
+    mn=sqrt(n[0]**2 + n[1]**2 + n[2]**2)    
+    if mn==0: mn=1  
+      
+    return [x/mn for x in n]   
+    
+
+
+nm=[]
+tt=0
+
+try:
+            
+    for nn in range(0,len(n),9):
+        ax,ay,az,bx,by,bz,cx,cy,cz=n[nn:nn+9]
+        tt+=1
+        a=[bx-ax,by-ay,bz-az]
+        b=[cx-ax,cy-ay,cz-az]   
+        nh=norm(a,b)
+        ##each vertex has a normal we are spanning 3 above to get those that make a triange
+        ##we are giving the same normal to each vertex in the triangle
+        nm+=nh
+        nm+=nh
+        nm+=nh
+
+except:
+    print((tt,nn))
+
+
+'''
+cols=[]
+        
+for nn in range(0,len(n),9):
+    cols+=[0,1,0]
+    cols+=[random.random()*0.1,1.0,random.random()*0.1]
+    cols+=[0,1,0]
+
+'''
+            
+
+print n[:10]
+print
+print nm[:10]
+print
+print cols[:10]
+print
 
 
 
