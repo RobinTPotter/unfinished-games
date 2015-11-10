@@ -146,7 +146,11 @@ class Action:
             if self.tick>=self.max:
                 self.working=False
                 self.overide=False
-                if not self.callback==None: self.callback()
+                if not self.callback==None:
+                    self.callback()                     
+                    print(dir(self))
+                    print("callback called")
+                    
                      
         if not self.value==None: return self.value
         else: return 0.0
@@ -236,6 +240,7 @@ class Solomon:
         return v
         
     def jump_displacement(self,tvmm):
+        print("jump disp called")
         t,v,min,max=tvmm
         if t<4: v+=2
         else: v+=1
@@ -244,7 +249,7 @@ class Solomon:
       
     def end_jump(self):
         print "jump complete"
-        self.current_state["jumping"]=0
+        self.current_state["jumping"]=False
 
     def __init__(self,sx,sy, level):
     
@@ -253,7 +258,7 @@ class Solomon:
         self.current_state["standing"]=1
         self.current_state["crouching"]=0
         self.current_state["walking"]=0
-        self.current_state["jumping"]=0
+        self.current_state["jumping"]=False
         self.current_state["wandswish"]=0
     
         self.x=sx
@@ -271,7 +276,7 @@ class Solomon:
         self.AG_jump.append("jump_displacement",Action(func=self.jump_displacement,max=10,min=0))        
         self.AG_jump.action("jump_displacement").callback=self.end_jump
          
-        print self.AG_jump.action("jump_displacement").callback
+        
          
         self.AG_walk.speed_scale(2) 
          
@@ -561,9 +566,6 @@ class Level:
         self.AG_twinklers.do() 
         
         
-        if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==0:                    
-            self.solomon.current_state["jumping"]=1  
-
 
         walkcheck=False
                 
@@ -617,12 +619,17 @@ class Level:
                 self.solomon.current_state["wandswish"]=1 
 
                     
-        if self.solomon.current_state["jumping"]==1:
+        if self.solomon.current_state["jumping"]==True:            
             self.solomon.AG_jump.do()
             print "he's jumping"
-            print str(self.solomon.AG_jump.action("jump_displacement").tick)
-            self.solomon.y+=0.2
+            print str(self.solomon.AG_jump.action("jump_displacement").tick  )
+            print str(self.solomon.AG_jump.action("jump_displacement").value  )
+            #self.solomon.y+=0.2
             #print "co-ordinates "+str((self.solomon.x,self.solomon.y))
+
+        if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==False:                    
+            self.solomon.current_state["jumping"]=True
+            self.solomon.AG_jump.kick()
 
 
     def draw(self):
@@ -920,7 +927,7 @@ class SolomonsKey:
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         
-        gluLookAt(self.cxx,self.cyy,self.czz,
+        gluLookAt(self.cxx,self.cyy,self.czz-10,
                   self.fxx,self.fyy,self.fzz,
                   0,1,0)
         
