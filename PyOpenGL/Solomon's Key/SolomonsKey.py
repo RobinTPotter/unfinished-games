@@ -9,6 +9,9 @@ from time import time
 from math import sin, cos, pi, floor, ceil, sqrt
 import random
 from Models import lists, MakeLists, colours
+from Action import Action, ActionGroup
+from Joystick import Joystick
+
 
 X=46.0
 
@@ -92,110 +95,10 @@ class Sprite:
         return v
                
         
-        
+def val(a,b):
+    return int(100*(a+b))/100.0
 
 
-class Action:
-    
-    tick=0
-    min=-5
-    max=5
-    value=0
-    cycle=False 
-    reverseloop=False
-    dir=1    
-    func=None
-    init_tick=0
-    working=True
-    overide=False
-    speed=1.0
-    callback=None
-    
-    #defined function must return the value for storage
-    def __init__(self,func=func,min=-5,max=5,cycle=False,reverseloop=False,init_tick=0):
-        self.func=func
-        self.min=min           
-        self.max=max
-        self.cycle=cycle 
-        self.reverseloop=reverseloop
-        self.init_tick=init_tick
-        self.kick()
-    
-    def kick(self):    
-        self.dir=1      
-        self.tick=self.init_tick
-        self.working=True
-
-    def do(self):
-        
-        #print str(("action",self.tick,self.value))
-        
-        if not self.working: return
-        self.tick+=self.dir*self.speed
-        
-        self.value=self.func((self.tick,self.value,self.min,self.max))  
-                
-        if self.cycle==True and self.reverseloop==False:
-            if self.tick>=self.max: self.tick=self.min
-            
-        elif self.cycle==True and self.reverseloop==True:
-            if self.tick>=self.max or self.tick<=self.min:
-                self.dir*=-1
-                     
-        elif self.cycle==False:
-            if self.tick>=self.max:
-                self.working=False
-                self.overide=False
-                if not self.callback==None:
-                    self.callback()                     
-                    print(dir(self))
-                    print("callback called")
-                    
-                     
-        if not self.value==None: return self.value
-        else: return 0.0
-        
-#defines a set of actions to be done as one.
-class ActionGroup:
-
-    actions={}
-
-    def __init__(self):
-        self.actions={}
-        
-    def append(self,action_name,action):
-        if self.actions.has_key(action_name):
-            raise Error("action defined "+action_name)
-        else:
-            self.actions[action_name]=action
-            
-        
-    def kick(self):
-        for a in self.actions.keys():
-            self.actions[a].kick()
-            
-    def speed_scale(self,scale):
-        for a in self.actions.keys():
-            self.actions[a].speed*=scale
-            
-    def do(self):
-        for a in self.actions.keys():
-            self.actions[a].do()
-            #print "do action "+str(a)+" "+str((self.actions[a].tick,self.actions[a].value))
-            
-    def value(self,action_name):
-        if self.actions.has_key(action_name):
-            #print "action "+str(action_name)+" "+str(self.actions[action_name].value)
-            return self.actions[action_name].value
-        else:
-            raise Error("no such action registered "+action_name)
-            
-    def action(self,action_name):
-        if self.actions.has_key(action_name):
-            return self.actions[action_name]
-        else:
-            raise Error("no such action registered "+action_name)
-            
 class Solomon:
 
     x,y=None,None
@@ -207,9 +110,16 @@ class Solomon:
     current_state={}
     
     bound=0.3 #this is his bounding sphere 
-    step=0.1
+    step=0.100
     facing=1 #or -1
     level=None
+    
+    def x_change(self,amt):
+        print(("changing x",amt))
+        self.x=val(self.x,amt)
+        
+    def y_change(self,amt):
+        self.y=val(self.y,amt)    
   
     def wobble(self,tvmm):
         t,v,mi,ma=tvmm
@@ -255,11 +165,12 @@ class Solomon:
     
         self.level=level
     
-        self.current_state["standing"]=1
-        self.current_state["crouching"]=0
-        self.current_state["walking"]=0
+        self.current_state["standing"]=True
+        self.current_state["crouching"]=False
+        self.current_state["walking"]=False
         self.current_state["jumping"]=False
-        self.current_state["wandswish"]=0
+        self.current_state["wandswish"]=False
+        self.current_state["falling"]=False
     
         self.x=sx
         self.y=sy
@@ -295,7 +206,7 @@ class Solomon:
         glutSolidCube(0.1)
         
 
-    def draw(self):
+    def draw(self,stickers=None):
             
         if self.current_state["walking"]==1:
             self.AG_walk.do()
@@ -305,6 +216,20 @@ class Solomon:
 
         #main displacement
         glTranslate(self.x,self.y,0) 
+        
+        
+        
+        
+        if stickers!=None:
+            for st in stickers:
+                glPushMatrix()     
+                glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[st[3]]) 
+                glTranslate(st[0],st[1],st[2])
+                glutSolidCube(0.5)      
+                glPopMatrix()
+                
+            
+        
 
         #for experiments
         global X
@@ -322,123 +247,135 @@ class Solomon:
         
         
         
-        #############################entering crouch section###############################
-        glPushMatrix()
-        if "crouching" in self.state_test_on(): glTranslate(0,0,-0.3)
-        
-        #hat
-        glPushMatrix()
-        if "walking" in self.state_test_on(): glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
-        glTranslate(0,0,0.5)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["hat"])
-        glutSolidCone(1,2,12,6)
-        glPopMatrix()
-        
-        #head/body
-        glPushMatrix()
-        glTranslate(0,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["body"])
-        glutSolidSphere(1,12,12)            
-        glPopMatrix()
-        
-        #left arm
-        glPushMatrix()
-        if self.state_test(["walking"])>0: glTranslate(0-float(self.AG_walk.value("footR"))/10,0.9,0)
-        elif self.state_test(["standing","crouching","wandswish"])>0: glTranslate(0,0.9,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
-        glutSolidSphere(0.5,24,12)            
-        glPopMatrix()
         
         
-        #right arm
-        glPushMatrix()
-        #glTranslate(0,-0.9,0)
-        if self.state_test(["wandswish"])>0:
-            res=self.A_wandswish.do()
-            if res==None: poo=0.0
-            else: poo=float(res/0.05)
-            #print poo
-            glTranslate(0,-0.9,0)
-            glRotatef(poo,1,1,0)
+        
+        if True:
+        
             
-        elif self.state_test(["walking"])>0: glTranslate(float(self.AG_walk.value("footL"))/10,-0.9,0)
-        elif self.state_test(["standing","crouching"])>0: glTranslate(0,-0.9,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
-        glutSolidSphere(0.5,24,12)            
-        #move pop to end to keep arm local system
-        
-        #wand
-        q=gluNewQuadric()
-        
-        glPushMatrix()
-        glTranslate(1.1,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])
-        glRotatef(90,0,1,0) 
-        gluCylinder(q,0.1,0.1,0.2,12,1)            
-        glPopMatrix()
-        
-        glPushMatrix()
-        glTranslate(0.5,0,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wand"])
-        glRotatef(90,0,1,0) 
-        gluCylinder(q,0.1,0.1,0.6,12,1)            
-        glPopMatrix()
-        
-        #from arm
-        glPopMatrix()
-        
-        #eyes
-        glPushMatrix()
-        glTranslate(1,.2,.1)
-        glRotatef(90,0,1,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
-        gluDisk(q,0.05,0.2,12,12)           
-        glPopMatrix()
-        
-        glPushMatrix()    
-        glTranslate(1,-.2,.1)
-        glRotatef(90,0,1,0)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
-        gluDisk(q,0.05,0.2,12,12)           
-        glPopMatrix()
-        
-        #nose    
-        glPushMatrix()
-        glTranslate(1,0,-.1)
-        glScale(1,1,0.5)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
-        glutSolidSphere(0.3,24,12)            
-        glPopMatrix()
-        
-        ##########################left crouch section##################################
-        glPopMatrix() #end of crouch
+            #############################entering crouch section###############################
+            glPushMatrix()
+            if "crouching" in self.state_test_on(): glTranslate(0,0,-0.3)
+            
+            #hat
+            glPushMatrix()
+            if "walking" in self.state_test_on(): glRotatef(-float(self.AG_walk.value("wobble")),1.0,0,0)   
+            glTranslate(0,0,0.5)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["hat"])
+            glutSolidCone(1,2,12,6)
+            glPopMatrix()
+            
+            #head/body
+            glPushMatrix()
+            glTranslate(0,0,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["body"])
+            glutSolidSphere(1,12,12)            
+            glPopMatrix()
+            
+            #left arm
+            glPushMatrix()
+            if self.state_test(["walking"])>0: glTranslate(0-float(self.AG_walk.value("footR"))/10,0.9,0)
+            elif self.state_test(["standing","crouching","wandswish"])>0: glTranslate(0,0.9,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
+            glutSolidSphere(0.5,24,12)            
+            glPopMatrix()
+            
+            
+            #right arm
+            glPushMatrix()
+            #glTranslate(0,-0.9,0)
+            if self.state_test(["wandswish"])>0:
+                res=self.A_wandswish.do()
+                if res==None: poo=0.0
+                else: poo=float(res/0.05)
+                #print poo
+                glTranslate(0,-0.9,0)
+                glRotatef(poo,1,1,0)
                 
-        #drawing rest of body (feet)
-        #left foot
-        glPushMatrix()        
-        glTranslate(-0.5,0,0)
-        #apply rotation if walking
-        if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footL")),0,1,0)
-        elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
-        glTranslate(0.5,0,0)        
-        glScale(1.5,1,.5)        
-        glTranslate(0,0.5,-2)
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
-        glutSolidSphere(0.5,24,12)            
-        glPopMatrix()
+            elif self.state_test(["walking"])>0: glTranslate(float(self.AG_walk.value("footL"))/10,-0.9,0)
+            elif self.state_test(["standing","crouching"])>0: glTranslate(0,-0.9,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
+            glutSolidSphere(0.5,24,12)            
+            #move pop to end to keep arm local system
+            
+            #wand
+            q=gluNewQuadric()
+            
+            glPushMatrix()
+            glTranslate(1.1,0,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])
+            glRotatef(90,0,1,0) 
+            gluCylinder(q,0.1,0.1,0.2,12,1)            
+            glPopMatrix()
+            
+            glPushMatrix()
+            glTranslate(0.5,0,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wand"])
+            glRotatef(90,0,1,0) 
+            gluCylinder(q,0.1,0.1,0.6,12,1)            
+            glPopMatrix()
+            
+            #from arm
+            glPopMatrix()
+            
+            #eyes
+            glPushMatrix()
+            glTranslate(1,.2,.1)
+            glRotatef(90,0,1,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
+            gluDisk(q,0.05,0.2,12,12)           
+            glPopMatrix()
+            
+            glPushMatrix()    
+            glTranslate(1,-.2,.1)
+            glRotatef(90,0,1,0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["wandtip"])    
+            gluDisk(q,0.05,0.2,12,12)           
+            glPopMatrix()
+            
+            #nose    
+            glPushMatrix()
+            glTranslate(1,0,-.1)
+            glScale(1,1,0.5)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
+            glutSolidSphere(0.3,24,12)            
+            glPopMatrix()
+            
+            ##########################left crouch section##################################
+            glPopMatrix() #end of crouch
+                    
+            #drawing rest of body (feet)
+            #left foot
+            glPushMatrix()        
+            glTranslate(-0.5,0,0)
+            #apply rotation if walking
+            if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footL")),0,1,0)
+            elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
+            glTranslate(0.5,0,0)        
+            glScale(1.5,1,.5)        
+            glTranslate(0,0.5,-2)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
+            glutSolidSphere(0.5,24,12)            
+            glPopMatrix()
+            
+            #right foot
+            glPushMatrix()        
+            glTranslate(-0.5,0,0)
+            #apply rotation if walking
+            if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footR")),0,1,0)
+            elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
+            glTranslate(0.5,0,0)             
+            glScale(1.5,1,.5)      
+            glTranslate(0,-0.5,-2)        
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
+            glutSolidSphere(0.5,24,12)            
+            glPopMatrix()
+            
+        else:
         
-        #right foot
-        glPushMatrix()        
-        glTranslate(-0.5,0,0)
-        #apply rotation if walking
-        if self.state_test(["walking"])>0: glRotatef(-15*float(self.AG_walk.value("footR")),0,1,0)
-        elif self.state_test(["standing","crouching","wandswish"])>0: glRotatef(0,0,1,0)
-        glTranslate(0.5,0,0)             
-        glScale(1.5,1,.5)      
-        glTranslate(0,-0.5,-2)        
-        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["shoe"])
-        glutSolidSphere(0.5,24,12)            
-        glPopMatrix()
+            glutSolidCube(0.1)
+        
+        
         
         X+=1
         #if (X % 40)==0: self.AG_walk.kick() #ok that works
@@ -452,13 +389,13 @@ class Level:
     
     AG_twinklers=None
     
-    def singo(self,tvsl):
+    def sin_gen_1(self,tvsl):
         t,v,s,l=tvsl
         v=0.5*(1+sin(2*pi*t/(l)))
         #print (t,v)
         return v
         
-    def singo2(self,tvsl):
+    def sin_gen_2(self,tvsl):
         t,v,s,l=tvsl
         v=0.5*(1+sin(4*pi*t/(l)))
         #print (t,v)
@@ -478,7 +415,7 @@ class Level:
             cc=0
             for c in r:
                 if c=="@":
-                    self.solomon=Solomon(cc,rr+0.3,self)
+                    self.solomon=Solomon(cc,rr,self)
                     self.grid[rr][cc]="."
                     self.solomon.A_wandswish.callback=self.block_swap
                     
@@ -498,8 +435,8 @@ class Level:
             rr+=1                    
         
         self.AG_twinklers=ActionGroup()
-        self.AG_twinklers.append("twinkle1",Action(func=self.singo,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
-        self.AG_twinklers.append("twinkle2",Action(func=self.singo2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
+        self.AG_twinklers.append("twinkle1",Action(func=self.sin_gen_1,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
+        self.AG_twinklers.append("twinkle2",Action(func=self.sin_gen_2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
         
         
     def block_swap(self):
@@ -507,7 +444,7 @@ class Level:
         print "hi"+str(self.solomon)
         takeoff_for_crouching=0
         if self.solomon.state_test(["crouching"])>0 : takeoff_for_crouching=-0.8
-        res=self.detect(self.solomon.x+self.solomon.facing*1.0,self.solomon.y+takeoff_for_crouching,collision_bound=0.5)
+        res=self.detect(val(self.solomon.x,self.solomon.facing*1.0),val(self.solomon.y,takeoff_for_crouching),collision_bound=0.5)
                 
         if res=="OK": return
         
@@ -561,70 +498,94 @@ class Level:
     
     def evaluate(self,joystick,keys): 
     
+    
+        
+        self.solomon.stickers=[]
+        
+    
+        print((self.solomon.x,self.solomon.y))
+    
         """ TODO redo current_state was rubbish anyway """
         
         self.AG_twinklers.do() 
         
-        
 
         walkcheck=False
+        
                 
         if self.solomon.A_wandswish.overide==False:
         
-            self.solomon.current_state["wandswish"]=0  
+            self.solomon.current_state["wandswish"]=False  
 
             if joystick.isDown(keys)==True:                    
-                self.solomon.current_state["crouching"]=1                        
-                self.solomon.current_state["standing"]=0
+                self.solomon.current_state["crouching"]=True                        
+                self.solomon.current_state["standing"]=False
             else:     
-                self.solomon.current_state["crouching"]=0               
+                self.solomon.current_state["crouching"]=False               
                     
                 if joystick.isRight(keys)==True:
                     self.solomon.facing=1    
-                    self.solomon.current_state["walking"]=1
-                    self.solomon.current_state["standing"]=1
+                    self.solomon.current_state["walking"]=True
+                    self.solomon.current_state["standing"]=True
                     walkcheck=True
                 elif joystick.isLeft(keys)==True:                
                     self.solomon.facing=-1        
                     walkcheck=True
-                    self.solomon.current_state["walking"]=1
-                    self.solomon.current_state["standing"]=0
+                    self.solomon.current_state["walking"]=True
+                    self.solomon.current_state["standing"]=False
                 else:
-                        self.solomon.current_state["walking"]=0                
-                        self.solomon.current_state["standing"]=1
+                    self.solomon.current_state["walking"]=False                
+                    self.solomon.current_state["standing"]=True
 
+            xcheck_p=val(self.solomon.x+0.5,self.solomon.step*2*self.solomon.facing)
+            xcheck_m=val(self.solomon.x+0.5,-self.solomon.step*2*self.solomon.facing)
+            
+            self.solomon.stickers.append([xcheck_p,self.solomon.y-self.solomon.step,0,"white"])
+            self.solomon.stickers.append([xcheck_m,self.solomon.y-self.solomon.step,0,"white"])
+        
             canwalk=False
             if walkcheck:
-                result=self.detect(self.solomon.x+self.solomon.facing*self.solomon.step*5.0,self.solomon.y)                                 
-                if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==1:
+                result=self.detect(val(self.solomon.x,self.solomon.facing*self.solomon.step*5.0),self.solomon.y)                                 
+                if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==True:
                     #self.solomon.x+=self.solomon.step*self.solomon.facing                
-                    self.solomon.current_state["standing"]=0  
-                    self.solomon.current_state["walking"]=1
+                    self.solomon.current_state["standing"]=False  
+                    self.solomon.current_state["walking"]=True
                     canwalk=True
                 #elif result[0][0] in ["]
 
-            result1=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5+self.solomon.step*2*self.solomon.facing)]
-            result2=self.grid[int(self.solomon.y-0)][int(self.solomon.x+0.5-self.solomon.step*2*self.solomon.facing)]
-            #print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
+            
+            result1=self.grid[int(self.solomon.y-self.solomon.step)][int(xcheck_p)]
+            result2=self.grid[int(self.solomon.y-self.solomon.step)][int(xcheck_m)]
+            print "fall check" + str((result1,result2,self.solomon.x,self.solomon.y))
             if result1=="." and result2==".":
-                self.solomon.y-=self.solomon.step
-                self.solomon.current_state["walking"]=0
-                canwalk=False
+                self.solomon.y_change(-self.solomon.step)
+                print(("solomon y affected by", -self.solomon.step))
+                #self.solomon.current_state["walking"]=False
+                #canwalk=False
 
-            if canwalk==True: self.solomon.x+=self.solomon.step*self.solomon.facing
+            if canwalk==True:
+                print(("self.solomon.x before",self.solomon.x))
+                self.solomon.x_change(self.solomon.step*self.solomon.facing)
+                print(("self.solomon.x after",self.solomon.x))
 
-            if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==0:            
+            if joystick.isFire(keys)==True and self.solomon.current_state["wandswish"]==False:            
                 self.solomon.A_wandswish.kick()
                 self.solomon.A_wandswish.overide=True
-                self.solomon.current_state["wandswish"]=1 
+                self.solomon.current_state["wandswish"]=True 
 
                     
-        if self.solomon.current_state["jumping"]==True:            
+        if self.solomon.current_state["jumping"]==True:  
+            isWalk=0
+            if self.solomon.current_state["walking"]==True: isWalk=1
+            result=self.detect(self.solomon.x+(self.solomon.facing*self.solomon.step*5.0)*(isWalk),self.solomon.y)     
+            
+            print(("jumping",result))
             self.solomon.AG_jump.do()
             print "he's jumping"
             print str(self.solomon.AG_jump.action("jump_displacement").tick  )
             print str(self.solomon.AG_jump.action("jump_displacement").value  )
-            #self.solomon.y+=0.2
+            self.solomon.y+=0.2
+            print(("solomon y affected by", +0.2))
             #print "co-ordinates "+str((self.solomon.x,self.solomon.y))
 
         if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==False:                    
@@ -659,7 +620,8 @@ class Level:
                         if c=="b": color = [0.3,0.3,1.0,1.0]
                         elif c=="s": color = [1.0,1.0,0.0,1.0]
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                        glutSolidCube(1)
+                        glutWireCube(1)
+                        #glutSolidCube(1)
                         
                     elif c in ["d","6"]: 
                     
@@ -690,7 +652,7 @@ class Level:
             rr+=1
          
         glPushMatrix()
-        self.solomon.draw()  
+        self.solomon.draw(self.solomon.stickers)  
         glPopMatrix()
 
         
@@ -703,37 +665,6 @@ class Level:
     
 
 
-class Joystick:
-    
-    up,down,left,right,fire="","","","",""
-
-    def __init__(self,up="q",down="a",left="o",right="p",fire="m"):
-        self.up=up
-        self.down=down
-        self.left=left
-        self.right=right
-        self.fire=fire
-        
-    def isUp(self,keys):
-        if keys.has_key(self.up): return keys[self.up]
-        else: return False
-         
-    def isDown(self,keys):
-        if keys.has_key(self.down): return keys[self.down]
-        else: return False
-         
-    def isLeft(self,keys):
-        if keys.has_key(self.left): return keys[self.left]
-        else: return False
-         
-    def isRight(self,keys):
-        if keys.has_key(self.right): return keys[self.right]
-        else: return False
-         
-    def isFire(self,keys):
-        if keys.has_key(self.fire): return keys[self.fire]
-        else: return False
-         
          
 class SolomonsKey:
 
@@ -769,8 +700,15 @@ class SolomonsKey:
 
         drawTime=currentTime-self.lastFrameTime
         self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0:
-            print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)           
+        if int(10*time())%10==0:
+            print "draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)     
+            gr=0
+            print(("solomon",self.level.solomon.x,self.level.solomon.y))
+            for gg in range(len(self.level.grid)-1,0,-1):
+                temp=list(self.level.grid[gg])
+                
+                if int(self.level.solomon.y)==gg: temp[int(self.level.solomon.x)]="#"
+                print((temp))
             #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)
             
         
@@ -927,7 +865,7 @@ class SolomonsKey:
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         
-        gluLookAt(self.cxx,self.cyy,self.czz-10,
+        gluLookAt(self.cxx,self.cyy,self.czz,
                   self.fxx,self.fyy,self.fzz,
                   0,1,0)
         
