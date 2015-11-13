@@ -1,6 +1,4 @@
 #!/bin/python
-from __future__ import print_function
-
 
 from OpenGL import *
 from OpenGL.GLUT import *
@@ -23,9 +21,6 @@ def key_detected_something_test(stuff):
     #print str(stuff)
     pass
     
-def print(stuff,end="\r"):
-    sys.stdout.write(str(stuff)+"                                                                 "+end)
-
 
 class Sprite:
 
@@ -231,9 +226,6 @@ class Solomon:
         #scale down character
         glScale(0.3,0.3,0.3) 
                
-        #rotate to direction facing
-        if self.facing==-1: glRotatef(180,0,1,0)
-        
         
         if stickers!=None:
             for st in stickers:
@@ -245,6 +237,10 @@ class Solomon:
                 glutSolidCube(0.5)      
                 glPopMatrix()
                 
+                
+        #rotate to direction facing
+        if self.facing==-1: glRotatef(180,0,1,0)
+        
         #correction for drawing character        
         glRotatef(-90.0,1.0,0,0)   
         
@@ -255,13 +251,13 @@ class Solomon:
         
         
         
-        drawSolProperly=False
+        drawSolProperly=True
     
     
     
-        if not drawSolProperly:        
-            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
-            glutSolidCube(0.2)
+        #if not drawSolProperly:        
+        #    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+        #    glutSolidCube(0.2)
             
             
         
@@ -511,9 +507,8 @@ class Level:
         
         self.solomon.stickers=[]
         
-    
-        print((self.solomon.x,self.solomon.y))
-    
+        self.solomon.stickers.append([0,0,0,"white"])
+        
         """ TODO redo current_state was rubbish anyway """
         
         self.AG_twinklers.do() 
@@ -521,7 +516,7 @@ class Level:
 
         walkcheck=False
         
-                
+        
         if self.solomon.A_wandswish.overide==False:
         
             self.solomon.current_state["wandswish"]=False  
@@ -535,7 +530,7 @@ class Level:
                 if joystick.isRight(keys)==True:
                     self.solomon.facing=1    
                     self.solomon.current_state["walking"]=True
-                    self.solomon.current_state["standing"]=True
+                    self.solomon.current_state["standing"]=False                    
                     walkcheck=True
                 elif joystick.isLeft(keys)==True:                
                     self.solomon.facing=-1        
@@ -556,6 +551,9 @@ class Level:
             #self.solomon.stickers.append([xcheck_p,self.solomon.y-self.solomon.step,0,"white"])
             #self.solomon.stickers.append([xcheck_m,self.solomon.y-self.solomon.step,0,"white"])
         
+        
+            width=1.5
+        
             canwalk=False
             if walkcheck:
             
@@ -563,8 +561,9 @@ class Level:
                 if self.solomon.facing==-1:
                     col="yellow"
                     
-                self.solomon.stickers.append([self.solomon.facing*self.solomon.step*5.0,0,0,col])
-                result=self.detect(val(self.solomon.x,self.solomon.facing*self.solomon.step*5.0),self.solomon.y)      
+                self.solomon.stickers.append([self.solomon.facing*self.solomon.step*width,0,0,col])
+                
+                result=self.detect(val(self.solomon.x,self.solomon.facing*self.solomon.step*width),self.solomon.y)      
                 
                            
                 if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==True:
@@ -581,8 +580,11 @@ class Level:
             if result1=="." and result2==".":
                 self.solomon.y_change(-self.solomon.step)
                 print(("solomon y affected by", -self.solomon.step))
-                #self.solomon.current_state["walking"]=False
+                self.solomon.current_state["falling"]=True
                 #canwalk=False
+            else:
+                self.solomon.current_state["falling"]=False
+            
 
             if canwalk==True:
                 print(("self.solomon.x before",self.solomon.x))
@@ -600,6 +602,7 @@ class Level:
             if self.solomon.current_state["walking"]==True: isWalk=1
             result=self.detect(self.solomon.x+(self.solomon.facing*self.solomon.step*5.0)*(isWalk),self.solomon.y)     
             
+            self.solomon.current_state["falling"]=False
             print(("jumping",result))
             self.solomon.AG_jump.do()
             print("he's jumping")
@@ -675,6 +678,9 @@ class Level:
         glPushMatrix()
         self.solomon.draw(self.solomon.stickers)  
         glPopMatrix()
+        
+        
+        
 
         
         for s in self.sprites:
@@ -684,6 +690,8 @@ class Level:
             glPopMatrix()
             s.do()
     
+
+
 
 
          
@@ -722,7 +730,9 @@ class SolomonsKey:
         drawTime=currentTime-self.lastFrameTime
         self.topFPS=int(1000/drawTime)
         if int(10*time())%10==0:
+        
             print("draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)     )
+            '''
             gr=0
 
             print(("solomon",self.level.solomon.x,self.level.solomon.y))
@@ -733,6 +743,7 @@ class SolomonsKey:
                 print((temp),"\n")
             #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)
             print("","\n")
+            '''
         
         self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x,self.level.solomon.y,5
         self.tcxx,self.tcyy,self.tczz=self.level.solomon.x,self.level.solomon.y,18
@@ -824,7 +835,7 @@ class SolomonsKey:
             "s......bbb......s",
             "s...2.......2...s",
             "s...sbs.1.sbs...s",
-            "s...b@Bbbbbkb...s",
+            "s...b@bbbbbkb...s",
             "s...sbs...sbs...s",
             "s...............s",
             ".sssssssssssssss."])
@@ -884,6 +895,7 @@ class SolomonsKey:
 
     def display(self):
 
+
         glLoadIdentity()
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         
@@ -891,7 +903,46 @@ class SolomonsKey:
                   self.fxx,self.fyy,self.fzz,
                   0,1,0)
         
+        #gluLookAt(10*cos(2*pi*self.lastFrameTime/10.0),10*sin(2*pi*self.lastFrameTime/50.0),10*sin(2*pi*self.lastFrameTime/10.0),
+        #          self.fxx,self.fyy,self.fzz,
+        #          0,1,0)
+        
+        
+        
         self.level.draw()
+        print("DISPlAY")
+        
+        
+     
+     
+     
+        glLoadIdentity()
+        
+        
+        gluLookAt(0, -0.5, 2.5,
+                  0, 0, 0  ,
+                  0, 1, 0  )
+        
+        
+        wdth=0.3
+        glTranslate(0.0-(len(self.level.solomon.current_state.keys())-1)*wdth/2.0,-1.3,0)  
+
+        for k in self.level.solomon.current_state.keys():
+            col="red"
+            if self.level.solomon.current_state[k]: col="green"
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])      
+            glutSolidCube(wdth-0.02)
+            glTranslate(wdth,0,0)
+            
+     
+        
+        
+        
+        
+        
+        
+        
+        
         
         glutSwapBuffers()
 
