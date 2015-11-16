@@ -207,9 +207,6 @@ class Solomon:
 
     def draw(self,stickers=None):
             
-        if self.current_state["walking"]==True:
-            self.AG_walk.do()
-            
         #correction
         glTranslate(0,-0.15,0)        
 
@@ -531,15 +528,24 @@ class Level:
                     self.solomon.facing=1    
                     self.solomon.current_state["walking"]=True
                     self.solomon.current_state["standing"]=False                    
-                    walkcheck=True
+                    walkcheck=True                        
                 elif joystick.isLeft(keys)==True:                
-                    self.solomon.facing=-1        
-                    walkcheck=True
+                    self.solomon.facing=-1    
                     self.solomon.current_state["walking"]=True
-                    self.solomon.current_state["standing"]=False
+                    self.solomon.current_state["standing"]=False    
+                    walkcheck=True
                 else:
                     self.solomon.current_state["walking"]=False                
                     self.solomon.current_state["standing"]=True
+                    
+            
+            if walkcheck==True:
+                if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==False:
+                    self.solomon.current_state["jumping"]=True
+                else:
+                    self.solomon.current_state["jumping"]=False
+
+
 
             xcheck_p=val(self.solomon.x+0.5,self.solomon.step*2*self.solomon.facing)
             xcheck_m=val(self.solomon.x+0.5,-self.solomon.step*2*self.solomon.facing)
@@ -615,6 +621,11 @@ class Level:
         if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==False:                    
             self.solomon.current_state["jumping"]=True
             self.solomon.AG_jump.kick()
+
+
+        if self.solomon.current_state["walking"]==True:
+            self.AG_walk.do()
+            
 
 
     def draw(self):
@@ -930,6 +941,29 @@ class SolomonsKey:
         for k in self.level.solomon.current_state.keys():
             col="red"
             if self.level.solomon.current_state[k]: col="green"
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])      
+            glutSolidCube(wdth-0.02)
+            glTranslate(wdth,0,0)
+            
+     
+     
+        glLoadIdentity()
+        
+        
+        gluLookAt(0, -0.5, 2.5,
+                  0, 0, 0  ,
+                  0, 1, 0  )
+        
+        wdth=0.2
+       
+        list=[x for x in dir(self.joystick) if x[0:2]=="is"]
+        glTranslate(0.0-(len(list)-1)*wdth/2.0,-1.0,0)  
+
+        for k in list:
+            print(k)
+                        
+            col="red"
+            if getattr(self.joystick,k)(self.keys): col="green"
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])      
             glutSolidCube(wdth-0.02)
             glTranslate(wdth,0,0)
