@@ -501,6 +501,10 @@ class Level:
     def evaluate(self,joystick,keys): 
     
     
+    
+    
+    
+    
         
         self.solomon.stickers=[]
         
@@ -510,9 +514,12 @@ class Level:
         
         self.AG_twinklers.do() 
         
-
-        walkcheck=False
         
+        
+        
+        
+        jumpnow=False
+        walkcheck=False        
         
         if self.solomon.A_wandswish.overide==False:
         
@@ -536,12 +543,12 @@ class Level:
                     walkcheck=True
                 else:
                     self.solomon.current_state["walking"]=False                
-                    self.solomon.current_state["standing"]=True
-                    
+                    self.solomon.current_state["standing"]=True                    
             
             if walkcheck==True:
                 if joystick.isUp(keys)==True and self.solomon.current_state["jumping"]==False:
                     self.solomon.current_state["jumping"]=True
+                    jumpnow=True
                 else:
                     self.solomon.current_state["jumping"]=False
 
@@ -561,7 +568,11 @@ class Level:
             width=1.5
         
             canwalk=False
-            if walkcheck:
+            
+            
+            
+            if walkcheck:           
+            
             
                 col="green"
                 if self.solomon.facing==-1:
@@ -570,6 +581,8 @@ class Level:
                 self.solomon.stickers.append([self.solomon.facing*self.solomon.step*width,0,0,col])
                 
                 result=self.detect(val(self.solomon.x,self.solomon.facing*self.solomon.step*width),self.solomon.y)      
+                
+                
                 
                            
                 if (len(result)==0 or result[0][0]==".") and self.solomon.current_state["walking"]==True:
