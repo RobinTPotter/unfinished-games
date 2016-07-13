@@ -1,4 +1,4 @@
-now=(new Date()).getTime()
+	now=(new Date()).getTime()
 data=[]
 for (var ff=0;ff<1000;ff++) {
 data.push({time:now+=6000,flavour:"raspberry"})
