@@ -7,10 +7,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
+import android.graphics.*;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
@@ -103,8 +100,11 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] arg0, Camera arg1) {
             // TODO Auto-generated method stub
-            lastPicture
+            Bitmap bmp
                     = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+
+            lastPicture=Bitmap.createBitmap(bmp,0,0,bmp.getWidth(),bmp.getHeight(), new Matrix(), true);
+
             buttonTakePicture.setBmp(lastPicture);
             // if (sv!=null  && lastPicture!=null)   sv.setBitmap(lastPicture);
             //camera.startPreview();
