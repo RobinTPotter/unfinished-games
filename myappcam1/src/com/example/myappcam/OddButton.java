@@ -17,11 +17,9 @@ import java.util.Date;
  */
 public class OddButton extends View {
 
-
     Bitmap bmp;
     String timeupdate = "not set";
     Bitmap bck;
-
 
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
@@ -40,9 +38,7 @@ public class OddButton extends View {
 
     public OddButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
     }
-
 
     public void draw(Canvas c) {
         super.draw(c);
@@ -66,7 +62,6 @@ public class OddButton extends View {
             c.drawText("Hello", 10, 10, p);
             c.drawText(String.valueOf(bmp.getWidth()), 10, 30, p);
             c.drawText(String.valueOf(bmp.getHeight()), 10, 50, p);
-
 
         }
 

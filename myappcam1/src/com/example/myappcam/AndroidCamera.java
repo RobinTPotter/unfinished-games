@@ -17,6 +17,7 @@ import android.widget.*;
 import android.view.ViewGroup.LayoutParams;
 //import android.R;
 import com.example.myappcam.R;
+
 import android.hardware.Camera.Size;
 
 public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
@@ -69,7 +70,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         });
 
 
-
     }
 
     Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
@@ -77,7 +77,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onShutter() {
             // TODO Auto-generated method stub
-
         }
     };
 
@@ -86,7 +85,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] arg0, Camera arg1) {
             // TODO Auto-generated method stub
-
         }
     };
 
@@ -111,7 +109,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
     };
 
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if (menu.findItem(12) == null || menu.findItem(23) == null) return createMenu(menu);
@@ -129,8 +126,8 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         int order = 0;
 
         SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
-       // sm1.setGroupCheckable(0, false, true);
-      //  menu.setGroupCheckable(0, false, true);
+        // sm1.setGroupCheckable(0, false, true);
+        //  menu.setGroupCheckable(0, false, true);
 
 
         for (Camera.Size size : previewSizes) {
@@ -139,7 +136,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
             // btn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             MenuItem mi = sm1.add(0, Menu.NONE, order++, text);
-       //     mi.setCheckable(true);
+            //     mi.setCheckable(true);
 
         }
 
@@ -153,15 +150,13 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
             // btn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
-       //     mi.setCheckable(true);
+            //     mi.setCheckable(true);
 
 
         }
 
-
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -188,12 +183,10 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                     //  surfaceView.setLayoutParams(new FrameLayout.LayoutParams(size.width,size.height ));
                     camera.setParameters(params);
                     success = true;
-                 //   item.setChecked(true);
+                    //   item.setChecked(true);
                     //buttonTakePicture.setSize(size.width,size.height);
-                    setSize(size.width,size.height);
+                    setSize(size.width, size.height);
                 }
-
-
             }
 
         } else if (item.getGroupId() == 1) {
@@ -208,26 +201,17 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                     // surfaceView.setLayoutParams(new FrameLayout.LayoutParams(size.width,size.height ));
                     camera.setParameters(params);
                     success = true;
-                 //   item.setChecked(true);
+                    //   item.setChecked(true);
                 }
-
-
             }
-
-
         }
 
         if (camera != null) {
-
             if (previewing) camera.startPreview();
-
         }
 
         return success;
-
     }
-
-
 
 
     public void setSize(int width, int height) {
@@ -239,13 +223,12 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
         float dev_asp = (float) measuredWidth / measuredHeight;
 
-        if (height>measuredHeight) {
+        if (height > measuredHeight) {
 
-            width =(int) (asp * measuredHeight);
+            width = (int) (asp * measuredHeight);
             height = measuredHeight;
 
-        }else{
-
+        } else {
 
         }
 
@@ -259,7 +242,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         buttonTakePicture.invalidate();
 
     }
-
 
 
     @Override
