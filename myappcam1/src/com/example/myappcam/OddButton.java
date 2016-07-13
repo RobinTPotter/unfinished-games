@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class OddButton extends View {
 
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
+        Toast.makeText(this.getContext(),"Set bitmap", Toast.LENGTH_SHORT).show();
         this.timeupdate = (new Date()).toString();
     }
 

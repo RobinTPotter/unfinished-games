@@ -13,12 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
-import android.widget.Button;
+import android.widget.*;
 import android.view.ViewGroup.LayoutParams;
 //import android.R;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
 import com.example.myappcam.R;
 import android.hardware.Camera.Size;
 
@@ -59,7 +56,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                 LayoutParams.MATCH_PARENT);// FILL_PARENT);
         this.addContentView(viewControl, layoutParamsControl);
 
-         buttonTakePicture = (OddButton) findViewById(R.id.takepicture);
+        buttonTakePicture = (OddButton) findViewById(R.id.takepicture);
         buttonTakePicture.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -70,7 +67,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                         myPictureCallback_RAW, myPictureCallback_JPG);
             }
         });
-
 
 
         // sv = (RobinView)findViewById(R.id.overlay);
@@ -100,15 +96,18 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] arg0, Camera arg1) {
             // TODO Auto-generated method stub
+
+            Toast.makeText(getBaseContext(), "took picture bitmap", Toast.LENGTH_SHORT).show();
+
             Bitmap bmp
                     = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 
-            lastPicture=Bitmap.createBitmap(bmp,0,0,bmp.getWidth(),bmp.getHeight(), new Matrix(), true);
+            lastPicture = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), new Matrix(), true);
 
             buttonTakePicture.setBmp(lastPicture);
             // if (sv!=null  && lastPicture!=null)   sv.setBitmap(lastPicture);
-            //camera.startPreview();
-            //previewing=true;
+            camera.startPreview();
+            previewing = true;
         }
     };
 
@@ -331,7 +330,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         camera = null;
         previewing = false;
     }
-
 
 
 }

@@ -31,7 +31,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/OddButton.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="25" selection-end-column="82" />
               <folding />
             </state>
           </provider>
@@ -40,9 +40,11 @@
       <file leaf-file-name="AndroidCamera.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/AndroidCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49860334">
-              <caret line="107" column="50" selection-start-line="107" selection-start-column="50" selection-end-line="107" selection-end-column="50" />
-              <folding />
+            <state vertical-scroll-proportion="0.30858806">
+              <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,8 +82,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/com/example/myappcam/OddButton.java" />
         <option value="$PROJECT_DIR$/res/layout/control.xml" />
+        <option value="$PROJECT_DIR$/src/com/example/myappcam/OddButton.java" />
         <option value="$PROJECT_DIR$/src/com/example/myappcam/AndroidCamera.java" />
       </list>
     </option>
@@ -442,14 +444,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/OddButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/__utils/Android/sdk/sources/android-19/android/hardware/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33240223">
@@ -482,11 +476,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/OddButton.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="23" selection-start-line="24" selection-start-column="23" selection-end-line="25" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/AndroidCamera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49860334">
-          <caret line="107" column="50" selection-start-line="107" selection-start-column="50" selection-end-line="107" selection-end-column="50" />
-          <folding />
+        <state vertical-scroll-proportion="0.30858806">
+          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
