@@ -7,6 +7,10 @@ if (ff/20==Math.floor(ff/20)) now+=20000
 data
 bins={}
 
+
+fs=require("fs")
+fs.readFileSync("")
+
 data.forEach(function(e){
     if (!bins) bins={}
     if (!bins[e.flavour]) bins[e.flavour]=[]
