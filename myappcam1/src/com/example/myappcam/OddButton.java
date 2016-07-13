@@ -45,13 +45,11 @@ public class OddButton extends View {
         Paint p = new Paint();
         p.setColor(Color.BLUE);
         p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(0.7f);
+        p.setStrokeWidth(1.0f);
 
         Paint bp = new Paint();
-        bp.setARGB(20, 20, 0, 0);
+        bp.setARGB(120, 20, 0, 0);
 
-        Paint bp2 = new Paint();
-        bp2.setARGB(0, 0, 0, 0);
 
         c.drawRect(0, 0, getWidth() - 1, getHeight() - 1, p);
         c.drawRect(10, 10, getWidth() - 10, getHeight() - 10, p);
