@@ -28,7 +28,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
     Bitmap lastPicture = null;
     Canvas canvas;
-    //RobinView sv;
 
     Camera.Size previewSize = null;
     Camera.Size pictureSize = null;
@@ -45,6 +44,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
+
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         // surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -69,7 +69,6 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         });
 
 
-        // sv = (RobinView)findViewById(R.id.overlay);
 
     }
 
@@ -112,59 +111,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
     };
 
 
-    /**
-     * Called when the activity is first created.
-     */
-/*
-    public void OldonCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
-        Button buttonStartCameraPreview = (Button)findViewById(R.id.startcamerapreview);
-        Button buttonStopCameraPreview = (Button)findViewById(R.id.stopcamerapreview);
-
-        getWindow().setFormat(PixelFormat.UNKNOWN);
-        surfaceView = (SurfaceView)findViewById(R.id.surfaceview);
-        surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(this);
-        surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-
-        buttonStartCameraPreview.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if(!previewing){
-                    camera = Camera.open();
-                    if (camera != null){
-                        try {
-                            camera.setPreviewDisplay(surfaceHolder);
-                            camera.startPreview();
-                            previewing = true;
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }});
-
-        buttonStopCameraPreview.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                if(camera != null && previewing){
-                    camera.stopPreview();
-                    camera.release();
-                    camera = null;
-
-                    previewing = false;
-                }
-            }});
-
-    }
-*/
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if (menu.findItem(12) == null || menu.findItem(23) == null) return createMenu(menu);
@@ -182,8 +129,8 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         int order = 0;
 
         SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
-        sm1.setGroupCheckable(0, false, true);
-        menu.setGroupCheckable(0, false, true);
+       // sm1.setGroupCheckable(0, false, true);
+      //  menu.setGroupCheckable(0, false, true);
 
 
         for (Camera.Size size : previewSizes) {
@@ -192,7 +139,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
             // btn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             MenuItem mi = sm1.add(0, Menu.NONE, order++, text);
-            mi.setCheckable(true);
+       //     mi.setCheckable(true);
 
         }
 
@@ -206,7 +153,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
             // btn.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
-            mi.setCheckable(true);
+       //     mi.setCheckable(true);
 
 
         }
@@ -241,7 +188,9 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                     //  surfaceView.setLayoutParams(new FrameLayout.LayoutParams(size.width,size.height ));
                     camera.setParameters(params);
                     success = true;
-                    item.setChecked(true);
+                 //   item.setChecked(true);
+                    //buttonTakePicture.setSize(size.width,size.height);
+                    setSize(size.width,size.height);
                 }
 
 
@@ -259,7 +208,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
                     // surfaceView.setLayoutParams(new FrameLayout.LayoutParams(size.width,size.height ));
                     camera.setParameters(params);
                     success = true;
-                    item.setChecked(true);
+                 //   item.setChecked(true);
                 }
 
 
@@ -276,18 +225,41 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
         return success;
 
-/*
-        switch (item.getTitle())){
-            case R.id.new_game:
-                newGame();
-                return true;
-            case R.id.help:
-                showHelp();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
     }
+
+
+
+
+    public void setSize(int width, int height) {
+
+        float asp = (float) width / height;
+
+        int measuredHeight = surfaceView.getMeasuredHeight();
+        int measuredWidth = surfaceView.getMeasuredWidth();
+
+        float dev_asp = (float) measuredWidth / measuredHeight;
+
+        if (height>measuredHeight) {
+
+            width =(int) (asp * measuredHeight);
+            height = measuredHeight;
+
+        }else{
+
+
+        }
+
+        int l = (measuredWidth - width) / 2;
+        int t = (measuredHeight - height) / 2;
+
+        surfaceView.layout(l, t, l + width, t + height);
+        surfaceView.invalidate();
+
+        buttonTakePicture.layout(l, t, l + width, t + height);
+        buttonTakePicture.invalidate();
+
+    }
+
 
 
     @Override

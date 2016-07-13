@@ -1,5 +1,6 @@
 package com.example.myappcam;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,9 +22,10 @@ public class OddButton extends View {
     String timeupdate = "not set";
     Bitmap bck;
 
+
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
-        Toast.makeText(this.getContext(),"Set bitmap", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.getContext(), "Set bitmap", Toast.LENGTH_SHORT).show();
         this.timeupdate = (new Date()).toString();
         invalidate();
     }
@@ -64,7 +66,6 @@ public class OddButton extends View {
             c.drawText("Hello", 10, 10, p);
             c.drawText(String.valueOf(bmp.getWidth()), 10, 30, p);
             c.drawText(String.valueOf(bmp.getHeight()), 10, 50, p);
-
 
 
         }
