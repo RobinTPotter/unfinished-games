@@ -25,6 +25,7 @@ public class OddButton extends View {
         this.bmp = bmp;
         Toast.makeText(this.getContext(),"Set bitmap", Toast.LENGTH_SHORT).show();
         this.timeupdate = (new Date()).toString();
+        invalidate();
     }
 
     public OddButton(Context context) {
