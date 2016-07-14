@@ -23,6 +23,8 @@ import android.hardware.Camera.Size;
 public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
     private static String BUTTON_TOGGLE_STRETCH = "ToggleStretch";
+    private static String CHANGE_OPACITY_INC = "Opacity+";
+    private static String CHANGE_OPACITY_DEC = "Opacity-";
 
     Camera camera;
     SurfaceView surfaceView;
@@ -104,7 +106,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             //        = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 
             // lastPicture = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), new Matrix(), true);
-            lastPicture   = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+            lastPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 
             buttonTakePicture.setBmp(lastPicture);
             camera.startPreview();
@@ -129,6 +131,8 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         int order = 0;
 
         menu.add(2, Menu.NONE, order++, BUTTON_TOGGLE_STRETCH);
+        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_DEC);
+        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_INC);
 
         SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
 
@@ -196,6 +200,18 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             if (item.getTitle().equals(BUTTON_TOGGLE_STRETCH)) {
                 stretch = !stretch;
                 setSize(previewSize.width, previewSize.height);
+            } else if (item.getTitle().equals(CHANGE_OPACITY_DEC)) {
+
+
+                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity()-10);
+                buttonTakePicture.updateBackgound();
+
+            }else if (item.getTitle().equals(CHANGE_OPACITY_INC)) {
+
+
+                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity()+10);
+                buttonTakePicture.updateBackgound();
+
             }
         }
 

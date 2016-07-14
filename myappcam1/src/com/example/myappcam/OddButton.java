@@ -21,6 +21,18 @@ public class OddButton extends View {
     String timeupdate = "not set";
     Bitmap bck;
 
+    int opacity = 128;
+
+    public int getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(int opacity) {
+        if (opacity > 255) opacity = 255;
+        if (opacity < 0) opacity = 0;
+        this.opacity = opacity;
+    }
+
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
         this.timeupdate = (new Date()).toString();
@@ -39,7 +51,15 @@ public class OddButton extends View {
         super(context, attrs, defStyle);
     }
 
+
+    public void updateBackgound() {
+
+        getBackground().setAlpha(opacity);  // 50% transparent
+        Toast.makeText(getContext(),"Opacity "+opacity,Toast.LENGTH_SHORT).show();
+
+    }
     public void draw(Canvas c) {
+
 
         super.draw(c);
 
@@ -53,16 +73,13 @@ public class OddButton extends View {
 
         if (bmp != null) {
 
-            c.drawBitmap(bmp, new Rect(0, 0, bmp.getWidth(), bmp.getHeight()), new Rect(0, 0, getWidth(), getHeight()), bp);
+            c.drawBitmap(bmp, new Rect(0, 0, bmp.getWidth(), bmp.getHeight()), new Rect(0, 0, getWidth(), getHeight()), null);
 
             c.drawText("Hello", 10, 10, p);
-            c.drawText(String.valueOf(bmp.getWidth()), 10, 30, p);
-            c.drawText(String.valueOf(bmp.getHeight()), 10, 50, p);
+            c.drawText(String.valueOf(bmp.getWidth()) + "x" + String.valueOf(bmp.getHeight()), 10, 30, p);
+            c.drawText(timeupdate, 10, 50, p);
 
         }
-
-        c.drawText("Hello", 20, 20, p);
-        c.drawText(timeupdate, 20, 40, p);
 
     }
 
