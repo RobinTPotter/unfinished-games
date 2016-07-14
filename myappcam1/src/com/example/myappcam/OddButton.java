@@ -41,8 +41,6 @@ public class OddButton extends View {
 
     public void draw(Canvas c) {
 
-
-
         super.draw(c);
 
         Paint p = new Paint();

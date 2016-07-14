@@ -88,7 +88,7 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         @Override
         public void onPictureTaken(byte[] arg0, Camera arg1) {
             /// TODO Auto-generated method stub
-            Toast.makeText(getBaseContext(),"Raw Picture "+arg0.length, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(),"Raw Picture "+arg0.length, Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -98,12 +98,13 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         public void onPictureTaken(byte[] arg0, Camera arg1) {
             /// TODO Auto-generated method stub
 
-            Toast.makeText(getBaseContext(), "took picture bitmap "+arg0.length, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(), "took picture bitmap "+arg0.length, Toast.LENGTH_SHORT).show();
 
-            Bitmap bmp
-                    = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+            //Bitmap bmp
+            //        = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 
-            lastPicture = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), new Matrix(), true);
+            // lastPicture = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), new Matrix(), true);
+            lastPicture   = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
 
             buttonTakePicture.setBmp(lastPicture);
             camera.startPreview();
