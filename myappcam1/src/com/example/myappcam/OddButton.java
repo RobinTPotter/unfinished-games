@@ -23,7 +23,6 @@ public class OddButton extends View {
 
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
-        Toast.makeText(this.getContext(), "Set bitmap", Toast.LENGTH_SHORT).show();
         this.timeupdate = (new Date()).toString();
         invalidate();
     }
@@ -41,6 +40,9 @@ public class OddButton extends View {
     }
 
     public void draw(Canvas c) {
+
+
+
         super.draw(c);
 
         Paint p = new Paint();
@@ -49,11 +51,7 @@ public class OddButton extends View {
         p.setStrokeWidth(1.0f);
 
         Paint bp = new Paint();
-        bp.setARGB(120, 20, 0, 0);
-
-
-        c.drawRect(0, 0, getWidth() - 1, getHeight() - 1, p);
-        c.drawRect(10, 10, getWidth() - 10, getHeight() - 10, p);
+        bp.setARGB(128, 255, 0, 0);
 
         if (bmp != null) {
 
