@@ -54,7 +54,8 @@ public class OddButton extends View {
 
     public void updateBackgound() {
 
-        getBackground().setAlpha(opacity);  // 50% transparent
+        setAlpha((float)(opacity)/255);
+        //getBackground().setAlpha(opacity);  // 50% transparent
         Toast.makeText(getContext(),"Opacity "+opacity,Toast.LENGTH_SHORT).show();
 
     }

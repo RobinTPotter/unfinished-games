@@ -11,22 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b5f0a76-a5cf-4474-9699-cd931e66d326" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/details.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$1.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$2.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$3.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$4.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/AndroidCamera.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/OddButton.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/OddButton.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$id.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$id.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$layout.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$layout.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$menu.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$menu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$string.class" afterPath="$PROJECT_DIR$/out/production/myappcam1/com/example/myappcam/R$string.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/myappcam1.apk" afterPath="$PROJECT_DIR$/out/production/myappcam1/myappcam1.apk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/myappcam1/myappcam1.unaligned.apk" afterPath="$PROJECT_DIR$/out/production/myappcam1/myappcam1.unaligned.apk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/control.xml" afterPath="$PROJECT_DIR$/res/layout/control.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/myappcam/AndroidCamera.java" afterPath="$PROJECT_DIR$/src/com/example/myappcam/AndroidCamera.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/example/myappcam/OddButton.java" afterPath="$PROJECT_DIR$/src/com/example/myappcam/OddButton.java" />
     </list>
     <ignored path="myappcam1.iws" />
@@ -52,8 +40,8 @@
       <file leaf-file-name="OddButton.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/OddButton.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5726257">
-              <caret line="67" column="39" selection-start-line="67" selection-start-column="39" selection-end-line="67" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.47486034">
+              <caret line="60" column="5" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
               <folding>
                 <element signature="e#560#561#0" expanded="true" />
                 <element signature="e#590#591#0" expanded="true" />
@@ -62,11 +50,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="View.java" pinned="false" current-in-tab="false">
+        <entry file="file://C:/__utils/Android/sdk/sources/android-19/android/view/View.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="15438" column="14" selection-start-line="15438" selection-start-column="14" selection-end-line="15438" selection-end-column="14" />
+              <folding>
+                <element signature="e#602926#602927#0" expanded="true" />
+                <element signature="e#602960#602961#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Drawable.java" pinned="false" current-in-tab="false">
         <entry file="file://C:/__utils/Android/sdk/sources/android-19/android/graphics/drawable/Drawable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="411" column="25" selection-start-line="411" selection-start-column="25" selection-end-line="411" selection-end-column="25" />
+            <state vertical-scroll-proportion="18.48276">
+              <caret line="620" column="24" selection-start-line="620" selection-start-column="19" selection-end-line="620" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -695,7 +696,13 @@
       <option name="project" value="LOCAL" />
       <updated>1468493188133</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="opacity">
+      <created>1468514858321</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1468514858321</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -749,7 +756,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="stretch" />
     <MESSAGE value="stretch-working" />
-    <option name="LAST_COMMIT_MESSAGE" value="stretch-working" />
+    <MESSAGE value="opacity" />
+    <option name="LAST_COMMIT_MESSAGE" value="opacity" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1137,24 +1145,27 @@
     </entry>
     <entry file="file://C:/__utils/Android/sdk/sources/android-19/android/view/View.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47486034">
-          <caret line="11050" column="49" selection-start-line="11050" selection-start-column="49" selection-end-line="11050" selection-end-column="49" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="15438" column="14" selection-start-line="15438" selection-start-column="14" selection-end-line="15438" selection-end-column="14" />
+          <folding>
+            <element signature="e#602926#602927#0" expanded="true" />
+            <element signature="e#602960#602961#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://C:/__utils/Android/sdk/sources/android-19/android/graphics/drawable/Drawable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="411" column="25" selection-start-line="411" selection-start-column="25" selection-end-line="411" selection-end-column="25" />
+        <state vertical-scroll-proportion="18.48276">
+          <caret line="620" column="24" selection-start-line="620" selection-start-column="19" selection-end-line="620" selection-end-column="24" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/example/myappcam/OddButton.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5726257">
-          <caret line="67" column="39" selection-start-line="67" selection-start-column="39" selection-end-line="67" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.47486034">
+          <caret line="60" column="5" selection-start-line="60" selection-start-column="5" selection-end-line="60" selection-end-column="5" />
           <folding>
             <element signature="e#560#561#0" expanded="true" />
             <element signature="e#590#591#0" expanded="true" />
