@@ -1,8 +1,12 @@
 package com.example.myappcam;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.File;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.List;
-
+import android.net.*;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +15,8 @@ import android.graphics.*;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcel;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -34,6 +40,8 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
     Bitmap lastPicture = null;
     Canvas canvas;
 
+    File currentDirectory;
+
     Camera.Size previewSize = null;
     Camera.Size pictureSize = null;
     OddButton buttonTakePicture;
@@ -55,6 +63,10 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
         /// surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+
+        String x=(new Date()).toString();
+        currentDirectory=getAlbumStorageDir("Stopmotion-"+x);
 
         controlInflater = LayoutInflater.from(getBaseContext());
         View viewControl = controlInflater.inflate(R.layout.control, null);
@@ -98,21 +110,46 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
 
         @Override
         public void onPictureTaken(byte[] arg0, Camera arg1) {
-            /// TODO Auto-generated method stub
 
-            //Toast.makeText(getBaseContext(), "took picture bitmap "+arg0.length, Toast.LENGTH_SHORT).show();
-
-            //Bitmap bmp
-            //        = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
-
-            // lastPicture = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), new Matrix(), true);
             lastPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+
+            Uri uriTarget =  android.net.Uri.fromFile(new File(currentDirectory,String.valueOf((new Date()).getTime())+".jpg"));
+
+            OutputStream imageFileOS;
+            try {
+                imageFileOS = getContentResolver().openOutputStream(uriTarget);
+                imageFileOS.write(arg0);
+                imageFileOS.flush();
+                imageFileOS.close();
+                Toast.makeText(AndroidCamera.this,
+                        "Image saved: " + uriTarget.toString(),
+                        Toast.LENGTH_SHORT).show();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
             buttonTakePicture.setBmp(lastPicture);
             camera.startPreview();
             previewing = true;
         }
     };
+
+
+
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
+        }
+        return file;
+    }
+
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -203,13 +240,13 @@ public class AndroidCamera extends Activity implements SurfaceHolder.Callback {
             } else if (item.getTitle().equals(CHANGE_OPACITY_DEC)) {
 
 
-                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity()-10);
+                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity() - 10);
                 buttonTakePicture.updateBackgound();
 
-            }else if (item.getTitle().equals(CHANGE_OPACITY_INC)) {
+            } else if (item.getTitle().equals(CHANGE_OPACITY_INC)) {
 
 
-                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity()+10);
+                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity() + 10);
                 buttonTakePicture.updateBackgound();
 
             }
