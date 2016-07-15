@@ -62,11 +62,9 @@ public class Onionskin extends View {
 
         Paint p = new Paint();
         p.setColor(Color.BLUE);
-        p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(1.0f);
+       // p.setStyle(Paint.Style.STROKE);
+  //      p.setStrokeWidth(1.0f);
 
-        Paint bp = new Paint();
-        bp.setARGB(128, 255, 0, 0);
 
         if (bmp != null) {
 
