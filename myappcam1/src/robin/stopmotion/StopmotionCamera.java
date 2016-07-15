@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
+
 import android.net.*;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -42,11 +43,62 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
     LayoutInflater controlInflater = null;
 
-    String stringPath = "/sdcard/samplevideo.3gp";
+
+
+    Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
+
+        @Override
+        public void onShutter() {
+            /// TODO Auto-generated method stub
+        }
+    };
+
+    Camera.PictureCallback myPictureCallback_RAW = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] arg0, Camera arg1) {
+            /// TODO Auto-generated method stub
+        }
+    };
+
+    Camera.PictureCallback myPictureCallback_JPG = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] arg0, Camera arg1) {
+
+            lastPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
+
+            Uri uriTarget = android.net.Uri.fromFile(new File(currentDirectory, String.valueOf((new Date()).getTime()) + ".jpg"));
+
+            OutputStream imageFileOS;
+            try {
+                imageFileOS = getContentResolver().openOutputStream(uriTarget);
+                imageFileOS.write(arg0);
+                imageFileOS.flush();
+                imageFileOS.close();
+                Toast.makeText(StopmotionCamera.this,
+                        "Image saved: " + uriTarget.toString(),
+                        Toast.LENGTH_SHORT).show();
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            buttonTakePicture.setBmp(lastPicture);
+            camera.startPreview();
+            previewing = true;
+        }
+    };
+
+
+
 
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+
+        setContentView(R.layout.main_camera_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
@@ -56,9 +108,8 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         surfaceHolder.addCallback(this);
         /// surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-
-        String x=(new Date()).toString();
-        currentDirectory=getAlbumStorageDir("Stopmotion-"+x);
+        String x = (new Date()).toString();
+        currentDirectory = getAlbumStorageDir("Stopmotion-" + x);
 
         controlInflater = LayoutInflater.from(getBaseContext());
         View viewControl = controlInflater.inflate(R.layout.control, null);
@@ -81,105 +132,26 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
     }
 
-    Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
-
-        @Override
-        public void onShutter() {
-            /// TODO Auto-generated method stub
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (camera!=null)  {
+            camera.stopPreview();
+            previewing=false;
         }
-    };
-
-    Camera.PictureCallback myPictureCallback_RAW = new Camera.PictureCallback() {
-
-        @Override
-        public void onPictureTaken(byte[] arg0, Camera arg1) {
-            /// TODO Auto-generated method stub
-            //Toast.makeText(getBaseContext(),"Raw Picture "+arg0.length, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    Camera.PictureCallback myPictureCallback_JPG = new Camera.PictureCallback() {
-
-        @Override
-        public void onPictureTaken(byte[] arg0, Camera arg1) {
-
-            lastPicture = BitmapFactory.decodeByteArray(arg0, 0, arg0.length);
-
-            Uri uriTarget =  android.net.Uri.fromFile(new File(currentDirectory,String.valueOf((new Date()).getTime())+".jpg"));
-
-            OutputStream imageFileOS;
-            try {
-                imageFileOS = getContentResolver().openOutputStream(uriTarget);
-                imageFileOS.write(arg0);
-                imageFileOS.flush();
-                imageFileOS.close();
-                Toast.makeText(StopmotionCamera.this,
-                        "Image saved: " + uriTarget.toString(),
-                        Toast.LENGTH_SHORT).show();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            buttonTakePicture.setBmp(lastPicture);
-            camera.startPreview();
-            previewing = true;
-        }
-    };
-
-
-
-    public File getAlbumStorageDir(String albumName) {
-        // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), albumName);
-        if (!file.mkdirs()) {
-        }
-        return file;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         if (menu.findItem(12) == null || menu.findItem(23) == null) return createMenu(menu);
         else return true;
 
-    }
-
-    public boolean createMenu(Menu menu) {
-
-        menu.clear();
-
-        List<Camera.Size> previewSizes = camera.getParameters().getSupportedPreviewSizes();
-        List<Camera.Size> pictureSizes = camera.getParameters().getSupportedPictureSizes();
-
-        int order = 0;
-
-        menu.add(2, Menu.NONE, order++, BUTTON_TOGGLE_STRETCH);
-        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_DEC);
-        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_INC);
-
-        SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
-
-        for (Camera.Size size : previewSizes) {
-            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
-            MenuItem mi = sm1.add(0, Menu.NONE, order++, text);
-        }
-
-        SubMenu sm2 = menu.addSubMenu(1, 23, order++, "Picture Size");
-        sm2.setGroupCheckable(1, false, true);
-        menu.setGroupCheckable(1, false, true);
-
-        for (Camera.Size size : pictureSizes) {
-            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
-            MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
-        }
-
-        return true;
     }
 
     @Override
@@ -251,6 +223,76 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         return success;
     }
 
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width,
+                               int height) {
+        if (previewing) {
+            camera.stopPreview();
+            previewing = false;
+        }
+
+        if (camera != null) {
+            try {
+                if (previewSize == null) previewSize = camera.getParameters().getPreviewSize();
+                if (pictureSize == null) pictureSize = camera.getParameters().getPictureSize();
+                camera.setPreviewDisplay(surfaceHolder);
+                camera.startPreview();
+                previewing = true;
+            } catch (IOException e) {
+                /// TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+        camera = Camera.open();
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
+        camera.stopPreview();
+        camera.release();
+        camera = null;
+        previewing = false;
+    }
+
+    public boolean createMenu(Menu menu) {
+
+        menu.clear();
+
+        List<Camera.Size> previewSizes = camera.getParameters().getSupportedPreviewSizes();
+        List<Camera.Size> pictureSizes = camera.getParameters().getSupportedPictureSizes();
+
+        int order = 0;
+
+        menu.add(2, Menu.NONE, order++, BUTTON_TOGGLE_STRETCH);
+        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_DEC);
+        menu.add(2, Menu.NONE, order++, CHANGE_OPACITY_INC);
+
+        SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
+
+        for (Camera.Size size : previewSizes) {
+            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
+            MenuItem mi = sm1.add(0, Menu.NONE, order++, text);
+        }
+
+        SubMenu sm2 = menu.addSubMenu(1, 23, order++, "Picture Size");
+        sm2.setGroupCheckable(1, false, true);
+        menu.setGroupCheckable(1, false, true);
+
+        for (Camera.Size size : pictureSizes) {
+            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
+            MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
+        }
+
+        return true;
+    }
+
     public void setSize(int width, int height) {
 
         float asp = (float) width / height;
@@ -298,42 +340,13 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
-        if (previewing) {
-            camera.stopPreview();
-            previewing = false;
+    public File getAlbumStorageDir(String albumName) {
+        // Get the directory for the user's public pictures directory.
+        File file = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), albumName);
+        if (!file.mkdirs()) {
         }
-
-        if (camera != null) {
-            try {
-                if (previewSize == null) previewSize = camera.getParameters().getPreviewSize();
-                if (pictureSize == null) pictureSize = camera.getParameters().getPictureSize();
-                camera.setPreviewDisplay(surfaceHolder);
-                camera.startPreview();
-                previewing = true;
-            } catch (IOException e) {
-                /// TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-
-        camera = Camera.open();
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-
-        camera.stopPreview();
-        camera.release();
-        camera = null;
-        previewing = false;
+        return file;
     }
 
 }
