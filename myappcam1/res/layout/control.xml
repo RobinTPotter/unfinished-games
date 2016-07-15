@@ -7,7 +7,7 @@
             android:gravity="bottom"
             android:rowCount="5" android:columnCount="5">
 
-    <com.example.myappcam.OddButton
+    <robin.stopmotion.Onionskin
             android:id="@+id/takepicture"
             android:layout_width="fill_parent"
             android:layout_height="448dp"
