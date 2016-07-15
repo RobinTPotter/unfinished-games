@@ -39,7 +39,7 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
     Camera.Size pictureSize = null;
     Onionskin buttonTakePicture;
 
-    boolean stretch = true;
+    boolean stretch =false;
 
     LayoutInflater controlInflater = null;
 
