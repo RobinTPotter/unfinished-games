@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
+import android.content.SharedPreferences;
 import android.net.*;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -21,6 +22,7 @@ import android.view.ViewGroup.LayoutParams;
 
 public class StopmotionCamera extends Activity implements SurfaceHolder.Callback {
 
+    private static String PREFS_NAME = "StopmotionCameraPreferences";
     private static String BUTTON_TOGGLE_STRETCH = "ToggleStretch";
     private static String CHANGE_OPACITY_INC = "Opacity+";
     private static String CHANGE_OPACITY_DEC = "Opacity-";
@@ -42,6 +44,20 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
     boolean stretch = false;
 
     LayoutInflater controlInflater = null;
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        super.onRestoreInstanceState(bundle);
+        bundle.getBoolean("stretch", false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putBoolean("stretch", stretch);
+    }
+
 
     Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
 
@@ -139,7 +155,6 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         });
 
         onionskin.setOpacity();
-        setSize();
 
     }
 
@@ -150,11 +165,23 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
             camera.stopPreview();
             previewing = false;
         }
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("stretch",stretch);
+        // Commit the edits!
+        editor.commit();
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        stretch=settings.getBoolean("stretch", false);
+
     }
 
     @Override
@@ -304,12 +331,6 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         return true;
     }
 
-    public void setSize() {
-
-        setSize(surfaceView.getMeasuredWidth(), surfaceView.getMeasuredHeight());
-
-
-    }
 
     public void setSize(int width, int height) {
 
