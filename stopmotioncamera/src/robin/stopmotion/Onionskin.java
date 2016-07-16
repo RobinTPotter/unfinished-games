@@ -29,6 +29,10 @@ public class Onionskin extends View {
         this.opacity = opacity;
     }
 
+    public void setOpacity() {
+        setOpacity(opacity);
+    }
+
     public void setBmp(Bitmap bmp) {
         this.bmp = bmp;
         this.timeupdate = (new Date()).toString();

@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,13 +37,11 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
     Camera.Size previewSize = null;
     Camera.Size pictureSize = null;
-    Onionskin buttonTakePicture;
+    Onionskin onionskin;
 
-    boolean stretch =false;
+    boolean stretch = false;
 
     LayoutInflater controlInflater = null;
-
-
 
     Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
 
@@ -87,13 +83,11 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
                 e.printStackTrace();
             }
 
-            buttonTakePicture.setBmp(lastPicture);
+            onionskin.setBmp(lastPicture);
             camera.startPreview();
             previewing = true;
         }
     };
-
-
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -110,11 +104,11 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         surfaceHolder.addCallback(this);
         /// surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        String x = (new Date()).toString().replace(" ","-");
+        String x = (new Date()).toString().replace(" ", "-");
         currentDirectory = getAlbumStorageDir("Stopmotion-" + x);
 
         controlInflater = LayoutInflater.from(getBaseContext());
-        LinearLayout viewControl = (LinearLayout)(controlInflater.inflate(R.layout.control, null));
+        LinearLayout viewControl = (LinearLayout) (controlInflater.inflate(R.layout.control, null));
 
         LayoutParams layoutParamsControl
                 = new LayoutParams(LayoutParams.MATCH_PARENT,/// FILL_PARENT,
@@ -123,17 +117,17 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         this.addContentView(viewControl, layoutParamsControl);
 
 
-      //  buttonTakePicture = (Onionskin) findViewById(R.id.takepicture);
+        //  onionskin = (Onionskin) findViewById(R.id.takepicture);
 
-        buttonTakePicture=new Onionskin(this);
+        onionskin = new Onionskin(this);
 
-        buttonTakePicture.setLayoutParams(new LinearLayout.LayoutParams(
+        onionskin.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.FILL_PARENT,
                 LinearLayout.LayoutParams.FILL_PARENT));
 
-        viewControl.addView(buttonTakePicture);
+        viewControl.addView(onionskin);
 
-        buttonTakePicture.setOnClickListener(new Button.OnClickListener() {
+        onionskin.setOnClickListener(new Button.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -144,14 +138,17 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
             }
         });
 
+        onionskin.setOpacity();
+        setSize();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (camera!=null)  {
+        if (camera != null) {
             camera.stopPreview();
-            previewing=false;
+            previewing = false;
         }
     }
 
@@ -219,13 +216,13 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
             } else if (item.getTitle().equals(CHANGE_OPACITY_DEC)) {
 
-                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity() - 24);
-                buttonTakePicture.updateBackgound();
+                onionskin.setOpacity(onionskin.getOpacity() - 24);
+                onionskin.updateBackgound();
 
             } else if (item.getTitle().equals(CHANGE_OPACITY_INC)) {
 
-                buttonTakePicture.setOpacity(buttonTakePicture.getOpacity() + 24);
-                buttonTakePicture.updateBackgound();
+                onionskin.setOpacity(onionskin.getOpacity() + 24);
+                onionskin.updateBackgound();
 
             }
         }
@@ -307,6 +304,13 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         return true;
     }
 
+    public void setSize() {
+
+        setSize(surfaceView.getMeasuredWidth(), surfaceView.getMeasuredHeight());
+
+
+    }
+
     public void setSize(int width, int height) {
 
         float asp = (float) width / height;
@@ -349,8 +353,8 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         surfaceView.layout(l, t, l + width, t + height);
         surfaceView.invalidate();
 
-        buttonTakePicture.layout(l, t, l + width, t + height);
-        buttonTakePicture.invalidate();
+        onionskin.layout(l, t, l + width, t + height);
+        onionskin.invalidate();
 
     }
 
