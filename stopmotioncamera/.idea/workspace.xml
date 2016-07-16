@@ -50,12 +50,12 @@
       <file leaf-file-name="StopmotionCamera.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robin/stopmotion/StopmotionCamera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.56799036">
-              <caret line="181" column="51" selection-start-line="181" selection-start-column="51" selection-end-line="181" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.8375451">
+              <caret line="199" column="35" selection-start-line="199" selection-start-column="35" selection-end-line="199" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2070#3117#0" expanded="true" />
-                <element signature="e#3116#3117#0" expanded="true" />
+                <element signature="e#2563#3610#0" expanded="true" />
+                <element signature="e#3609#3610#0" expanded="true" />
                 <element signature="method#surfaceDestroyed#0;class#StopmotionCamera#0" expanded="false" />
                 <element signature="method#getAlbumStorageDir#0;class#StopmotionCamera#0" expanded="false" />
               </folding>
@@ -634,8 +634,8 @@
           <caret line="21" column="19" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2070#3117#0" expanded="true" />
-            <element signature="e#3116#3117#0" expanded="true" />
+            <element signature="e#2563#3610#0" expanded="true" />
+            <element signature="e#3609#3610#0" expanded="true" />
             <element signature="method#surfaceDestroyed#0;class#StopmotionCamera#0" expanded="false" />
             <element signature="method#getAlbumStorageDir#0;class#StopmotionCamera#0" expanded="false" />
           </folding>
@@ -693,8 +693,8 @@
           <caret line="20" column="29" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2070#3117#0" expanded="true" />
-            <element signature="e#3116#3117#0" expanded="true" />
+            <element signature="e#2563#3610#0" expanded="true" />
+            <element signature="e#3609#3610#0" expanded="true" />
             <element signature="method#surfaceDestroyed#0;class#StopmotionCamera#0" expanded="false" />
             <element signature="method#getAlbumStorageDir#0;class#StopmotionCamera#0" expanded="false" />
           </folding>
@@ -1488,12 +1488,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robin/stopmotion/StopmotionCamera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56799036">
-          <caret line="181" column="51" selection-start-line="181" selection-start-column="51" selection-end-line="181" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.8375451">
+          <caret line="199" column="35" selection-start-line="199" selection-start-column="35" selection-end-line="199" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2070#3117#0" expanded="true" />
-            <element signature="e#3116#3117#0" expanded="true" />
+            <element signature="e#2563#3610#0" expanded="true" />
+            <element signature="e#3609#3610#0" expanded="true" />
             <element signature="method#surfaceDestroyed#0;class#StopmotionCamera#0" expanded="false" />
             <element signature="method#getAlbumStorageDir#0;class#StopmotionCamera#0" expanded="false" />
           </folding>

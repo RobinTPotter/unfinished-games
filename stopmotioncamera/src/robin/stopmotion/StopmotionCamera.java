@@ -50,12 +50,21 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
     public void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
         bundle.getBoolean("stretch", false);
+        previewSize.width=bundle.getInt("previewWidth", 100);
+        previewSize.height= bundle.getInt("previewHeight", 100);
+        pictureSize.width= bundle.getInt("picturewWidth", 100);
+        pictureSize.height=bundle.getInt("picturewHeight", 100);
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putBoolean("stretch", stretch);
+        bundle.putInt("previewWidth", previewSize.width);
+        bundle.putInt("previewHeight", previewSize.height);
+        bundle.putInt("picturewWidth",pictureSize.width);
+        bundle.putInt("picturewHeight",pictureSize.height);
+
     }
 
 
@@ -170,6 +179,10 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("stretch",stretch);
+        editor.putInt("previewWidth", previewSize.width);
+        editor.putInt("previewHeight", previewSize.height);
+        editor.putInt("picturewWidth",pictureSize.width);
+        editor.putInt("picturewHeight", pictureSize.height);
         // Commit the edits!
         editor.commit();
 
@@ -181,6 +194,10 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         super.onResume();
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         stretch=settings.getBoolean("stretch", false);
+        previewSize.width=settings.getInt("previewWidth", 100);
+        previewSize.height= settings.getInt("previewHeight", 100);
+        pictureSize.width= settings.getInt("picturewWidth", 100);
+        pictureSize.height=settings.getInt("picturewHeight", 100);
 
     }
 
