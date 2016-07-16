@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -108,17 +110,29 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         surfaceHolder.addCallback(this);
         /// surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        String x = (new Date()).toString();
+        String x = (new Date()).toString().replace(" ","-");
         currentDirectory = getAlbumStorageDir("Stopmotion-" + x);
 
         controlInflater = LayoutInflater.from(getBaseContext());
-        View viewControl = controlInflater.inflate(R.layout.control, null);
+        LinearLayout viewControl = (LinearLayout)(controlInflater.inflate(R.layout.control, null));
+
         LayoutParams layoutParamsControl
                 = new LayoutParams(LayoutParams.MATCH_PARENT,/// FILL_PARENT,
                 LayoutParams.MATCH_PARENT);/// FILL_PARENT);
+
         this.addContentView(viewControl, layoutParamsControl);
 
-        buttonTakePicture = (Onionskin) findViewById(R.id.takepicture);
+
+      //  buttonTakePicture = (Onionskin) findViewById(R.id.takepicture);
+
+        buttonTakePicture=new Onionskin(this);
+
+        buttonTakePicture.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.FILL_PARENT,
+                LinearLayout.LayoutParams.FILL_PARENT));
+
+        viewControl.addView(buttonTakePicture);
+
         buttonTakePicture.setOnClickListener(new Button.OnClickListener() {
 
             @Override
