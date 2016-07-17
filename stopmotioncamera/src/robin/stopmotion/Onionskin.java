@@ -3,6 +3,7 @@ package robin.stopmotion;
 import android.content.Context;
 import android.graphics.*;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import java.util.Date;
  */
 public class Onionskin extends View {
 
+    private static String LOGTAG = "StopmotionCameraLog-Onionskin";
     Bitmap bmp;
     String timeupdate = "not set";
     Bitmap bck;
@@ -23,10 +25,28 @@ public class Onionskin extends View {
         return opacity;
     }
 
+    public void increaseOpacity() {
+
+        setOpacity(getOpacity() + 24);
+        updateBackgound();
+        Log.d(LOGTAG, "increaseOpacity");
+    }
+
+    public void decreaseOpacity() {
+
+        setOpacity(getOpacity() - 24);
+        updateBackgound();
+
+        Log.d(LOGTAG, "decreaseOpacity");
+
+    }
+
     public void setOpacity(int opacity) {
         if (opacity > 255) opacity = 255;
         if (opacity < 0) opacity = 0;
         this.opacity = opacity;
+
+        Log.d(LOGTAG, "setOpactity " + opacity);
     }
 
     public void setOpacity() {
@@ -37,6 +57,7 @@ public class Onionskin extends View {
         this.bmp = bmp;
         this.timeupdate = (new Date()).toString();
         invalidate();
+        Log.d(LOGTAG, "setBmp");
     }
 
     public Onionskin(Context context) {
@@ -49,16 +70,19 @@ public class Onionskin extends View {
 
     public Onionskin(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
+        Log.d(LOGTAG, "creaed Onionskin");
     }
 
 
     public void updateBackgound() {
 
-        setAlpha((float)(opacity)/255);
-        //getBackground().setAlpha(opacity);  // 50% transparent
-        Toast.makeText(getContext(),"Opacity "+opacity,Toast.LENGTH_SHORT).show();
+        setAlpha((float) (opacity) / 255);
 
+        Log.d(LOGTAG, "updateBackground");
+        //getBackground().setAlpha(opacity);  // 50% transparent
     }
+
     public void draw(Canvas c) {
 
 
@@ -66,8 +90,8 @@ public class Onionskin extends View {
 
         Paint p = new Paint();
         p.setColor(Color.BLUE);
-       // p.setStyle(Paint.Style.STROKE);
-  //      p.setStrokeWidth(1.0f);
+        // p.setStyle(Paint.Style.STROKE);
+        //      p.setStrokeWidth(1.0f);
 
 
         if (bmp != null) {
@@ -79,6 +103,7 @@ public class Onionskin extends View {
             c.drawText(timeupdate, 10, 50, p);
 
         }
+
 
     }
 

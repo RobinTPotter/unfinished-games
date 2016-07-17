@@ -15,6 +15,7 @@ import android.graphics.*;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import android.view.ViewGroup.LayoutParams;
@@ -23,6 +24,7 @@ import android.view.ViewGroup.LayoutParams;
 public class StopmotionCamera extends Activity implements SurfaceHolder.Callback {
 
     private static String PREFS_NAME = "StopmotionCameraPreferences";
+    private static String LOGTAG = "StopmotionCameraLog-StopmotionCamera";
     private static String BUTTON_TOGGLE_STRETCH = "ToggleStretch";
     private static String CHANGE_OPACITY_INC = "Opacity+";
     private static String CHANGE_OPACITY_DEC = "Opacity-";
@@ -49,21 +51,39 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
     @Override
     public void onRestoreInstanceState(Bundle bundle) {
         super.onRestoreInstanceState(bundle);
-        bundle.getBoolean("stretch", false);
-        previewSize.width=bundle.getInt("previewWidth", 100);
-        previewSize.height= bundle.getInt("previewHeight", 100);
-        pictureSize.width= bundle.getInt("picturewWidth", 100);
-        pictureSize.height=bundle.getInt("picturewHeight", 100);
+        Log.d(LOGTAG, "onRestoreInstanceState");
+        if (bundle != null) {
+            stretch = bundle.getBoolean("stretch", false);
+            onionskin.setOpacity(bundle.getInt("opacity", 128));
+            if (previewSize != null) {
+                previewSize.width = bundle.getInt("previewWidth", 100);
+                previewSize.height = bundle.getInt("previewHeight", 100);
+                Log.d(LOGTAG, "set preview size from restore");
+            }
+            if (pictureSize != null) {
+                pictureSize.width = bundle.getInt("picturewWidth", 100);
+                pictureSize.height = bundle.getInt("picturewHeight", 100);
+                Log.d(LOGTAG, "set picture size from restore");
+            }
+            onionskin.setOpacity();
+            onionskin.updateBackgound();
+            onionskin.invalidate();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
-        bundle.putBoolean("stretch", stretch);
-        bundle.putInt("previewWidth", previewSize.width);
-        bundle.putInt("previewHeight", previewSize.height);
-        bundle.putInt("picturewWidth",pictureSize.width);
-        bundle.putInt("picturewHeight",pictureSize.height);
+        Log.d(LOGTAG, "onSaveInstanceState");
+        if (bundle != null) {
+            bundle.putInt("opacity", onionskin.getOpacity());
+            bundle.putBoolean("stretch", stretch);
+            bundle.putInt("previewWidth", previewSize.width);
+            bundle.putInt("previewHeight", previewSize.height);
+            bundle.putInt("picturewWidth", pictureSize.width);
+            bundle.putInt("picturewHeight", pictureSize.height);
+            onionskin.invalidate();
+        }
 
     }
 
@@ -98,9 +118,9 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
                 imageFileOS.write(arg0);
                 imageFileOS.flush();
                 imageFileOS.close();
-                Toast.makeText(StopmotionCamera.this,
-                        "Image saved: " + uriTarget.toString(),
-                        Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(StopmotionCamera.this,
+                //        "Image saved: " + uriTarget.toString(),
+                //        Toast.LENGTH_SHORT).show();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -109,8 +129,12 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
             }
 
             onionskin.setBmp(lastPicture);
+            onionskin.updateBackgound();
             camera.startPreview();
             previewing = true;
+
+            Log.d(LOGTAG, "picture " + uriTarget.toString());
+
         }
     };
 
@@ -164,7 +188,9 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         });
 
         onionskin.setOpacity();
+        onionskin.updateBackgound();
 
+        Log.d(LOGTAG, "created");
     }
 
     @Override
@@ -178,27 +204,51 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
         SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean("stretch",stretch);
+        editor.putBoolean("stretch", stretch);
+        editor.putInt("opacity", onionskin.getOpacity());
         editor.putInt("previewWidth", previewSize.width);
         editor.putInt("previewHeight", previewSize.height);
-        editor.putInt("picturewWidth",pictureSize.width);
+        editor.putInt("picturewWidth", pictureSize.width);
         editor.putInt("picturewHeight", pictureSize.height);
         // Commit the edits!
         editor.commit();
+        Log.d(LOGTAG, "committed");
 
+        onionskin.updateBackgound();
+        onionskin.invalidate();
+        Log.d(LOGTAG, "paused");
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(LOGTAG, "onResume");
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        stretch=settings.getBoolean("stretch", false);
-        previewSize.width=settings.getInt("previewWidth", 100);
-        previewSize.height= settings.getInt("previewHeight", 100);
-        pictureSize.width= settings.getInt("picturewWidth", 100);
-        pictureSize.height=settings.getInt("picturewHeight", 100);
+        stretch = settings.getBoolean("stretch", false);
+        onionskin.setOpacity(settings.getInt("opacity", 128));
 
+        Log.d(LOGTAG, "set stretch from resume " + stretch);
+
+        int width = settings.getInt("previewWidth", 100);
+        int height = settings.getInt("previewHeight", 100);
+        setSize(width, height);
+
+        Log.d(LOGTAG, "set preview size from resume");
+
+        if (previewSize != null) {
+
+            previewSize.width = width;
+            previewSize.height = height;
+            Log.d(LOGTAG, "set preview size from resume");
+        }
+        if (pictureSize != null) {
+            pictureSize.width = settings.getInt("picturewWidth", 100);
+            pictureSize.height = settings.getInt("picturewHeight", 100);
+            Log.d(LOGTAG, "set picture size from resume");
+        }
+        onionskin.updateBackgound();
+        onionskin.invalidate();
     }
 
     @Override
@@ -255,18 +305,13 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         } else if (item.getGroupId() == 2) {
             if (item.getTitle().equals(BUTTON_TOGGLE_STRETCH)) {
 
-                stretch = !stretch;
-                setSize(previewSize.width, previewSize.height);
+                setStretch(!stretch);
 
             } else if (item.getTitle().equals(CHANGE_OPACITY_DEC)) {
-
-                onionskin.setOpacity(onionskin.getOpacity() - 24);
-                onionskin.updateBackgound();
+            onionskin.decreaseOpacity();
 
             } else if (item.getTitle().equals(CHANGE_OPACITY_INC)) {
-
-                onionskin.setOpacity(onionskin.getOpacity() + 24);
-                onionskin.updateBackgound();
+onionskin.increaseOpacity();
 
             }
         }
@@ -276,6 +321,14 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         }
 
         return success;
+    }
+
+    public void setStretch(boolean stretch) {
+
+        this.stretch = stretch;
+        setSize(previewSize.width, previewSize.height);
+        Log.d(LOGTAG, "setStretch to " + this.stretch);
+
     }
 
     @Override
@@ -345,11 +398,15 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
             MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
         }
 
+        Log.d(LOGTAG, "created Menu for first time");
+
         return true;
     }
 
 
     public void setSize(int width, int height) {
+
+        Log.d(LOGTAG, "setSize " + width + " " + height);
 
         float asp = (float) width / height;
 
@@ -392,7 +449,12 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         surfaceView.invalidate();
 
         onionskin.layout(l, t, l + width, t + height);
+        onionskin.updateBackgound();
         onionskin.invalidate();
+
+
+        Log.d(LOGTAG, "setSize done");
+
 
     }
 
@@ -402,6 +464,10 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
                 Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
         }
+
+
+        Log.d(LOGTAG, "getAlbumStorageDir " + file.toString());
+
         return file;
     }
 
