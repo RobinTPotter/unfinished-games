@@ -106,7 +106,7 @@ public class Onionskin extends View {
 
             c.drawBitmap(bmp, new Rect(0, 0, bmp.getWidth(), bmp.getHeight()), new Rect(0, 0, getWidth(), getHeight()), null);
 
-            c.drawText("Hello", 10, 10, p);
+
             c.drawText(String.valueOf(bmp.getWidth()) + "x" + String.valueOf(bmp.getHeight()), 10, 30, p);
             c.drawText(timeupdate, 10, 50, p);
 

@@ -6,7 +6,9 @@
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/StopmotionCamera$5.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/BuildConfig.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/Manifest.class \
+/home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/StopmotionCamera$6.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/R$attr.class \
+/home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/StopmotionCamera$5$1.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/Onionskin.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/StopmotionCamera$1.class \
 /home/deadmeat/Spod/unfinished-games/stopmotioncamera/bin/classes/robin/stopmotion/R$string.class \

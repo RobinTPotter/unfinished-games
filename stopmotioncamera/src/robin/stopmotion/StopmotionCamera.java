@@ -35,6 +35,8 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
     SurfaceHolder surfaceHolder;
     boolean previewing = false;
 
+    boolean justfocussed=false;
+
     Bitmap lastPicture = null;
     String lastPictureFile = "";
     Canvas canvas;
@@ -190,8 +192,29 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
             public void onClick(View arg0) {
                 /// TODO Auto-generated method stub
 
-                camera.takePicture(myShutterCallback,
-                        myPictureCallback_RAW, myPictureCallback_JPG);
+                if (justfocussed) {
+                    justfocussed=false;
+                }else {
+
+                    camera.takePicture(myShutterCallback,
+                            myPictureCallback_RAW, myPictureCallback_JPG);
+
+                }
+            }
+        });
+
+
+        onionskin.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                camera.autoFocus(new Camera.AutoFocusCallback() {
+                    @Override
+                    public void onAutoFocus(boolean success, Camera camera) {
+                        justfocussed=true;
+                        Toast.makeText(StopmotionCamera.this,"focus",Toast.LENGTH_LONG).show();
+                    }
+                });
+                return false;
             }
         });
 
@@ -295,7 +318,7 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
             for (Camera.Size size : previewSizes) {
                 String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
-                if (text.equals(item.getTitle())) {
+                if (item.getTitle().toString().startsWith(text)) {
                     Camera.Parameters params = camera.getParameters();
                     params.setPreviewSize(size.width, size.height);
                     camera.setParameters(params);
@@ -312,7 +335,7 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
 
             for (Camera.Size size : pictureSizes) {
                 String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
-                if (text.equals(item.getTitle())) {
+                if (item.getTitle().toString().startsWith(text)) {
                     Camera.Parameters params = camera.getParameters();
                     params.setPictureSize(size.width, size.height);
                     pictureSize = size;
@@ -404,7 +427,7 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         SubMenu sm1 = menu.addSubMenu(0, 12, order++, "Preview Size");
 
         for (Camera.Size size : previewSizes) {
-            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
+            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height) + " | " + String.format("%.3f",(float) size.width / size.height);
             MenuItem mi = sm1.add(0, Menu.NONE, order++, text);
         }
 
@@ -413,7 +436,8 @@ public class StopmotionCamera extends Activity implements SurfaceHolder.Callback
         menu.setGroupCheckable(1, false, true);
 
         for (Camera.Size size : pictureSizes) {
-            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height);
+            String text = String.valueOf(size.width) + "x" + String.valueOf(size.height) + " | " + String.format("%.3f", (float)size.width / size.height);
+            ;
             MenuItem mi = sm2.add(1, Menu.NONE, order++, text);
         }
 
