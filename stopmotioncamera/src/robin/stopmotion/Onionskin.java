@@ -25,6 +25,14 @@ public class Onionskin extends View {
         return opacity;
     }
 
+    @Override
+    public void invalidate() {
+
+        super.invalidate();
+        Log.d(LOGTAG,"Invalidated Onionskin");
+    }
+
+
     public void increaseOpacity() {
 
         setOpacity(getOpacity() + 24);
