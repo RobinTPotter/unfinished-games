@@ -62,6 +62,8 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
+        plate.setRad(
+                plate.getRad()+2);
         plate.setM((int) (e2.getX()), (int)(e2.getY()));
         plate.setCol(Color.YELLOW);
 
@@ -71,7 +73,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
     @Override
     public void onLongPress(MotionEvent e) {
-
+plate.setRad(100);
         plate.setM((int) (e.getX()), (int)(e.getY()));
         plate.setCol(Color.MAGENTA);
         plate.invalidate();

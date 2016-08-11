@@ -14,6 +14,16 @@ public class Plate extends View {
 
     int mx = -1;
 
+    public float getRad() {
+        return rad;
+    }
+
+    public void setRad(float rad) {
+        this.rad = rad;
+    }
+
+    float rad=10;
+
     public void setM(int mx, int my) {
         this.mx = mx;
         this.my = my;
@@ -40,6 +50,7 @@ public class Plate extends View {
     }
 
     public void setCol(int col) {
+
         this.col = col;
     }
 
@@ -62,14 +73,14 @@ public class Plate extends View {
     public void onDraw(Canvas c) {
         super.onDraw(c);
 
-        if (mx != -1 && my != -1 && col != -1) {
+        //if (mx != -1 && my != -1 && col != -1) {
 
-            Paint p = new Paint();
-            p.setColor(col);
-            c.drawCircle(mx, my, 160, p);
+        Paint p = new Paint();
+        p.setColor(col);
+        c.drawCircle(mx, my, rad, p);
+if (rad>10) rad-=0.1;
 
-
-        }
+        //}
 
 
     }
