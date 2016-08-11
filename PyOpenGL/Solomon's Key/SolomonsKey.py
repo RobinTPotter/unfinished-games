@@ -501,10 +501,6 @@ class Level:
     def evaluate(self,joystick,keys): 
     
     
-    
-    
-    
-    
         
         self.solomon.stickers=[]
         
@@ -513,8 +509,6 @@ class Level:
         """ TODO redo current_state was rubbish anyway """
         
         self.AG_twinklers.do() 
-        
-        
         
         
         
@@ -994,13 +988,20 @@ class SolomonsKey:
         glutSwapBuffers()
 
     def keydownevent(self,c,x,y):
-    
-        self.keys[c.lower()]=True
+        try:
+            self.keys[c.lower()]=True
+        except:
+            pass
+
         glutPostRedisplay()
         
     def keyupevent(self,c,x,y):
     
-        if self.keys.has_key(c.lower()): self.keys[c.lower()]=False
+        try: 
+            if self.keys.has_key(c.lower()): self.keys[c.lower()]=False
+        except:
+            pass
+
         glutPostRedisplay()
         
 if __name__ == '__main__': SolomonsKey()
