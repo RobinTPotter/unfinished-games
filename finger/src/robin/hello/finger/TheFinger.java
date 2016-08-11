@@ -38,6 +38,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public boolean onDown(MotionEvent e) {
         plate.setM((int) (e.getX()), (int)(e.getY()));
         plate.setCol(Color.GREEN);
+        plate.invalidate();
         return true;
     }
 
@@ -45,6 +46,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public void onShowPress(MotionEvent e) {
         plate.setM((int) (e.getX()), (int)(e.getY()));
         plate.setCol(Color.BLUE);
+        plate.invalidate();
 
 
     }
@@ -53,6 +55,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public boolean onSingleTapUp(MotionEvent e) {
         plate.setM((int) (e.getX()), (int)(e.getY()));
         plate.setCol(Color.RED);
+        plate.invalidate();
         return true;
     }
 
@@ -62,6 +65,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
         plate.setM((int) (e2.getX()), (int)(e2.getY()));
         plate.setCol(Color.YELLOW);
 
+        plate.invalidate();
         return true;
     }
 
@@ -70,6 +74,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
         plate.setM((int) (e.getX()), (int)(e.getY()));
         plate.setCol(Color.MAGENTA);
+        plate.invalidate();
     }
 
     @Override
@@ -79,6 +84,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
         plate.setM((int) (e2.getX()), (int)(e2.getY()));
         plate.setCol(Color.CYAN);
+        plate.invalidate();
         return true;
     }
 
@@ -99,8 +105,9 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        plate.setM((int) (e.getX()), (int)(e.getY()));
+        plate.setM((int) (event.getX()), (int)(event.getY()));
         plate.setCol(Color.CYAN);
+        plate.invalidate();
         return true;
     }
 }
