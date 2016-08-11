@@ -66,7 +66,7 @@ public class Plate extends View {
 
             Paint p = new Paint();
             p.setColor(col);
-            c.drawCircle(mx, my, 10, p);
+            c.drawCircle(mx, my, 80, p);
 
 
         }
