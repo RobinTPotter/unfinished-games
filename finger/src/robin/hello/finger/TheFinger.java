@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-public class TheFinger extends Activity implements Runnable, View.OnTouchListener, GestureDetector.OnGestureListener {
+public class TheFinger extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener {
     /**
      * Called when the activity is first created.
      */
@@ -31,9 +31,6 @@ public class TheFinger extends Activity implements Runnable, View.OnTouchListene
         plate.setOnTouchListener(this);
         gd = new GestureDetector(this, this);
 
-        thread = new Thread(this);
-        thread.start();
-
     }
 
     public void onPause() {
@@ -41,17 +38,6 @@ public class TheFinger extends Activity implements Runnable, View.OnTouchListene
         thread=null;
     }
 
-    public void run() {
-        while (thread != null) {
-            try {
-                plate.invalidate();
-                thread.sleep(40);
-            } catch (Exception ex) {
-
-            }
-        }
-
-    }
 
     @Override
     public boolean onDown(MotionEvent e) {
