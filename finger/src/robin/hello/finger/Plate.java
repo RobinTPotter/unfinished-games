@@ -16,7 +16,8 @@ import android.view.SurfaceView;
 
 public class Plate extends SurfaceView implements Runnable {
 
-    private static int RADIUS_LIMIT=300;
+    private static int RADIUS_LIMIT=500;
+    private static int RADIUS_LIMIT_MINIMUM=50;
     private static long TICKS_PER_SECOND = 15;
 
     long startTime;
@@ -159,7 +160,8 @@ public class Plate extends SurfaceView implements Runnable {
         Paint p = new Paint();
         p.setColor(col);
         c.drawCircle(mx, my, rad, p);
-        if (rad > 20) rad *=0.92;
+
+        if (rad > RADIUS_LIMIT_MINIMUM) rad *=0.97;
 
         Paint i = new Paint();
         i.setColor(Color.WHITE);
