@@ -67,7 +67,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
         plate.setRad(
-                plate.getRad() + 0.5f);
+                plate.getRad() + 1.1f);
         plate.setM((int) (e2.getX()), (int) (e2.getY()));
 
         if  (Math.abs(distanceX)>Math.abs( distanceY)) plate.setCol(Color.YELLOW); else plate.setCol(Color.GRAY);
