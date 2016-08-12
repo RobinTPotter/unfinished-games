@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-public class TheFinger extends Activity implements /*View.OnTouchListener,*/ GestureDetector.OnGestureListener {
+public class TheFinger extends Activity  {
     /**
      * Called when the activity is first created.
      */
@@ -30,66 +30,8 @@ public class TheFinger extends Activity implements /*View.OnTouchListener,*/ Ges
 
        // plate.setOnTouchListener(this);
 
-        gd = new GestureDetector(this, this);
 
     }
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        plate.setM((int) (e.getX()), (int)(e.getY()));
-        plate.setCol(Color.GREEN);
-        plate.invalidate();
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-        plate.setM((int) (e.getX()), (int)(e.getY()));
-        plate.setCol(Color.BLUE);
-        plate.invalidate();
-
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        plate.setM((int) (e.getX()), (int)(e.getY()));
-        plate.setCol(Color.RED);
-        plate.invalidate();
-        return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-
-        plate.setRad(
-                plate.getRad()+2);
-        plate.setM((int) (e2.getX()), (int)(e2.getY()));
-        plate.setCol(Color.YELLOW);
-
-        plate.invalidate();
-        return true;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-plate.setRad(100);
-        plate.setM((int) (e.getX()), (int)(e.getY()));
-        plate.setCol(Color.MAGENTA);
-        plate.invalidate();
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-
-
-        plate.setM((int) (e2.getX()), (int)(e2.getY()));
-        plate.setCol(Color.CYAN);
-        plate.invalidate();
-        return true;
-    }
-
 
     private Process launchLogcat() {
 
