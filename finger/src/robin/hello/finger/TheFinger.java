@@ -35,9 +35,8 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
     public void onPause() {
         super.onPause();
-        thread=null;
+        thread = null;
     }
-
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -66,11 +65,11 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
-        plate.setRad(
-                plate.getRad()+ 5);
+        plate.setRad(plate.getRad() + 3);
         plate.setM((int) (e2.getX()), (int) (e2.getY()));
 
-        if  (Math.abs(distanceX)>Math.abs( distanceY)) plate.setCol(Color.YELLOW); else plate.setCol(Color.GRAY);
+        if (Math.abs(distanceX) > Math.abs(distanceY)) plate.setCol(Color.YELLOW);
+        else plate.setCol(Color.GRAY);
 
         plate.invalidate();
         return true;

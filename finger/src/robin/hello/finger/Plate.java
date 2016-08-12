@@ -16,12 +16,16 @@ import android.view.SurfaceView;
 
 public class Plate extends SurfaceView implements Runnable {
 
+    private static int RADIUS_LIMIT=300;
+    private static long TICKS_PER_SECOND = 15;
+
     long startTime;
-    long ticksPerSecond = 15;
+
     int mx = -1;
     float rad = 10;
     int my = -1;
     int col = -1;
+
     SurfaceHolder surfaceHolder;
     Thread thread;
 
@@ -92,7 +96,7 @@ public class Plate extends SurfaceView implements Runnable {
             sleep
              */
 
-            long sleepTime = ticksPerSecond - (System.currentTimeMillis() - startTime);
+            long sleepTime = TICKS_PER_SECOND - (System.currentTimeMillis() - startTime);
 
             try {
                 if (sleepTime > 0) thread.sleep(sleepTime);
@@ -110,6 +114,7 @@ public class Plate extends SurfaceView implements Runnable {
     }
 
     public void setRad(float rad) {
+        if (rad>RADIUS_LIMIT) rad=RADIUS_LIMIT;
         this.rad = rad;
     }
 

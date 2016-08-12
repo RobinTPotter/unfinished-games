@@ -34,11 +34,9 @@
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/Plate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="156" column="32" selection-start-line="156" selection-start-column="32" selection-end-line="156" selection-end-column="32" />
+              <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2633#2634#0" expanded="true" />
-                <element signature="e#2663#2664#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -60,8 +58,8 @@
       <file leaf-file-name="TheFinger.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33519554">
-              <caret line="69" column="33" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.45391062">
+              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
               <folding>
                 <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
               </folding>
@@ -616,8 +614,6 @@
           <caret line="156" column="32" selection-start-line="156" selection-start-column="32" selection-end-line="156" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -649,8 +645,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -682,8 +676,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -870,8 +862,6 @@
           <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -911,8 +901,6 @@
           <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1150,19 +1138,17 @@
     <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/Plate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="156" column="32" selection-start-line="156" selection-start-column="32" selection-end-line="156" selection-end-column="32" />
+          <caret line="157" column="0" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2633#2634#0" expanded="true" />
-            <element signature="e#2663#2664#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33519554">
-          <caret line="69" column="33" selection-start-line="69" selection-start-column="33" selection-end-line="69" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.45391062">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
           <folding>
             <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
           </folding>
