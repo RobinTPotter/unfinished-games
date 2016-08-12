@@ -58,8 +58,8 @@
       <file leaf-file-name="TheFinger.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.3980447">
-              <caret line="54" column="5" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.8840782">
+              <caret line="108" column="13" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="13" />
               <folding>
                 <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
               </folding>
@@ -550,7 +550,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="1" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1147,8 +1147,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.3980447">
-          <caret line="54" column="5" selection-start-line="54" selection-start-column="5" selection-end-line="54" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.8840782">
+          <caret line="108" column="13" selection-start-line="108" selection-start-column="13" selection-end-line="108" selection-end-column="13" />
           <folding>
             <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
           </folding>
