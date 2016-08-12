@@ -12,6 +12,7 @@ import android.view.View;
 
 public class Plate extends View {
 
+
     int mx = -1;
 
     public float getRad() {
@@ -22,7 +23,7 @@ public class Plate extends View {
         this.rad = rad;
     }
 
-    float rad=10;
+    float rad = 10;
 
     public void setM(int mx, int my) {
         this.mx = mx;
@@ -57,7 +58,6 @@ public class Plate extends View {
     int my = -1;
     int col = -1;
 
-
     public Plate(Context context) {
         super(context);
     }
@@ -78,10 +78,9 @@ public class Plate extends View {
         Paint p = new Paint();
         p.setColor(col);
         c.drawCircle(mx, my, rad, p);
-if (rad>10) rad-=0.1;
+        if (rad > 10) rad -= 0.1;
 
         //}
-
 
     }
 }
