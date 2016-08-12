@@ -4,11 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
+
 
 /**
  * Created by potterr on 11/08/2016.
@@ -132,13 +131,7 @@ public class Plate extends SurfaceView implements Runnable {
 
     }
 
-    public Plate(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
 
-    public Plate(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
 
     protected void onDraw(Canvas c) {
         super.onDraw(c);
