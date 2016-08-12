@@ -154,7 +154,7 @@ public class Plate extends SurfaceView implements Runnable {
         Paint p = new Paint();
         p.setColor(col);
         c.drawCircle(mx, my, rad, p);
-        if (rad > 10) rad -= 0.1;
+        if (rad > 20) rad *=0.9;
 
         Paint i = new Paint();
         i.setColor(Color.WHITE);
