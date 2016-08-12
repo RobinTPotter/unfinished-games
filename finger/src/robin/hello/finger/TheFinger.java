@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-public class TheFinger extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public class TheFinger extends Activity implements /*View.OnTouchListener,*/ GestureDetector.OnGestureListener {
     /**
      * Called when the activity is first created.
      */
@@ -28,7 +28,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
         plate = (Plate) findViewById(R.id.viewingPlate);
 
-        plate.setOnTouchListener(this);
+       // plate.setOnTouchListener(this);
 
         gd = new GestureDetector(this, this);
 
@@ -104,12 +104,12 @@ plate.setRad(100);
             return null;
         }
     }
-
+/*
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         plate.setM((int) (event.getX()), (int)(event.getY()));
         plate.setCol(Color.CYAN);
         plate.invalidate();
         return true;
-    }
+    }*/
 }
