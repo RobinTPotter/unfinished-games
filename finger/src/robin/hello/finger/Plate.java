@@ -4,10 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 
 /**
  * Created by potterr on 11/08/2016.
@@ -17,6 +18,55 @@ public class Plate extends SurfaceView implements Runnable {
 
     long startTime;
     long ticksPerSecond = 15;
+    int mx = -1;
+    float rad = 10;
+    int my = -1;
+    int col = -1;
+    SurfaceHolder surfaceHolder;
+    Thread thread;
+
+    public Plate(Context context) {
+        super(context);
+        init();
+    }
+
+    public Plate(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+    public Plate(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }
+
+    public void init() {
+
+        surfaceHolder = getHolder();
+
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                Canvas canvas = surfaceHolder.lockCanvas(null);
+                onDraw(canvas);
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+
+            }
+        });
+
+        thread = new Thread(this);
+        thread.start();
+
+    }
 
     public void run() {
         while (thread != null) {
@@ -55,8 +105,6 @@ public class Plate extends SurfaceView implements Runnable {
 
     }
 
-    int mx = -1;
-
     public float getRad() {
         return rad;
     }
@@ -64,8 +112,6 @@ public class Plate extends SurfaceView implements Runnable {
     public void setRad(float rad) {
         this.rad = rad;
     }
-
-    float rad = 10;
 
     public void setM(int mx, int my) {
         this.mx = mx;
@@ -93,48 +139,15 @@ public class Plate extends SurfaceView implements Runnable {
     }
 
     public void setCol(int col) {
-
         this.col = col;
     }
 
-    int my = -1;
-    int col = -1;
-    SurfaceHolder surfaceHolder;
-    Thread thread;
-
-    public Plate(Context context) {
-        super(context);
-
-        surfaceHolder = getHolder();
-
-        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                Canvas canvas = surfaceHolder.lockCanvas(null);
-                onDraw(canvas);
-                surfaceHolder.unlockCanvasAndPost(canvas);
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-            }
-        });
-
-        thread = new Thread(this);
-        thread.start();
-
-    }
-
-
-
     protected void onDraw(Canvas c) {
         super.onDraw(c);
+
+        Paint b=new Paint();
+        b.setColor(Color.BLACK);
+        c.drawRect(new Rect(0,0,getWidth(),getHeight()),b);
 
         //if (mx != -1 && my != -1 && col != -1) {
 

@@ -10,7 +10,10 @@
             android:text="Hello World, TheFinger"
     />
     <robin.hello.finger.Plate
+            android:id="@+id/viewingPlate"
+
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" android:id="@+id/viewingPlate" android:layout_gravity="center_horizontal"/>
+            android:layout_height="fill_parent"  android:layout_gravity="center_horizontal"
+    />
 </LinearLayout>
 
