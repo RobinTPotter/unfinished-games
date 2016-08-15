@@ -42,7 +42,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public boolean onDown(MotionEvent e) {
         plate.setM((int) (e.getX()), (int) (e.getY()));
         plate.setCol(Color.GREEN);
-        plate.startPath((int)(e.getX()),(int)(e.getY()), e.getEventTime());
+        plate.startPath((int)(e.getX()),(int)(e.getY()));
         // plate.invalidate();
         return true;
     }
@@ -68,7 +68,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
         plate.setRad(plate.getRad()*1.1f);
         plate.setM((int) (e2.getX()), (int) (e2.getY()));
-        plate.addToPath((int)(e2.getX()),(int)(e2.getY()), e2.getEventTime());
+        plate.addToPath((int)(e2.getX()),(int)(e2.getY()));
 
         if (Math.abs(distanceX) > Math.abs(distanceY)) plate.setCol(Color.YELLOW);
         else plate.setCol(Color.GRAY);

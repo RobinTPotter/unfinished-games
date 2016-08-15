@@ -23,7 +23,7 @@ public class Plate extends SurfaceView implements Runnable {
     long startTime;
     int mx = -(int)RADIUS_LIMIT_MINIMUM;
     int my = -(int)RADIUS_LIMIT_MINIMUM;
-    Vector<TimePoint> path = new Vector<>();
+    Vector<Point> path = new Vector<>();
     int col = -1;
     float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
@@ -44,13 +44,13 @@ public class Plate extends SurfaceView implements Runnable {
         init();
     }
 
-    public void startPath(int mx, int my, long tm) {
+    public void startPath(int mx, int my) {
         path = new Vector<>();
-        path.add(new TimePoint(mx, my, tm));
+        path.add(new Point(mx, my));
     }
 
-    public void addToPath(int mx, int my, long tm) {
-        path.add(new TimePoint(mx, my,tm));
+    public void addToPath(int mx, int my) {
+        path.add(new Point(mx, my));
     }
 
     public void init() {
@@ -172,15 +172,15 @@ public class Plate extends SurfaceView implements Runnable {
         p.setColor(col);
 
         long tm = (new Date()).getTime();
-        int yy = 40;
+       // int yy = 40;
         try {
             if (path != null) {
                 if (path.size() > 0) {
-                    float age = (float)(path.elementAt(0).getAge(tm));
-                    for (TimePoint t : path) {
-                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * (float)(t.getAge(tm)) / age) + RADIUS_LIMIT_MINIMUM;
-                        c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
-                        yy += 10;
+                    int pp=0;
+                    for (Point t : path) {
+                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * (float)pp / path.size()) + RADIUS_LIMIT_MINIMUM;
+                       // c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
+                       // yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
                 }
@@ -198,16 +198,4 @@ public class Plate extends SurfaceView implements Runnable {
 
     }
 
-    class TimePoint extends Point {
-        long timestamp;
-
-        public TimePoint(int mx, int my, long tmp) {
-            super(mx, my);
-            timestamp = tmp;
-        }
-
-        public long getAge(long tmp) {
-            return tmp - timestamp;
-        }
-    }
 }
