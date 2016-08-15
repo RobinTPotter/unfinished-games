@@ -16,12 +16,12 @@ import java.util.Vector;
 
 public class Plate extends SurfaceView implements Runnable {
 
-    private static int RADIUS_LIMIT = 300;
-    private static int RADIUS_LIMIT_MINIMUM = 50;
+    private static float RADIUS_LIMIT = 200;
+    private static float RADIUS_LIMIT_MINIMUM = 50;
     private static long TICKS_PER_SECOND = 15;
     long startTime;
-    int mx = -RADIUS_LIMIT_MINIMUM;
-    int my = -RADIUS_LIMIT_MINIMUM;
+    int mx = -(int)RADIUS_LIMIT_MINIMUM;
+    int my = -(int)RADIUS_LIMIT_MINIMUM;
     Vector<TimePoint> path = new Vector<>();
     int col = -1;
     float rad = RADIUS_LIMIT_MINIMUM;
@@ -166,7 +166,7 @@ public class Plate extends SurfaceView implements Runnable {
 
         Paint i = new Paint();
         i.setColor(Color.WHITE);
-        
+
         Paint p = new Paint();
         p.setColor(col);
 
@@ -175,9 +175,9 @@ public class Plate extends SurfaceView implements Runnable {
         try {
             if (path != null) {
                 if (path.size() > 0) {
-                    long age = path.elementAt(0).getAge(tm);
+                    float age = (float)(path.elementAt(0).getAge(tm));
                     for (TimePoint t : path) {
-                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * t.getAge(tm) / age) + RADIUS_LIMIT_MINIMUM;
+                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * (float)(t.getAge(tm)) / age) + RADIUS_LIMIT_MINIMUM;
                         c.drawText(t.x + " " + t.y, 10, yy, i);
                         yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
