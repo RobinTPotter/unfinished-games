@@ -30,11 +30,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Plate.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Plate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/Plate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.87857145">
-              <caret line="190" column="54" selection-start-line="190" selection-start-column="54" selection-end-line="190" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="188" column="30" selection-start-line="188" selection-start-column="30" selection-end-line="188" selection-end-column="30" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1275#1276#0" expanded="true" />
@@ -59,11 +59,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TheFinger.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TheFinger.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.5871429">
+              <caret line="72" column="51" selection-start-line="72" selection-start-column="51" selection-end-line="72" selection-end-column="51" />
               <folding>
                 <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
               </folding>
@@ -92,8 +92,8 @@
         <option value="$PROJECT_DIR$/gen/robin/hello/finger/R.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/res/layout/main.xml" />
-        <option value="$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java" />
         <option value="$PROJECT_DIR$/src/robin/hello/finger/Plate.java" />
+        <option value="$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java" />
       </list>
     </option>
   </component>
@@ -1165,26 +1165,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="13" selection-start-line="57" selection-start-column="13" selection-end-line="57" selection-end-column="13" />
-          <folding>
-            <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/Plate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.87857145">
-          <caret line="190" column="54" selection-start-line="190" selection-start-column="54" selection-end-line="190" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="188" column="30" selection-start-line="188" selection-start-column="30" selection-end-line="188" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1275#1276#0" expanded="true" />
             <element signature="e#1346#1347#0" expanded="true" />
             <element signature="e#4858#4859#0" expanded="true" />
             <element signature="e#4904#4905#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5871429">
+          <caret line="72" column="51" selection-start-line="72" selection-start-column="51" selection-end-line="72" selection-end-column="51" />
+          <folding>
+            <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
           </folding>
         </state>
       </provider>

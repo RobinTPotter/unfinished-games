@@ -68,7 +68,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
         plate.setRad(plate.getRad()*1.1f);
         plate.setM((int) (e2.getX()), (int) (e2.getY()));
-        plate.addToPath((int)(e1.getX()),(int)(e1.getY()));
+        plate.addToPath((int)(e2.getX()),(int)(e2.getY()));
 
         if (Math.abs(distanceX) > Math.abs(distanceY)) plate.setCol(Color.YELLOW);
         else plate.setCol(Color.GRAY);
