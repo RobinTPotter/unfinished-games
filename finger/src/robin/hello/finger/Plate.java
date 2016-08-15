@@ -23,7 +23,7 @@ public class Plate extends SurfaceView implements Runnable {
     long startTime;
     int mx = -(int)RADIUS_LIMIT_MINIMUM;
     int my = -(int)RADIUS_LIMIT_MINIMUM;
-    Vector<Point> path = new Vector<>();
+    Vector<TimePoint> path = new Vector<>();
     int col = -1;
     float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
@@ -46,11 +46,11 @@ public class Plate extends SurfaceView implements Runnable {
 
     public void startPath(int mx, int my) {
         path = new Vector<>();
-        path.add(new Point(mx, my));
+        path.add(new TimePoint(mx, my,(new Date()).getTime()));
     }
 
     public void addToPath(int mx, int my) {
-        path.add(new Point(mx, my));
+        path.add(new TimePoint(mx, my,(new Date()).getTime()));
     }
 
     public void init() {
@@ -185,7 +185,7 @@ public class Plate extends SurfaceView implements Runnable {
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
 
-                    path.remove(0);
+                    if (path.elementAt(0).getAge()>500) path.remove(0);
                 }
 
             }
@@ -204,4 +204,18 @@ public class Plate extends SurfaceView implements Runnable {
 
     }
 
+
+    class TimePoint extends Point {
+        long timestamp;
+        public TimePoint(int mx, int my, long tm) {
+            super(mx,my);
+                timestamp=tm;
+
+        }
+
+        public long getAge() {
+            return (new Date()).getTime()-timestamp;
+        }
+
+    }
 }
