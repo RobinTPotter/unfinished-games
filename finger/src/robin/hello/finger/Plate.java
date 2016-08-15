@@ -1,14 +1,14 @@
 package robin.hello.finger;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import java.util.Date;
+import java.util.Vector;
 
 /**
  * Created by potterr on 11/08/2016.
@@ -16,17 +16,15 @@ import android.view.SurfaceView;
 
 public class Plate extends SurfaceView implements Runnable {
 
-    private static int RADIUS_LIMIT=500;
-    private static int RADIUS_LIMIT_MINIMUM=50;
+    private static int RADIUS_LIMIT = 300;
+    private static int RADIUS_LIMIT_MINIMUM = 50;
     private static long TICKS_PER_SECOND = 15;
-
     long startTime;
-
-    int mx = -1;
-    float rad = 10;
-    int my = -1;
+    int mx = -RADIUS_LIMIT_MINIMUM;
+    int my = -RADIUS_LIMIT_MINIMUM;
+    Vector<TimePoint> path = new Vector<>();
     int col = -1;
-
+    float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
     Thread thread;
 
@@ -43,6 +41,15 @@ public class Plate extends SurfaceView implements Runnable {
     public Plate(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
+    }
+
+    public void startPath(int mx, int my) {
+        path = new Vector<>();
+        path.add(new TimePoint(mx, my, (new Date()).getTime()));
+    }
+
+    public void addToPath(int mx, int my) {
+        path.add(new TimePoint(mx, my, (new Date()).getTime()));
     }
 
     public void init() {
@@ -115,7 +122,7 @@ public class Plate extends SurfaceView implements Runnable {
     }
 
     public void setRad(float rad) {
-        if (rad>RADIUS_LIMIT) rad=RADIUS_LIMIT;
+        if (rad > RADIUS_LIMIT) rad = RADIUS_LIMIT;
         this.rad = rad;
     }
 
@@ -151,23 +158,52 @@ public class Plate extends SurfaceView implements Runnable {
     protected void onDraw(Canvas c) {
         super.onDraw(c);
 
-        Paint b=new Paint();
+        Paint b = new Paint();
         b.setColor(Color.BLACK);
-        c.drawRect(new Rect(0,0,getWidth(),getHeight()),b);
+        c.drawRect(new Rect(0, 0, getWidth(), getHeight()), b);
 
         //if (mx != -1 && my != -1 && col != -1) {
 
         Paint p = new Paint();
         p.setColor(col);
+
+        long tm = (new Date()).getTime();
+
+        try {
+            if (path != null) {
+                if (path.size() > 0) {
+                    long age = path.elementAt(0).getAge(tm);
+                    for (TimePoint t : path) {
+                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * t.getAge(tm) / age) + RADIUS_LIMIT_MINIMUM;
+                        c.drawCircle(t.x, t.y, scale_rad, p);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+
         c.drawCircle(mx, my, rad, p);
 
-        if (rad > RADIUS_LIMIT_MINIMUM) rad *=0.97;
-
+        if (rad > RADIUS_LIMIT_MINIMUM) rad *= 0.97;
         Paint i = new Paint();
         i.setColor(Color.WHITE);
-        c.drawText("Hi " + rad, 30, 30, i);
+        c.drawText("Hi " + (int)(rad)+ " "+path.size(), 30, 30, i);
 
         //}
 
+    }
+
+    class TimePoint extends Point {
+        long timestamp;
+
+        public TimePoint(int mx, int my, long tmp) {
+            super(mx, my);
+            timestamp = tmp;
+        }
+
+        public long getAge(long tmp) {
+            return tmp - timestamp;
+        }
     }
 }
