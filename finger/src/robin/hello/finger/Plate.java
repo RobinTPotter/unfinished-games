@@ -184,11 +184,15 @@ public class Plate extends SurfaceView implements Runnable {
                        // yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
+
+                    path.remove(0);
                 }
             }
         } catch (Exception ex) {
 
         }
+
+
 
         c.drawCircle(mx, my, rad, p);
 
