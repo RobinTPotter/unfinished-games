@@ -178,7 +178,7 @@ public class Plate extends SurfaceView implements Runnable {
                 if (path.size() > 0) {
                     int pp=0;
                     for (Point t : path) {
-                        float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * (float)pp / path.size()) + RADIUS_LIMIT_MINIMUM;
+                        float scale_rad = ((rad) * (float)pp / path.size());
                        // c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
                        // yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
