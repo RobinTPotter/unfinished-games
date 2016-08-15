@@ -187,6 +187,7 @@ public class Plate extends SurfaceView implements Runnable {
 
                     path.remove(0);
                 }
+
             }
         } catch (Exception ex) {
 
