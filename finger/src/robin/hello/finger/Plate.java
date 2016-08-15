@@ -164,17 +164,22 @@ public class Plate extends SurfaceView implements Runnable {
 
         //if (mx != -1 && my != -1 && col != -1) {
 
+        Paint i = new Paint();
+        i.setColor(Color.WHITE);
+        
         Paint p = new Paint();
         p.setColor(col);
 
         long tm = (new Date()).getTime();
-
+        int yy = 40;
         try {
             if (path != null) {
                 if (path.size() > 0) {
                     long age = path.elementAt(0).getAge(tm);
                     for (TimePoint t : path) {
                         float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * t.getAge(tm) / age) + RADIUS_LIMIT_MINIMUM;
+                        c.drawText(t.x + " " + t.y, 10, yy, i);
+                        yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
                 }
@@ -186,9 +191,7 @@ public class Plate extends SurfaceView implements Runnable {
         c.drawCircle(mx, my, rad, p);
 
         if (rad > RADIUS_LIMIT_MINIMUM) rad *= 0.97;
-        Paint i = new Paint();
-        i.setColor(Color.WHITE);
-        c.drawText("Hi " + (int)(rad)+ " "+path.size(), 30, 30, i);
+        c.drawText("Hi " + (int) (rad) + " " + path.size(), 30, 30, i);
 
         //}
 
