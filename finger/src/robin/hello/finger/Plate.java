@@ -44,13 +44,13 @@ public class Plate extends SurfaceView implements Runnable {
         init();
     }
 
-    public void startPath(int mx, int my) {
+    public void startPath(int mx, int my, long tm) {
         path = new Vector<>();
-        path.add(new TimePoint(mx, my, (new Date()).getTime()));
+        path.add(new TimePoint(mx, my, tm));
     }
 
-    public void addToPath(int mx, int my) {
-        path.add(new TimePoint(mx, my, (new Date()).getTime()));
+    public void addToPath(int mx, int my, long tm) {
+        path.add(new TimePoint(mx, my,tm));
     }
 
     public void init() {
