@@ -73,7 +73,6 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
         if (Math.abs(distanceX) > Math.abs(distanceY)) plate.setCol(Color.YELLOW);
         else plate.setCol(Color.GRAY);
 
-        // // plate.invalidate();
         return true;
     }
 
