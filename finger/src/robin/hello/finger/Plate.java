@@ -180,6 +180,7 @@ public class Plate extends SurfaceView implements Runnable {
                     for (Point t : path) {
                         float scale_rad = ((rad) * (float)pp / path.size());
                        // c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
+                        pp++;
                        // yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
