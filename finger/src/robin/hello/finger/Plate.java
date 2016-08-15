@@ -16,9 +16,10 @@ import java.util.Vector;
 
 public class Plate extends SurfaceView implements Runnable {
 
-    private static float RADIUS_LIMIT = 200;
-    private static float RADIUS_LIMIT_MINIMUM = 50;
+    private static float RADIUS_LIMIT = 150;
+    private static float RADIUS_LIMIT_MINIMUM = 30;
     private static long TICKS_PER_SECOND = 15;
+
     long startTime;
     int mx = -(int)RADIUS_LIMIT_MINIMUM;
     int my = -(int)RADIUS_LIMIT_MINIMUM;
@@ -178,7 +179,7 @@ public class Plate extends SurfaceView implements Runnable {
                     float age = (float)(path.elementAt(0).getAge(tm));
                     for (TimePoint t : path) {
                         float scale_rad = ((rad - RADIUS_LIMIT_MINIMUM) * (float)(t.getAge(tm)) / age) + RADIUS_LIMIT_MINIMUM;
-                        c.drawText(t.x + " " + t.y, 10, yy, i);
+                        c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
                         yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
