@@ -87,6 +87,7 @@ public class Plate extends SurfaceView implements Runnable {
 
     public void start() {
 
+        init();
         thread = new Thread(this);
         thread.start();
 

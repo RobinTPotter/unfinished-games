@@ -19,10 +19,10 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     GestureDetector gd;
     Process process;
     Plate plate;
-    Thread thread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         process = launchLogcat();
         setContentView(R.layout.main);
@@ -42,7 +42,6 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public void onPause() {
         super.onPause();
         plate.stop();
-        thread = null;
     }
 
     @Override
