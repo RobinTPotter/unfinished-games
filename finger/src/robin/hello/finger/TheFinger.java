@@ -38,7 +38,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
         plate = (Plate) findViewById(R.id.viewingPlate);
         plate.setOnTouchListener(this);
         gd = new GestureDetector(this, this);
-        
+
 
         plate.start();
 

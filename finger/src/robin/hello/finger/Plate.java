@@ -60,9 +60,9 @@ public class Plate extends SurfaceView implements Runnable {
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                Canvas canvas = surfaceHolder.lockCanvas(null);
-                onDraw(canvas);
-                surfaceHolder.unlockCanvasAndPost(canvas);
+                //Canvas canvas = surfaceHolder.lockCanvas(null);
+                //onDraw(canvas);
+                //surfaceHolder.unlockCanvasAndPost(canvas);
             }
 
             @Override
