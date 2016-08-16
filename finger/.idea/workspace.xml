@@ -62,8 +62,8 @@
       <file leaf-file-name="TheFinger.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34">
-              <caret line="39" column="45" selection-start-line="39" selection-start-column="45" selection-end-line="39" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.3642857">
+              <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
               <folding>
                 <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
               </folding>
@@ -1181,8 +1181,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/robin/hello/finger/TheFinger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34">
-          <caret line="39" column="45" selection-start-line="39" selection-start-column="45" selection-end-line="39" selection-end-column="45" />
+        <state vertical-scroll-proportion="0.3642857">
+          <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
           <folding>
             <element signature="docComment;field#gd#0;class#TheFinger#0" expanded="false" />
           </folding>
