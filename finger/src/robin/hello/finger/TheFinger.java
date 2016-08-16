@@ -33,8 +33,15 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        plate.start();
+    }
+
     public void onPause() {
         super.onPause();
+        plate.stop();
         thread = null;
     }
 
@@ -42,7 +49,7 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public boolean onDown(MotionEvent e) {
         plate.setM((int) (e.getX()), (int) (e.getY()));
         plate.setCol(Color.GREEN);
-        plate.startPath((int)(e.getX()),(int)(e.getY()));
+        plate.startPath((int) (e.getX()), (int) (e.getY()));
         // plate.invalidate();
         return true;
     }
@@ -66,9 +73,9 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 
-        plate.setRad(plate.getRad()*1.1f);
+        plate.setRad(plate.getRad() * 1.1f);
         plate.setM((int) (e2.getX()), (int) (e2.getY()));
-        plate.addToPath((int)(e2.getX()),(int)(e2.getY()));
+        plate.addToPath((int) (e2.getX()), (int) (e2.getY()));
 
         if (Math.abs(distanceX) > Math.abs(distanceY)) plate.setCol(Color.YELLOW);
         else plate.setCol(Color.GRAY);

@@ -21,8 +21,8 @@ public class Plate extends SurfaceView implements Runnable {
     private static long TICKS_PER_SECOND = 15;
 
     long startTime;
-    int mx = -(int)RADIUS_LIMIT_MINIMUM;
-    int my = -(int)RADIUS_LIMIT_MINIMUM;
+    int mx = -(int) RADIUS_LIMIT_MINIMUM;
+    int my = -(int) RADIUS_LIMIT_MINIMUM;
     Vector<TimePoint> path = new Vector<>();
     int col = -1;
     float rad = RADIUS_LIMIT_MINIMUM;
@@ -46,11 +46,11 @@ public class Plate extends SurfaceView implements Runnable {
 
     public void startPath(int mx, int my) {
         path = new Vector<>();
-        path.add(new TimePoint(mx, my,(new Date()).getTime()));
+        path.add(new TimePoint(mx, my, (new Date()).getTime()));
     }
 
     public void addToPath(int mx, int my) {
-        path.add(new TimePoint(mx, my,(new Date()).getTime()));
+        path.add(new TimePoint(mx, my, (new Date()).getTime()));
     }
 
     public void init() {
@@ -75,6 +75,17 @@ public class Plate extends SurfaceView implements Runnable {
 
             }
         });
+    }
+
+    public void stop() {
+        try {
+            thread.join();
+        } catch (Exception ex) {
+        }
+        thread = null;
+    }
+
+    public void start() {
 
         thread = new Thread(this);
         thread.start();
@@ -172,28 +183,26 @@ public class Plate extends SurfaceView implements Runnable {
         p.setColor(col);
 
         long tm = (new Date()).getTime();
-       // int yy = 40;
+        // int yy = 40;
         try {
             if (path != null) {
                 if (path.size() > 0) {
-                    int pp=0;
+                    int pp = 0;
                     for (Point t : path) {
-                        float scale_rad = ((rad) * (float)pp / path.size());
-                       // c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
+                        float scale_rad = ((rad) * (float) pp / path.size());
+                        // c.drawText(t.x + " " + t.y+" "+scale_rad, 10, yy, i);
                         pp++;
-                       // yy += 10;
+                        // yy += 10;
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
 
-                    if (path.elementAt(0).getAge()>500) path.remove(0);
+                    if (path.elementAt(0).getAge() > 500) path.remove(0);
                 }
 
             }
         } catch (Exception ex) {
 
         }
-
-
 
         c.drawCircle(mx, my, rad, p);
 
@@ -204,17 +213,17 @@ public class Plate extends SurfaceView implements Runnable {
 
     }
 
-
     class TimePoint extends Point {
         long timestamp;
+
         public TimePoint(int mx, int my, long tm) {
-            super(mx,my);
-                timestamp=tm;
+            super(mx, my);
+            timestamp = tm;
 
         }
 
         public long getAge() {
-            return (new Date()).getTime()-timestamp;
+            return (new Date()).getTime() - timestamp;
         }
 
     }
