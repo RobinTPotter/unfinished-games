@@ -2,6 +2,7 @@ package robin.hello.finger;
 
 import android.content.Context;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -23,12 +24,14 @@ public class Plate extends SurfaceView implements Runnable {
     long startTime;
     int mx = -(int) RADIUS_LIMIT_MINIMUM;
     int my = -(int) RADIUS_LIMIT_MINIMUM;
-    Vector<TimePoint> path = new Vector<>();
+    Vector<TimePoint> path = new Vector<TimePoint>();
     int col = -1;
     float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
     Thread thread;
     boolean running=false;
+
+    Bitmap buffer;
 
     public Plate(Context context) {
         super(context);
@@ -46,7 +49,7 @@ public class Plate extends SurfaceView implements Runnable {
     }
 
     public void startPath(int mx, int my) {
-        path = new Vector<>();
+        path = new Vector<TimePoint>();
         path.add(new TimePoint(mx, my, (new Date()).getTime()));
     }
 
@@ -76,6 +79,10 @@ public class Plate extends SurfaceView implements Runnable {
 
             }
         });
+
+        buffer=Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_4444);
+
+
     }
 
     public void stop() {
@@ -178,9 +185,16 @@ public class Plate extends SurfaceView implements Runnable {
     protected void onDraw(Canvas c) {
 
         if (c == null) return;
-
         super.onDraw(c);
+        paintIt();
+        Paint i = new Paint();
+        c.drawBitmap(buffer,0,0,i);
 
+    }
+
+    private void paintIt() {
+
+        Canvas c=new Canvas(buffer);
 
         Paint b = new Paint();
         b.setColor(Color.BLACK);
