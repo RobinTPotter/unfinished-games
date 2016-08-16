@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,11 +38,14 @@ public class TheFinger extends Activity implements View.OnTouchListener, Gesture
     public void onResume() {
         super.onResume();
         plate.start();
+
+        Log.i("TheFingerInform","Resumed");
     }
 
     public void onPause() {
         super.onPause();
         plate.stop();
+        Log.i("TheFingerInform","Paused");
     }
 
     @Override

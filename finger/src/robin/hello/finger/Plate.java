@@ -83,6 +83,7 @@ public class Plate extends SurfaceView implements Runnable {
         } catch (Exception ex) {
         }
         thread = null;
+        Log.i("TheFingerInform","Stopped");
     }
 
     public void start() {
@@ -90,10 +91,11 @@ public class Plate extends SurfaceView implements Runnable {
         init();
         thread = new Thread(this);
         thread.start();
-
+        Log.i("TheFingerInform","Started");
     }
 
     public void run() {
+        Log.i("TheFingerInform","EnterRun");
         while (thread != null) {
 
             Canvas c = null;
@@ -127,6 +129,8 @@ public class Plate extends SurfaceView implements Runnable {
                 Log.e("myapp", "Thread.run(sleep)", e);
             }
         }
+
+        Log.i("TheFingerInform","ExitRun");
 
     }
 
