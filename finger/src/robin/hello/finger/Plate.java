@@ -175,6 +175,8 @@ public class Plate extends SurfaceView implements Runnable {
     protected void onDraw(Canvas c) {
         super.onDraw(c);
 
+        if (c==null) return;
+
         Paint b = new Paint();
         b.setColor(Color.BLACK);
         c.drawRect(new Rect(0, 0, getWidth(), getHeight()), b);
