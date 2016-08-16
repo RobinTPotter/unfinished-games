@@ -17,9 +17,10 @@ import java.util.Vector;
 
 public class Plate extends SurfaceView implements Runnable {
 
-    private static float RADIUS_LIMIT = 150;
+    private static float RADIUS_LIMIT = 100;
     private static float RADIUS_LIMIT_MINIMUM = 30;
-    private static long TICKS_PER_SECOND = 15;
+    private static long TICKS_PER_SECOND = 1000/30;
+    private static long PARTICLE_TTL = 200;
 
     long startTime;
     int mx = -(int) RADIUS_LIMIT_MINIMUM;
@@ -29,9 +30,9 @@ public class Plate extends SurfaceView implements Runnable {
     float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
     Thread thread;
-    boolean running=false;
+    boolean running = false;
 
-    Bitmap buffer;
+    Bitmap buffer = null;
 
     public Plate(Context context) {
         super(context);
@@ -80,13 +81,11 @@ public class Plate extends SurfaceView implements Runnable {
             }
         });
 
-        buffer=Bitmap.createBitmap(getWidth(),getHeight(), Bitmap.Config.ARGB_4444);
-
 
     }
 
     public void stop() {
-        running=false;
+        running = false;
         try {
             thread.join();
         } catch (Exception ex) {
@@ -98,7 +97,7 @@ public class Plate extends SurfaceView implements Runnable {
     public void start() {
 
         init();
-        running=true;
+        running = true;
         thread = new Thread(this);
         thread.start();
         Log.i("TheFingerInform", "Started");
@@ -108,6 +107,7 @@ public class Plate extends SurfaceView implements Runnable {
         Log.i("TheFingerInform", "EnterRun");
         while (running) {
 
+            paintIt();
             Canvas c = null;
             startTime = System.currentTimeMillis();
 
@@ -186,15 +186,24 @@ public class Plate extends SurfaceView implements Runnable {
 
         if (c == null) return;
         super.onDraw(c);
-        paintIt();
         Paint i = new Paint();
-        c.drawBitmap(buffer,0,0,i);
+        c.drawBitmap(buffer, 0, 0, i);
 
     }
 
     private void paintIt() {
 
-        Canvas c=new Canvas(buffer);
+        if (buffer == null) {
+
+            int w = getWidth();
+            int h = getHeight();
+            if (w > 0 & h > 0) {
+                buffer = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_4444);
+            } else return;
+
+        }
+
+        Canvas c = new Canvas(buffer);
 
         Paint b = new Paint();
         b.setColor(Color.BLACK);
@@ -222,7 +231,7 @@ public class Plate extends SurfaceView implements Runnable {
                         c.drawCircle(t.x, t.y, scale_rad, p);
                     }
 
-                    if (path.elementAt(0).getAge() > 500) path.remove(0);
+                    if (path.elementAt(0).getAge() > PARTICLE_TTL) path.remove(0);
                 }
 
             }
