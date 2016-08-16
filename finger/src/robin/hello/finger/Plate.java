@@ -28,6 +28,7 @@ public class Plate extends SurfaceView implements Runnable {
     float rad = RADIUS_LIMIT_MINIMUM;
     SurfaceHolder surfaceHolder;
     Thread thread;
+    boolean running=false;
 
     public Plate(Context context) {
         super(context);
@@ -78,6 +79,7 @@ public class Plate extends SurfaceView implements Runnable {
     }
 
     public void stop() {
+        running=false;
         try {
             thread.join();
         } catch (Exception ex) {
@@ -89,6 +91,7 @@ public class Plate extends SurfaceView implements Runnable {
     public void start() {
 
         init();
+        running=true;
         thread = new Thread(this);
         thread.start();
         Log.i("TheFingerInform", "Started");
@@ -96,7 +99,7 @@ public class Plate extends SurfaceView implements Runnable {
 
     public void run() {
         Log.i("TheFingerInform", "EnterRun");
-        while (thread != null) {
+        while (running) {
 
             Canvas c = null;
             startTime = System.currentTimeMillis();
