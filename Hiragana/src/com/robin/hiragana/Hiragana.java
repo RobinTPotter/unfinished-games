@@ -22,14 +22,15 @@ public class Hiragana extends Activity {
     int current_hiragana = 0;
     Button[] buttons;
 
-    String[] hiraganaList = getString(R.string.hiragana).split(",");
-
+    String[] hiraganaList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        hiraganaList = getString(R.string.hiragana).split(",");
 
         final Button buttonReset = (Button) findViewById(R.id.button_reset);
         buttonReset.setOnClickListener(new View.OnClickListener() {
@@ -40,14 +41,16 @@ public class Hiragana extends Activity {
             }
         });
 
+        buttons = new Button[hiraganaList.length];
 
-        buttons= new Button[hiraganaList.length];
-        int hh=0;
-        for (Button b : buttons) {
-            b.setText(hiraganaList[hh]);
+        for (int hh=0; hh<hiraganaList.length;hh++) {
+            String text=hiraganaList[hh];
+            Button b =(Button)findViewById(getResources().getIdentifier("button_" + text, "id",getPackageName()));
+            b.setText(text);
+            final int  _hh=hh;
             b.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (current_hiragana==hh) score_correct++;
+                    if (current_hiragana == _hh) score_correct++;
                     else score_wrong++;
                     showScore();
                     nextHiragana();
@@ -57,16 +60,13 @@ public class Hiragana extends Activity {
 
         nextHiragana();
 
-
     }
 
     /**
      * read the list of characters in the strings resource R.string.hiragana
      * get the imageview object off the layout and update the drawable.
-     *
      */
     private void nextHiragana() {
-
 
         final ImageView hiraganaImage = (ImageView) findViewById(R.id.imageHiragana);
 
@@ -75,7 +75,7 @@ public class Hiragana extends Activity {
             next = (int) Math.floor(Math.random() * hiraganaList.length);
         }
 
-        current_hiragana=next;
+        current_hiragana = next;
         String letter = hiraganaList[current_hiragana];
 
         Drawable drawable = getResources().getDrawable(getResources()
