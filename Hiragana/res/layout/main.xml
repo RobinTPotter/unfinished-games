@@ -43,6 +43,12 @@
             android:id="@+id/layoutButtons">
 
         <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sa"
+                android:id="@+id/button_sa" android:layout_row="0" android:layout_column="6"/>
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ka"
@@ -59,6 +65,12 @@
             style="?android:attr/buttonStyleSmall" />
 
         <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="shi"
+                android:id="@+id/button_shi" android:layout_row="1" android:layout_column="6"/>
+        <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,6 +83,12 @@
                 android:id="@+id/button_i" android:layout_row="1" android:layout_column="8"
             style="?android:attr/buttonStyleSmall" />
 
+        <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="su"
+                android:id="@+id/button_su" android:layout_row="2" android:layout_column="6"/>
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -85,6 +103,12 @@
             style="?android:attr/buttonStyleSmall" />
 
         <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="se"
+                android:id="@+id/button_se" android:layout_row="3" android:layout_column="6"/>
+        <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,6 +121,12 @@
                 android:id="@+id/button_e" android:layout_row="3" android:layout_column="8"
             style="?android:attr/buttonStyleSmall" />
 
+        <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="so"
+                android:id="@+id/button_so" android:layout_row="4" android:layout_column="6"/>
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"

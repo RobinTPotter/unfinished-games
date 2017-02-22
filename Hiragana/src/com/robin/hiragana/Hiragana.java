@@ -131,7 +131,7 @@ public class Hiragana extends Activity {
         final TextView textPercent = (TextView) findViewById(R.id.textPercent);
         textCorrect.setText(String.valueOf(score_correct));
         textWrong.setText(String.valueOf(score_wrong));
-        if ((score_wrong+score_correct) >0 )textPercent.setText(String.valueOf(Math.round(score_correct/(score_wrong+score_correct))) + " %");
+        if ((score_wrong+score_correct) >0 )textPercent.setText(String.valueOf(Math.round(100*score_correct/(score_wrong+score_correct))) + " %");
         else textPercent.setText("0 %");
 
     }

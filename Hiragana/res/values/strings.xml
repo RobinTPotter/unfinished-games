@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hiragana</string>
-    <string name="hiragana">a,i,u,e,o,ka,ki,ku,ke,ko</string>
+    <string name="hiragana">a,i,u,e,o,ka,ki,ku,ke,ko,sa,shi,su,se,so</string>
 </resources>
