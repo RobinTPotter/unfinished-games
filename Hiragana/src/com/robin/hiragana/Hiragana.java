@@ -69,7 +69,7 @@ public class Hiragana extends Activity {
         }
 
         showScore();
-        nextHiragana();
+        if (savedInstanceState == null) nextHiragana();
 
     }
 
@@ -92,14 +92,11 @@ public class Hiragana extends Activity {
 
     }
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        
     }
-
 
     /**
      * read the list of characters in the strings resource R.string.hiragana
@@ -131,8 +128,11 @@ public class Hiragana extends Activity {
 
         final TextView textCorrect = (TextView) findViewById(R.id.textCorrect);
         final TextView textWrong = (TextView) findViewById(R.id.textWrong);
+        final TextView textPercent = (TextView) findViewById(R.id.textPercent);
         textCorrect.setText(String.valueOf(score_correct));
         textWrong.setText(String.valueOf(score_wrong));
+        if ((score_wrong+score_correct) >0 )textPercent.setText(String.valueOf(Math.round(score_correct/(score_wrong+score_correct))) + " %");
+        else textPercent.setText("0 %");
 
     }
 
