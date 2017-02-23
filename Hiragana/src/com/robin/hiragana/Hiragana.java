@@ -1,11 +1,14 @@
 package com.robin.hiragana;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,10 +55,27 @@ public class Hiragana extends Activity {
         });
 
         buttons = new Button[hiraganaList.length];
+        GridLayout gl = (GridLayout) findViewById(R.id.layoutButtons);
 
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
-            Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
+            //Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
+            Button b = new Button(this);
+            /*
+            *   android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a"
+                android:id="@+id/button_a" android:layout_row="0" android:layout_column="8"
+            style="?android:attr/buttonStyleSmall
+            * */
+int cc=8-(int)(hh/5);
+            int rr=hh%5;
+            b.setLayoutParams(
+                    new GridLayout.LayoutParams(
+                     /* col */       GridLayout.spec(GridLayout.UNDEFINED,cc),
+                     /* row */       GridLayout.spec(GridLayout.UNDEFINED,rr))
+            );
+
             b.setText(text);
             final int _hh = hh;
             b.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +151,8 @@ public class Hiragana extends Activity {
         final TextView textPercent = (TextView) findViewById(R.id.textPercent);
         textCorrect.setText(String.valueOf(score_correct));
         textWrong.setText(String.valueOf(score_wrong));
-        if ((score_wrong+score_correct) >0 )textPercent.setText(String.valueOf(Math.round(100*score_correct/(score_wrong+score_correct))) + " %");
+        if ((score_wrong + score_correct) > 0)
+            textPercent.setText(String.valueOf(Math.round(100 * score_correct / (score_wrong + score_correct))) + " %");
         else textPercent.setText("0 %");
 
     }
