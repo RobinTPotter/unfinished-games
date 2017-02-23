@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="smallbuttons">
+
+            <item name="android:layout_margin">1dp</item>
+            <item name="android:maxWidth">14dp</item>
+            <item name="android:maxHeight">14dp</item>
+        <item name="android:color">#000088</item>
+
+
+    </style>
+
+</resources>

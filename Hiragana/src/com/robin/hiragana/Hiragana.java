@@ -3,9 +3,11 @@ package com.robin.hiragana;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -63,7 +65,9 @@ public class Hiragana extends Activity {
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
             //Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
-            Button b = new Button(this);
+           // Button b =new Button(new ContextThemeWrapper(this, R.style.smallbuttons));
+            Button b =new Button(this, null,R.style.smallbuttons);
+
             /*
             *   android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,6 +75,8 @@ public class Hiragana extends Activity {
                 android:id="@+id/button_a" android:layout_row="0" android:layout_column="8"
             style="?android:attr/buttonStyleSmall
             * */
+
+
             int cc = 8 - (int) (hh / 5);
             int rr = hh % 5;
 
@@ -83,8 +89,6 @@ public class Hiragana extends Activity {
             );
 */
 
-
-
             b.setText(text);
             final int _hh = hh;
             b.setOnClickListener(new View.OnClickListener() {
@@ -96,11 +100,11 @@ public class Hiragana extends Activity {
                 }
             });
 
-
             gl.addView(b, new GridLayout.LayoutParams(
-                    GridLayout.spec(rr, GridLayout.CENTER),
-                    GridLayout.spec(cc, GridLayout.CENTER)));
-
+                            GridLayout.spec(rr, GridLayout.CENTER),
+                            GridLayout.spec(cc, GridLayout.CENTER)
+                    )
+            );
 
         }
 
@@ -142,7 +146,7 @@ public class Hiragana extends Activity {
 
         final ImageView hiraganaImage = (ImageView) findViewById(R.id.imageHiragana);
 
-        int next = 0;
+        int next =current_hiragana;
         while (next == current_hiragana) {
             next = (int) Math.floor(Math.random() * hiraganaList.length);
         }

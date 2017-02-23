@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Hiragana</string>
     <string name="hiragana">a,i,u,e,o,ka,ki,ku,ke,ko,sa,shi,su,se,so,ta,chi,tsu,te,to,na,ni,nu,ne,no,ha,hi,hu,he,ho,ma,mi,mu,me,mo</string>
+    <string name="button_text_size">14.0</string>
 </resources>
