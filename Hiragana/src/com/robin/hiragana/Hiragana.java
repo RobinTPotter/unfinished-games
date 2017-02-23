@@ -57,6 +57,9 @@ public class Hiragana extends Activity {
         buttons = new Button[hiraganaList.length];
         GridLayout gl = (GridLayout) findViewById(R.id.layoutButtons);
 
+        gl.setColumnCount(12);
+        gl.setRowCount(8);
+
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
             //Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
@@ -68,13 +71,19 @@ public class Hiragana extends Activity {
                 android:id="@+id/button_a" android:layout_row="0" android:layout_column="8"
             style="?android:attr/buttonStyleSmall
             * */
-int cc=8-(int)(hh/5);
-            int rr=hh%5;
+            int cc = 8 - (int) (hh / 5);
+            int rr = hh % 5;
+
+
+            /*
             b.setLayoutParams(
                     new GridLayout.LayoutParams(
-                     /* col */       GridLayout.spec(GridLayout.UNDEFINED,cc),
-                     /* row */       GridLayout.spec(GridLayout.UNDEFINED,rr))
+                          GridLayout.spec(GridLayout.UNDEFINED, 1),
+                          GridLayout.spec(GridLayout.UNDEFINED, 1))
             );
+*/
+
+
 
             b.setText(text);
             final int _hh = hh;
@@ -86,6 +95,13 @@ int cc=8-(int)(hh/5);
                     nextHiragana();
                 }
             });
+
+
+            gl.addView(b, new GridLayout.LayoutParams(
+                    GridLayout.spec(rr, GridLayout.CENTER),
+                    GridLayout.spec(cc, GridLayout.CENTER)));
+
+
         }
 
         showScore();
