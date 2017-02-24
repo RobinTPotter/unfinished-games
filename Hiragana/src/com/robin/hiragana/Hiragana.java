@@ -59,14 +59,14 @@ public class Hiragana extends Activity {
         buttons = new Button[hiraganaList.length];
         GridLayout gl = (GridLayout) findViewById(R.id.layoutButtons);
 
-        gl.setColumnCount(12);
+        gl.setColumnCount(10);
         gl.setRowCount(8);
 
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
             //Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
-           // Button b =new Button(new ContextThemeWrapper(this, R.style.smallbuttons));
-            Button b =new Button(this, null,R.style.smallbuttons);
+            Button b =new Button(new ContextThemeWrapper(this, R.style.smallbuttons));
+            //Button b =new Button(this, null,R.style.smallbuttons);
 
             /*
             *   android:layout_width="wrap_content"
