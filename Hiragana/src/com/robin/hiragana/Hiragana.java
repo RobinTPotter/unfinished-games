@@ -7,11 +7,13 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +30,11 @@ public class Hiragana extends Activity {
     int score_wrong = 0;
     int current_hiragana = 0;
     Button[] buttons;
+    int knowledge_threshhold = 2;
+    int scatter_threshold = 2;
 
     String[] hiraganaList;
+    int[] hiraganaCount;
 
     static String SCORE_WRONG_KEY = "score_wrong";
     static String SCORE_CORRECT_KEY = "score_correct";
@@ -41,6 +46,7 @@ public class Hiragana extends Activity {
         setContentView(R.layout.main);
 
         hiraganaList = getString(R.string.hiragana).split(",");
+        hiraganaCount = new int[hiraganaList.length];
 
         if (savedInstanceState != null) {
             score_wrong = savedInstanceState.getInt(SCORE_WRONG_KEY, 0);
@@ -52,59 +58,34 @@ public class Hiragana extends Activity {
             public void onClick(View v) {
                 score_correct = 0;
                 score_wrong = 0;
+                hiraganaCount = new int[hiraganaList.length];
                 showScore();
             }
         });
 
         buttons = new Button[hiraganaList.length];
-        GridLayout gl = (GridLayout) findViewById(R.id.layoutButtons);
 
-        gl.setColumnCount(10);
-        gl.setRowCount(8);
 
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
-            //Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
-            Button b =new Button(new ContextThemeWrapper(this, R.style.smallbuttons));
-            //Button b =new Button(this, null,R.style.smallbuttons);
+            Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
 
-            /*
-            *   android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="a"
-                android:id="@+id/button_a" android:layout_row="0" android:layout_column="8"
-            style="?android:attr/buttonStyleSmall
-            * */
+            Log.i(getClass().getCanonicalName(), text);
 
-
-            int cc = 8 - (int) (hh / 5);
-            int rr = hh % 5;
-
-
-            /*
-            b.setLayoutParams(
-                    new GridLayout.LayoutParams(
-                          GridLayout.spec(GridLayout.UNDEFINED, 1),
-                          GridLayout.spec(GridLayout.UNDEFINED, 1))
-            );
-*/
-
-            b.setText(text);
             final int _hh = hh;
             b.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (current_hiragana == _hh) score_correct++;
-                    else score_wrong++;
+                    if (current_hiragana == _hh) {
+                        score_correct++;
+                        hiraganaCount[current_hiragana]++;
+                    } else {
+                        score_wrong++;
+                    }
                     showScore();
                     nextHiragana();
                 }
             });
 
-            gl.addView(b, new GridLayout.LayoutParams(
-                            GridLayout.spec(rr, GridLayout.CENTER),
-                            GridLayout.spec(cc, GridLayout.CENTER)
-                    )
-            );
 
         }
 
@@ -146,9 +127,13 @@ public class Hiragana extends Activity {
 
         final ImageView hiraganaImage = (ImageView) findViewById(R.id.imageHiragana);
 
-        int next =current_hiragana;
+        int next = current_hiragana;
         while (next == current_hiragana) {
             next = (int) Math.floor(Math.random() * hiraganaList.length);
+            if (hiraganaCount[next]==-1 || hiraganaCount[next] > (knowledge_threshhold + Math.random() * scatter_threshold)) {
+                next = current_hiragana;
+                hiraganaCount[next]=-1;
+            }
         }
 
         current_hiragana = next;
@@ -174,6 +159,7 @@ public class Hiragana extends Activity {
         if ((score_wrong + score_correct) > 0)
             textPercent.setText(String.valueOf(Math.round(100 * score_correct / (score_wrong + score_correct))) + " %");
         else textPercent.setText("0 %");
+
 
     }
 
