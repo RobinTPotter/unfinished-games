@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -134,10 +135,16 @@ public class Hiragana extends Activity {
                 next = current_hiragana;
                 hiraganaCount[next]=-1;
             }
+
         }
 
         current_hiragana = next;
         String letter = hiraganaList[current_hiragana];
+
+        Button b = (Button) findViewById(getResources().getIdentifier("button_" + letter, "id", getPackageName()));
+        if (hiraganaCount[current_hiragana]==-1) b.setBackgroundColor(Color.GREEN);
+        
+
 
         Drawable drawable = getResources().getDrawable(getResources()
                 .getIdentifier("hiragana_" + letter, "drawable", getPackageName()));
