@@ -40,6 +40,9 @@ public class Hiragana extends Activity {
     static String SCORE_WRONG_KEY = "score_wrong";
     static String SCORE_CORRECT_KEY = "score_correct";
 
+    int winColour = Color.GREEN;
+    int normalColour = Color.GRAY;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -55,21 +58,30 @@ public class Hiragana extends Activity {
         }
 
         final Button buttonReset = (Button) findViewById(R.id.button_reset);
+
+        final Drawable defaultBackground = buttonReset.getBackground();
+
         buttonReset.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 score_correct = 0;
                 score_wrong = 0;
                 hiraganaCount = new int[hiraganaList.length];
                 showScore();
+                for (int hh = 0; hh < hiraganaList.length; hh++) {
+                    String text = hiraganaList[hh];
+                    final Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
+                    b.setBackground(defaultBackground);
+                }
             }
         });
 
         buttons = new Button[hiraganaList.length];
 
-
         for (int hh = 0; hh < hiraganaList.length; hh++) {
             String text = hiraganaList[hh];
-            Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
+            final Button b = (Button) findViewById(getResources().getIdentifier("button_" + text, "id", getPackageName()));
+            b.setMinWidth(0);
+            b.setMinHeight(0);
 
             Log.i(getClass().getCanonicalName(), text);
 
@@ -83,10 +95,10 @@ public class Hiragana extends Activity {
                         score_wrong++;
                     }
                     showScore();
+                    if (hiraganaCount[_hh] == -1) b.setBackgroundColor(winColour);
                     nextHiragana();
                 }
             });
-
 
         }
 
@@ -127,24 +139,21 @@ public class Hiragana extends Activity {
     private void nextHiragana() {
 
         final ImageView hiraganaImage = (ImageView) findViewById(R.id.imageHiragana);
-
+        String letter;
         int next = current_hiragana;
         while (next == current_hiragana) {
-            next = (int) Math.floor(Math.random() * hiraganaList.length);
-            if (hiraganaCount[next]==-1 || hiraganaCount[next] > (knowledge_threshhold + Math.random() * scatter_threshold)) {
-                next = current_hiragana;
-                hiraganaCount[next]=-1;
+            if (hiraganaCount[next] == -1 || hiraganaCount[next] > (knowledge_threshhold + Math.random() * scatter_threshold)) {
+                hiraganaCount[next] = -1;
+                letter = hiraganaList[next];
+                Button b = (Button) findViewById(getResources().getIdentifier("button_" + letter, "id", getPackageName()));
+                b.setBackgroundColor(winColour);
             }
+            next = (int) Math.floor(Math.random() * hiraganaList.length);
 
         }
 
         current_hiragana = next;
-        String letter = hiraganaList[current_hiragana];
-
-        Button b = (Button) findViewById(getResources().getIdentifier("button_" + letter, "id", getPackageName()));
-        if (hiraganaCount[current_hiragana]==-1) b.setBackgroundColor(Color.GREEN);
-        
-
+         letter = hiraganaList[current_hiragana];
 
         Drawable drawable = getResources().getDrawable(getResources()
                 .getIdentifier("hiragana_" + letter, "drawable", getPackageName()));
@@ -166,7 +175,6 @@ public class Hiragana extends Activity {
         if ((score_wrong + score_correct) > 0)
             textPercent.setText(String.valueOf(Math.round(100 * score_correct / (score_wrong + score_correct))) + " %");
         else textPercent.setText("0 %");
-
 
     }
 

@@ -76,6 +76,8 @@
             android:layout_height="wrap_content"
             android:text="ha"
             android:id="@+id/button_ha"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="0"
             android:layout_column="2" />
 
@@ -86,6 +88,8 @@
             android:text="ma"
             android:id="@+id/button_ma"
             android:layout_row="0"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_column="3" />
 
         <Button
@@ -93,6 +97,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="na"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_na"
             android:layout_row="0"
             android:layout_column="4" />
@@ -102,6 +108,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ta"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_ta"
             android:layout_row="0"
             android:layout_column="5" />
@@ -113,6 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_column="6"
             android:layout_row="0"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="sa" />
 
         <Button
@@ -121,6 +131,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="7"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="0"
             android:text="ka" />
 
@@ -130,6 +142,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="8"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="0"
             android:text="a" />
 
@@ -139,6 +153,8 @@
             android:layout_height="wrap_content"
             android:text="hi"
             android:id="@+id/button_hi"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="1"
             android:layout_column="2" />
 
@@ -147,6 +163,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mi"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_mi"
             android:layout_row="1"
             android:layout_column="3" />
@@ -156,6 +174,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ni"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_ni"
             android:layout_row="1"
             android:layout_column="4" />
@@ -165,6 +185,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="chi"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_chi"
             android:layout_row="1"
             android:layout_column="5" />
@@ -175,6 +197,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="6"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="1"
             android:text="shi" />
 
@@ -184,6 +208,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="7"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="1"
             android:text="ki" />
 
@@ -193,6 +219,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="8"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="1"
             android:text="i" />
 
@@ -200,6 +228,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="hu"
             android:id="@+id/button_hu"
             android:layout_row="2"
@@ -209,6 +239,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="mu"
             android:id="@+id/button_mu"
             android:layout_row="2"
@@ -218,6 +250,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="nu"
             android:id="@+id/button_nu"
             android:layout_row="2"
@@ -227,6 +261,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="tsu"
             android:id="@+id/button_tsu"
             android:layout_row="2"
@@ -238,6 +274,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="6"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="2"
             android:text="su" />
 
@@ -247,6 +285,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="7"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="2"
             android:text="ku" />
 
@@ -256,6 +296,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="8"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="2"
             android:text="u" />
 
@@ -264,6 +306,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="he"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_he"
             android:layout_row="3"
             android:layout_column="2" />
@@ -273,6 +317,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="me"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_me"
             android:layout_row="3"
             android:layout_column="3" />
@@ -282,6 +328,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ne"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_ne"
             android:layout_row="3"
             android:layout_column="4" />
@@ -291,6 +339,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="te"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_te"
             android:layout_row="3"
             android:layout_column="5" />
@@ -301,6 +351,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="6"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="3"
             android:text="se" />
 
@@ -310,6 +362,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="7"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="3"
             android:text="ke" />
 
@@ -319,6 +373,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="8"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="3"
             android:text="e" />
 
@@ -327,6 +383,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ho"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_ho"
             android:layout_row="4"
             android:layout_column="2" />
@@ -336,6 +394,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="mo"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_mo"
             android:layout_row="4"
             android:layout_column="3" />
@@ -345,6 +405,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="no"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:id="@+id/button_no"
             android:layout_row="4"
             android:layout_column="4" />
@@ -355,6 +417,8 @@
             android:layout_height="wrap_content"
             android:text="to"
             android:id="@+id/button_to"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="4"
             android:layout_column="5" />
 
@@ -364,6 +428,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="6"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:layout_row="4"
             android:text="so" />
 
@@ -374,6 +440,8 @@
             android:layout_height="wrap_content"
             android:layout_column="7"
             android:layout_row="4"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="ko" />
 
         <Button
@@ -383,6 +451,8 @@
             android:layout_height="wrap_content"
             android:layout_column="8"
             android:layout_row="4"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
             android:text="o"
             android:padding="0dp" />
 
