@@ -14,6 +14,8 @@ print current_size
 
 screen_surface = pygame.display.set_mode(size, pygame.FULLSCREEN)
 
+pygame.mouse.set_visible(False)
+
 running = True
 
 def back_to_normal():
