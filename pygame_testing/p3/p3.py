@@ -26,10 +26,6 @@ def back_to_normal():
 
 while running:
     for event in pygame.event.get():
-        #print event.type
-        #for x in dir(pygame):
-        #    if str(type(getattr(pygame,x)))=='<type \'int\'>':
-        #        print(x,getattr(pygame,x))
         #print('event dict',event.type,pygame.event.event_name(event.type),event.dict)
         #if 'pos' in dir(event):
         #    print (' pos',event.pos)
