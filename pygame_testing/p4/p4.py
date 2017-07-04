@@ -5,23 +5,33 @@ import json
 import os
 
 
+## default to best display mode, assuming this is going to be the top of the list
+
+best_mode = 0 
+fullscreen = False
+screen_ratio_test = False 
 
 ## settings
 
 settings = {}
 
 options = {
-    '-fullscreen':False,
-    '-mode':[0,1,2,3,4,5]
+    '-fullscreen': False,
+    '-mode':range(0,30),
+    '-screen_ratio_test': False
 }
 
-if (sys.argv) > 1:
+settings = options
+
+if len(sys.argv) > 1:
     for key in options.keys():
-        settings = options
         if key in sys.argv:
+            print '{0} found'.format(key)
             pos = sys.argv.index(key)
+            print 'key positions {0}'.format(pos)
             value = None
-            if type(options[key]) is not :
+            if type(options[key]) is not bool:
+                print 'key not bool {0} {1} {2}'.format(key, options[key], type(options[key]))
                 value = sys.argv[pos + 1]
             if value == None:
                 settings[key] = True
@@ -42,10 +52,16 @@ else:
             settings = json.loads(sf.read())
 
 
+print settings
 
 
-
-
+## user starts with integer
+try:
+    best_mode = int(settings['-mode'])
+except:
+    best_mode 
+fullscreen = settings['-fullscreen']
+screen_ratio_test = settings['-screen_ratio_test']
 
 ## inititalize pygame
 pygame.init()
@@ -70,29 +86,17 @@ good_modes = []
 for m in list_of_modes:
     ratio = int(100*float(m[0])/m[1])
     test_ratio = abs(ratio-current_ratio) < 2
-    if test_ratio:
-        print (m)
+    if test_ratio or fullscreen == False or screen_ratio_test == False:
+        print '{0: <4}   {1: <30}'.format(len(good_modes), m)
         good_modes.append(m)
 
 print 'number of good modes {0}'.format(len(good_modes))
 
 
-## default to best display mode, assuming this is going to be the top of the list
-
-best_mode = 0 
-fullscreen = True
-
-## user starts with integer
-try:
-    best_mode = int(settings['-mode'])
-except:
-    fullscreen = settings['-fullscreen']
-
-
 ## start setting properties for program
 size = width, height = good_modes[best_mode]
 
-print current_size
+print 'current screen resolution {0}'.format(current_size)
 
 ## inititalize a drawing surface
 if fullscreen == True:
@@ -112,7 +116,8 @@ running = True
 
 ## declare function for returning to orignanl state (assuming full screen at the mo)
 def back_to_normal():
-    pygame.display.set_mode(current_size)
+    if fullscreen:
+        pygame.display.set_mode(current_size)
     pygame.quit()
     running = False
     print 'quit'
