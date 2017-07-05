@@ -112,16 +112,12 @@ pygame.display.set_caption('space blobs')
 ## inititalize a variable to hold the mouse position, could be an array for 'tail' eg.
 last_mouse = None
 
-## flag for running loop
-running = True
 
 
 ## declare function for returning to orignanl state (assuming full screen at the mo)
 def back_to_normal():
     if fullscreen:
         pygame.display.set_mode(current_size)
-    pygame.quit()
-    sys.exit(0)
 
 
 
@@ -172,8 +168,8 @@ colours
 
 '''
 
-BLACK = [0, 0, 0]
-WHITE = (255, 255, 255, 30)
+BLACK = [0, 0, 0, 0]
+WHITE = (255, 255, 255, 200)
 
 
 
@@ -182,6 +178,8 @@ WHITE = (255, 255, 255, 30)
 >set GIT_SSL_NO_VERIFY=true
 '''
 
+
+MAX_BLOB_SPEED = 4
 
 
 from math import cos, sin, pi
@@ -192,46 +190,77 @@ class SpaceBlob(pygame.sprite.Sprite):
 
     # Constructor. Pass in the color of the block,
     # and its x and y position
-    def __init__(self, width, height, point=10):
-        self.x = randint(0, WIDTH)
-        self.y = randint(0, HEIGHT)
+    def __init__(self, width, height, point=10, dir=-1):
+        
+        self.width = width
+        self.height = height
+        if dir == -1:
+            self.speedx = randint(-MAX_BLOB_SPEED, -2)
+            self.x = randint(WIDTH, WIDTH+WIDTH)
+        else:
+            self.speedx = randint(2, MAX_BLOB_SPEED)
+            self.x = randint(-WIDTH, 0)
+            
+            
+        print self.speedx
+        
+        self.speedy = 0
+        self.y = randint(0, HEIGHT - self.height)
+        
+        
+        print (self.x, self.y)
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface([width, height])
+        self.image = self.image.convert_alpha()
         self.image.fill([0, 0, 0, 0])
         centre = [width / 2, height / 2]
         points = []
         for r in range(0, point):
-            px = centre[0] + randint(width / 4,width / 2) * cos(2 * pi * float(r) / point)
-            py = centre[1] + randint(height / 4,height / 2) * sin(2 * pi * float(r) / point)
+            px = centre[0] + randint(width / 4,width / 2-1) * cos(2 * pi * float(r) / point)
+            py = centre[1] + randint(height / 4,height / 2-1) * sin(2 * pi * float(r) / point)
             points.append([px,py])
         
-        pygame.draw.polygon(self.image, WHITE, points)  
+        pygame.draw.polygon(self.image, WHITE, points, 1)  
         self.rect = self.image.get_rect()
-        self.move(self.x, self.y)
         
-    def move(self,dx,dy):
-        self.x = self.x + dx
-        self.y = self.y + dy
-        self.rect = self.rect.move(dx, dy)
+        # and because the rect inits to 0,0
+        self.rect.move_ip(self.x, self.y)
+        
+    def move(self):
+        self.x = self.x + self.speedx
+        self.y = self.y + self.speedy
+        self.rect = self.rect.move(self.speedx, self.speedy)
+        
+    def update(self):
+        self.move()
+        if self.x < -self.width and self.speedx<0 or self.x + self.width > WIDTH and self.speedx>0:
+            print 'bye {0}'.format(self)
+            self.kill()
 
 
-
-test = SpaceBlob(60,40)
-test1 = SpaceBlob(60,50)
 
 
 
 
 space_blobs = pygame.sprite.Group()
 
-space_blobs.add(test)
-space_blobs.add(test1)
+wave = 0
+
+def new_wave():
+    space_blobs.add(SpaceBlob(60,50))
+    space_blobs.add(SpaceBlob(40,50))
+    space_blobs.add(SpaceBlob(50,50))
+    space_blobs.add(SpaceBlob(60,50))
+    space_blobs.add(SpaceBlob(40,50))
+    space_blobs.add(SpaceBlob(50,50))
 
 
 
 clock = pygame.time.Clock()
 
+## flag for running loop
+running = True
 
 ## main game loop
 while running:
@@ -254,6 +283,7 @@ while running:
         # quite important if you want to exit.
         # original example had just the mouse X button so added Esc for quickly exiting
         if event.type == pygame.QUIT or ( event.type == 3 and event.dict['key'] == 27):
+            running = False
             back_to_normal()
             
             
@@ -263,8 +293,11 @@ while running:
         s.zoom()
             
     for s in space_blobs.sprites():
-        print s
-        s.move(-1, 0)
+        s.update()
+        
+    if len(space_blobs.sprites()) == 0:
+        wave = wave + 1
+        new_wave()
         
     space_blobs.draw(screen_surface)
             
@@ -274,3 +307,5 @@ while running:
 
 
 
+print 'done'
+pygame.quit()
