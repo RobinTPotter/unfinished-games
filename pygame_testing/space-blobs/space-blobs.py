@@ -16,7 +16,7 @@ settings = {}
 
 options = {
     '-fullscreen': False,
-    '-mode':range(0,30),
+    '-mode':range(0, 30),
     '-screen_ratio_test': False
 }
 
@@ -38,16 +38,16 @@ if len(sys.argv) > 1:
                 if str(value) in [str(o) for o in options[key]]:
                     settings[key] = str(value)
                 else:
-                    print 'value {0} is invalid for setting {1}'.format(value,key)
+                    print 'value {0} is invalid for setting {1}'.format(value, key)
                     
-    with open('settings.json','w') as sf:
+    with open('settings.json', 'w') as sf:
         sf.write(json.dumps(settings))
         
             
 else:
     files = os.listdir('.')
     if 'settings.json' in files:
-        with open('settings.json','r') as sf:
+        with open('settings.json', 'r') as sf:
             settings = json.loads(sf.read())
 
 
@@ -75,7 +75,7 @@ current_display = pygame.display.Info()
 
 ## .. calculate apprcx ratio
 current_size = ( current_display.current_w, current_display.current_h )
-current_ratio = int(100*float(current_size[0])/current_size[1])
+current_ratio = int(100 * float(current_size[0]) / current_size[1])
 print current_ratio
 
 
@@ -83,10 +83,10 @@ print current_ratio
 good_modes = []
 
 for m in list_of_modes:
-    ratio = int(100*float(m[0])/m[1])
+    ratio = int(100 * float(m[0]) / m[1])
     test_ratio = abs(ratio-current_ratio) < 2
     if test_ratio or fullscreen == False or screen_ratio_test == False:
-        print '{0: <4}   {1: <30}'.format(len(good_modes), m)
+        print '{0: <4} {1: <30}'.format(len(good_modes), m)
         good_modes.append(m)
 
 print 'number of good modes {0}'.format(len(good_modes))
@@ -106,6 +106,9 @@ else:
 ## switch off the mouse pointer
 pygame.mouse.set_visible(False)
 
+##change name to space blobs
+pygame.display.set_caption('space blobs')
+
 ## inititalize a variable to hold the mouse position, could be an array for 'tail' eg.
 last_mouse = None
 
@@ -118,8 +121,7 @@ def back_to_normal():
     if fullscreen:
         pygame.display.set_mode(current_size)
     pygame.quit()
-    running = False
-    print 'quit'
+    sys.exit(0)
 
 
 
@@ -143,20 +145,20 @@ MIN_STAR_SPEED = -5
 
 class Star():
     def __init__(self):
-        self.x = random.randint(0,WIDTH)
-        self.y = random.randint(0,HEIGHT)
-        self.s = random.randint(MIN_STAR_SPEED,MAX_STAR_SPEED)
+        self.x = random.randint(0, WIDTH)
+        self.y = random.randint(0, HEIGHT)
+        self.s = random.randint(MIN_STAR_SPEED, MAX_STAR_SPEED)
 
     def zoom(self):
         self.x = self.x + self.s
         if self.x > WIDTH:
             self.x = 0 
-            self.y = random.randint(0,HEIGHT)
-            self.s = random.randint(MIN_STAR_SPEED,MAX_STAR_SPEED)
+            self.y = random.randint(0, HEIGHT)
+            self.s = random.randint(MIN_STAR_SPEED, MAX_STAR_SPEED)
         elif self.x < 0:
             self.x = WIDTH 
-            self.y = random.randint(0,HEIGHT)
-            self.s = random.randint(MIN_STAR_SPEED,MAX_STAR_SPEED)
+            self.y = random.randint(0, HEIGHT)
+            self.s = random.randint(MIN_STAR_SPEED, MAX_STAR_SPEED)
         
 
 STARS = []
@@ -171,13 +173,60 @@ colours
 '''
 
 BLACK = [0, 0, 0]
-WHITE = (255,255,255,255)
+WHITE = (255, 255, 255, 30)
 
 
 
 
+'''
+>set GIT_SSL_NO_VERIFY=true
+'''
 
 
+
+from math import cos, sin, pi
+from random import randint
+
+
+class SpaceBlob(pygame.sprite.Sprite):
+
+    # Constructor. Pass in the color of the block,
+    # and its x and y position
+    def __init__(self, width, height, point=10):
+        self.x = randint(0, WIDTH)
+        self.y = randint(0, HEIGHT)
+        # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface([width, height])
+        self.image.fill([0, 0, 0, 0])
+        centre = [width / 2, height / 2]
+        points = []
+        for r in range(0, point):
+            px = centre[0] + randint(width / 4,width / 2) * cos(2 * pi * float(r) / point)
+            py = centre[1] + randint(height / 4,height / 2) * sin(2 * pi * float(r) / point)
+            points.append([px,py])
+        
+        pygame.draw.polygon(self.image, WHITE, points)  
+        self.rect = self.image.get_rect()
+        self.move(self.x, self.y)
+        
+    def move(self,dx,dy):
+        self.x = self.x + dx
+        self.y = self.y + dy
+        self.rect = self.rect.move(dx, dy)
+
+
+
+test = SpaceBlob(60,40)
+test1 = SpaceBlob(60,50)
+
+
+
+
+space_blobs = pygame.sprite.Group()
+
+space_blobs.add(test)
+space_blobs.add(test1)
 
 
 
@@ -208,13 +257,20 @@ while running:
             back_to_normal()
             
             
-    for s in STARS:
-        pygame.draw.line(screen_surface, WHITE, [s.x,s.y], [s.x+s.s,s.y])
-        s.zoom()
-        
             
+    for s in STARS:
+        pygame.draw.line(screen_surface, WHITE, [s.x, s.y], [s.x + s.s, s.y])
+        s.zoom()
+            
+    for s in space_blobs.sprites():
+        print s
+        s.move(-1, 0)
+        
+    space_blobs.draw(screen_surface)
+            
+    clock.tick(40)
     # update the buffer (draw!)
     pygame.display.update()
-    clock.tick(40)
 
-print 'done'
+
+
