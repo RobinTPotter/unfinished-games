@@ -188,6 +188,8 @@ from random import randint
 
 class SpaceBlob(pygame.sprite.Sprite):
 
+    exploding = None
+
     # Constructor. Pass in the color of the block,
     # and its x and y position
     def __init__(self, width, height, point=10, dir=-1):
@@ -214,16 +216,16 @@ class SpaceBlob(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image = self.image.convert_alpha()
         self.image.fill([0, 0, 0, 0])
-        centre = [width / 2, height / 2]
+        self.centre = [width / 2, height / 2]
         points = []
         for r in range(0, point):
-            px = centre[0] + randint(width / 4,width / 2-1) * cos(2 * pi * float(r) / point)
-            py = centre[1] + randint(height / 4,height / 2-1) * sin(2 * pi * float(r) / point)
+            px = self.centre[0] + randint(width / 4,width / 2-1) * cos(2 * pi * float(r) / point)
+            py = self.centre[1] + randint(height / 4,height / 2-1) * sin(2 * pi * float(r) / point)
             points.append([px,py])
         
-        pygame.draw.polygon(self.image, WHITE, points, 1)  
+        pygame.draw.polygon(self.image, WHITE, points, 2)  
         self.rect = self.image.get_rect()
-        
+        self.mask = pygame.mask.from_surface(self.image)
         # and because the rect inits to 0,0
         self.rect.move_ip(self.x, self.y)
         
@@ -237,23 +239,38 @@ class SpaceBlob(pygame.sprite.Sprite):
         if self.x < -self.width and self.speedx<0 or self.x + self.width > WIDTH and self.speedx>0:
             print 'bye {0}'.format(self)
             self.kill()
+        if self.exploding is not None:
+            self.exploding = self.exploding + 1
+            self.image.fill([0, 0, 0, 0])        
+            pygame.draw.circle(self.image, WHITE, self.centre, int(self.exploding+2), 3)
+            if self.exploding > 30:
+                self.image.fill([0, 0, 0, 0])  
+                self.exploding = None
+                self.kill()
+        
+            
+    def explode(self):
+        if self.exploding == None: self.exploding = 0
+    
+            
+        
+        
 
 
+pygame.font.init()
+myfont = pygame.font.SysFont("monospace", 15)
 
-
+time_so_far = 0
 
 
 space_blobs = pygame.sprite.Group()
 
 wave = 0
 
-def new_wave():
-    space_blobs.add(SpaceBlob(60,50))
-    space_blobs.add(SpaceBlob(40,50))
-    space_blobs.add(SpaceBlob(50,50))
-    space_blobs.add(SpaceBlob(60,50))
-    space_blobs.add(SpaceBlob(40,50))
-    space_blobs.add(SpaceBlob(50,50))
+def new_wave(num=5):
+    for r in range(0,num):
+        space_blobs.add(SpaceBlob(45+randint(0,10),45+randint(0,10)))
+        
 
 
 
@@ -292,18 +309,32 @@ while running:
         pygame.draw.line(screen_surface, WHITE, [s.x, s.y], [s.x + s.s, s.y])
         s.zoom()
             
-    for s in space_blobs.sprites():
-        s.update()
+    
+    for s1 in space_blobs.sprites():
+        for s2 in space_blobs.sprites():
+            if s1 is not s2 and pygame.sprite.collide_mask(s1, s2) is not None:
+                if s1.exploding == None: s1.explode()
+                if s2.exploding == None: s2.explode()
+            
+    
+    space_blobs.update()
         
     if len(space_blobs.sprites()) == 0:
         wave = wave + 1
-        new_wave()
+        new_wave(wave)
         
     space_blobs.draw(screen_surface)
-            
+    
+    
+    #screen_surface = font.render('{0: <3} {1: <3}'.format(wave, time_so_far),True, WHITE, )
+    label = myfont.render('{0:03d} {1:05d} {2:02d}'.format(wave, time_so_far, len(space_blobs.sprites())), 1, WHITE)
+    screen_surface.blit(label, (WIDTH/2 - label.get_width()/2, HEIGHT - 20))  
+
+      
     clock.tick(40)
     # update the buffer (draw!)
     pygame.display.update()
+    time_so_far = time_so_far + 1
 
 
 
