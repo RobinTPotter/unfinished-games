@@ -1,8 +1,7 @@
-import sys
-import pygame
-import json
-import os
 
+import pygame
+
+from lib.options import generate_settings
 
 ## default to best display mode, assuming this is going to be the top of the list
 
@@ -12,43 +11,11 @@ screen_ratio_test = False
 
 ## settings
 
-settings = {}
-
-options = {
+settings = generate_settings({
     '-fullscreen': False,
     '-mode':range(0, 30),
     '-screen_ratio_test': False
-}
-
-settings = options
-
-if len(sys.argv) > 1:
-    for key in options.keys():
-        if key in sys.argv:
-            print '{0} found'.format(key)
-            pos = sys.argv.index(key)
-            print 'key positions {0}'.format(pos)
-            value = None
-            if type(options[key]) is not bool:
-                print 'key not bool {0} {1} {2}'.format(key, options[key], type(options[key]))
-                value = sys.argv[pos + 1]
-            if value == None:
-                settings[key] = True
-            else:
-                if str(value) in [str(o) for o in options[key]]:
-                    settings[key] = str(value)
-                else:
-                    print 'value {0} is invalid for setting {1}'.format(value, key)
-                    
-    with open('settings.json', 'w') as sf:
-        sf.write(json.dumps(settings))
-        
-            
-else:
-    files = os.listdir('.')
-    if 'settings.json' in files:
-        with open('settings.json', 'r') as sf:
-            settings = json.loads(sf.read())
+})
 
 
 print settings
@@ -222,12 +189,10 @@ class SpaceBlob(pygame.sprite.Sprite):
             self.speedx = randint(2, MAX_BLOB_SPEED)
             self.x = randint(-WIDTH, 0)
                         
-        print self.speedx
         
         self.speedy = 0
         self.y = randint(0, HEIGHT - self.height)       
         
-        print (self.x, self.y)
         
         ## create an image for the sprite, remembering to make it transparent
         self.image = pygame.Surface([width, height])
@@ -334,7 +299,7 @@ class SpacePerson(pygame.sprite.Sprite):
         self.image_blank.fill([0, 0, 0, 0])
         
         self.image_normal = {}
-        
+        self.mask_normal = {}
         
         self.centre = [width / 2, height / 2]
         
@@ -349,7 +314,6 @@ class SpacePerson(pygame.sprite.Sprite):
             dx = round(cos(0 + offset),2)
             dy = round(sin(0 + offset),2)
             
-            print (dx, dy)
             
             px = self.centre[0] + (width / 2) * cos(0 + offset)
             py = self.centre[1] + (width / 2) * sin(0 + offset)            
@@ -369,6 +333,7 @@ class SpacePerson(pygame.sprite.Sprite):
                     
             pygame.draw.polygon(image, WHITE, points, 2) 
             self.image_normal[(dx,dy)] = image
+            self.mask_normal[(dx,dy)] = pygame.mask.from_surface(image)
          
         self.image = self.image_normal[(1,0)]
         self.image = self.image.convert_alpha()
@@ -387,16 +352,14 @@ class SpacePerson(pygame.sprite.Sprite):
         # and because the rect inits to 0,0 top/left
          
         try:
-            print ('self.dir', self.dir)
+            #print ('self.dir', self.dir)
             self.image = self.image_normal[self.dir]
+            self.mask =  pygame.mask.from_surface(self.image)
         except:
             pass
             
         self.x = self.x + self.thrust[0]
-        self.y = self.y + self.thrust[1]
-        
-        
-        
+        self.y = self.y + self.thrust[1]        
         
         self.rect.x = self.x
         self.rect.y = self.y
@@ -405,7 +368,7 @@ class SpacePerson(pygame.sprite.Sprite):
         self.thrust[1] = self.thrust[1] * self.DRAG
         
         if abs(self.thrust[0])<0.001 and abs(self.thrust[1])<0.001:
-            print 'slow reset'
+            #print 'slow reset'
             self.thrust=[0,0] 
         
         
@@ -415,7 +378,6 @@ class SpacePerson(pygame.sprite.Sprite):
         mag = sqrt(mag)      
         
         if mag < 10.0:
-            print 'inc'
             self.thrust[0] = self.thrust[0] + dx * 2
             self.thrust[1] = self.thrust[1] + dy * 2
         
@@ -425,7 +387,6 @@ class SpacePerson(pygame.sprite.Sprite):
         if mag > 0.5:
             
             test = (round(self.thrust[0] / mag,0) , round(self.thrust[1] / mag,0))
-            print 'test' + str(test)
             if abs(test[0])+abs(test[1]) == 1:
                 self.dir = test
             else:
@@ -435,7 +396,7 @@ class SpacePerson(pygame.sprite.Sprite):
     def update(self):    
         self.move()
         
-        print ('drag' ,  self.DRAG , 'thrust' , self.thrust)
+        #print ('drag' ,  self.DRAG , 'thrust' , self.thrust)
         
         #print self.dir
         # define the sprites rect as that of the image
@@ -446,7 +407,12 @@ class SpacePerson(pygame.sprite.Sprite):
         ##print (self.thrust)
         
         
+    def get_image():
+        return self.image_normal[self.dir]
         
+    def get_mask():
+        return self.mask_normal[self.dir]
+     
         
 
 robin = SpacePerson()
@@ -491,11 +457,11 @@ while running:
         if 'key' in event.dict:
         
             if pygame.event.event_name(event.type) == 'KeyDown':
-                print 'key down'
+                #print 'key down'
                 keys[event.dict['key']] = True
                 
             if pygame.event.event_name(event.type) == 'KeyUp':
-                print 'key up'
+                #print 'key up'
                 keys[event.dict['key']] = False
 
 
@@ -532,6 +498,15 @@ while running:
     robin.update()
     space_blobs.draw(screen_surface)
     space_group.draw(screen_surface)
+    
+    
+    ## collision of blob with spaceperson
+    main_list = pygame.sprite.groupcollide(space_blobs, space_group, False, False, collided=None)
+    for blob in main_list:
+        for person in main_list[blob]:
+            if pygame.sprite.collide_mask(person, blob) is not None:
+                if blob.exploding == None: blob.explode()
+            
     
     # make a sticker, like a dymo...
     label = myfont.render('{0:03d} {1:05d} {2:02d}'.format(WAVE, TIME_SURVIVED, len(space_blobs.sprites())), 1, WHITE)
