@@ -349,7 +349,7 @@ class SpacePerson(pygame.sprite.Sprite):
             dx = round(cos(0 + offset),2)
             dy = round(sin(0 + offset),2)
             
-            ##print (dx, dy)
+            print (dx, dy)
             
             px = self.centre[0] + (width / 2) * cos(0 + offset)
             py = self.centre[1] + (width / 2) * sin(0 + offset)            
@@ -423,7 +423,14 @@ class SpacePerson(pygame.sprite.Sprite):
         mag = sqrt(mag)
             
         if mag > 0.5:
-            self.dir = (round(self.thrust[0] / mag,2) , round(self.thrust[1] / mag,2))
+            
+            test = (round(self.thrust[0] / mag,0) , round(self.thrust[1] / mag,0))
+            print 'test' + str(test)
+            if abs(test[0])+abs(test[1]) == 1:
+                self.dir = test
+            else:
+                self.dir = ( 0.71 * test[0]/abs(test[0]), 0.71 * test[1]/abs(test[1]) )            
+            
         
     def update(self):    
         self.move()
