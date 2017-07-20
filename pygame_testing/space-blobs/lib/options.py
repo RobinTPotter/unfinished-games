@@ -36,5 +36,11 @@ def generate_settings(options):
         if 'settings.json' in files:
             with open('settings.json', 'r') as sf:
                 settings = json.loads(sf.read())
+                for ok in options.keys():
+                    if ok not in settings.keys():
+                        if type(options[ok]) is not bool:
+                            settings[ok]=options[ok][0]
+                        else:
+                            settings[ok]=options[ok]
 
     return settings

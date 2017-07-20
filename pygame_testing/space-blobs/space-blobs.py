@@ -1,4 +1,4 @@
-
+import sys
 import pygame
 
 from lib.options import generate_settings
@@ -9,25 +9,51 @@ best_mode = 0
 fullscreen = False
 screen_ratio_test = False 
 
-## settings
+## settings: generate a settings object with defaults or lists of acceptable values
 
 settings = generate_settings({
     '-fullscreen': False,
     '-mode':range(0, 30),
-    '-screen_ratio_test': False
+    '-screen_ratio_test': False,
+    '-use_bluedot': False
 })
-
 
 print(settings)
 
 
-## user starts with integer
+
+
+## screen mode should be integer
 try:
     best_mode = int(settings['-mode'])
 except:
     best_mode 
+    
+##other settings to variables
 fullscreen = settings['-fullscreen']
 screen_ratio_test = settings['-screen_ratio_test']
+use_bluedot = settings['-use_bluedot']
+
+
+##test python version
+python_version = sys.version_info[0]
+print('python version is {0}'.format(python_version))
+
+
+##test bluedot installed
+bluedot_available = 'bluedot' in sys.modules
+bd_controller = None
+if bluedot_available:
+    print('bluedot is available')
+    if use_bluedot:
+        from bluedot import BlueDot
+        bd_controller = BlueDot()
+        if bd_controller:
+            print('got bluedot')
+            
+else:
+    print('bluedot is not available')
+
 
 ## inititalize pygame
 pygame.init()
@@ -464,17 +490,21 @@ while running:
                 #print('key up')
                 keys[event.dict['key']] = False
 
-
-    if keys[115]: #s
+    if bd_controller is not None:
+        if bd_controller.position is not None:
+            if bd_controller.position.x > 0: keys[100]=bd_controller.is_pressed
+            if bd_controller.position.x < 0: keys[97]=bd_controller.is_pressed
+            if bd_controller.position.y > 0: keys[115]=bd_controller.is_pressed
+            if bd_controller.position.y < 0: keys[119]=bd_controller.is_pressed
+            
+    if keys[115]: #s down
         robin.accell(0.0,1.0)
-    if keys[119]: #w
+    if keys[119]: #w up
         robin.accell(0.0,-1.0)
-    if keys[97]:  #a
+    if keys[97]:  #a left
         robin.accell(-1.0,0.0)
-    if keys[100]: #d
+    if keys[100]: #d right
         robin.accell(1.0,0.0)
-
-
         
     for s in STARS:
         pygame.draw.line(screen_surface, WHITE, [s.x, s.y], [s.x + s.s, s.y])
