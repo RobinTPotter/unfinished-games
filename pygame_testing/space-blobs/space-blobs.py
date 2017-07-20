@@ -41,11 +41,14 @@ print('python version is {0}'.format(python_version))
 
 
 ##test bluedot installed
-bluedot_available = 'bluedot' in sys.modules
+from pip import get_installed_distributions
+
+bluedot_available = len([b for b in get_installed_distributions() if 'bluedot' in b.project_name]) > 0
 bd_controller = None
 if bluedot_available:
     print('bluedot is available')
-    if use_bluedot:
+    if use_bluedot == True:
+        print('importing bluedot')
         from bluedot import BlueDot
         bd_controller = BlueDot()
         if bd_controller:
@@ -56,14 +59,17 @@ else:
 
 
 ## inititalize pygame
+print('initializing pygame')
 pygame.init()
 
 
 
 ## get list of display modes at fullscreen to stop pixel shape going wierd
+print('getting list of modes')
 list_of_modes = pygame.display.list_modes(0, pygame.FULLSCREEN)
 
 ## get current display properties...
+print('getting display info')
 current_display = pygame.display.Info()
 
 ## .. calculate apprcx ratio
@@ -492,11 +498,26 @@ while running:
 
     if bd_controller is not None:
         if bd_controller.position is not None:
-            if bd_controller.position.x > 0: keys[100]=bd_controller.is_pressed
-            if bd_controller.position.x < 0: keys[97]=bd_controller.is_pressed
-            if bd_controller.position.y > 0: keys[115]=bd_controller.is_pressed
-            if bd_controller.position.y < 0: keys[119]=bd_controller.is_pressed
-            
+                if bd_controller.is_pressed == True:
+                    print(bd_controller.position.x, bd_controller.position.y)
+                    if bd_controller.position.x > 0.4: keys[100]=True
+                    else: keys[100] = False
+
+                    if bd_controller.position.x < -0.4: keys[97]=True
+                    else: keys[97] = False
+
+                    if bd_controller.position.y < -0.4: keys[115]=True
+                    else: keys[115] = False
+
+                    if bd_controller.position.y > 0.4: keys[119]=True
+                    else: keys[119] = False
+
+                else:
+                    keys[100] = False
+                    keys[97] = False
+                    keys[119] = False
+                    keys[115] = False
+
     if keys[115]: #s down
         robin.accell(0.0,1.0)
     if keys[119]: #w up
