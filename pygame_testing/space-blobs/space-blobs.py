@@ -18,7 +18,7 @@ settings = generate_settings({
 })
 
 
-print settings
+print(settings)
 
 
 ## user starts with integer
@@ -43,7 +43,7 @@ current_display = pygame.display.Info()
 ## .. calculate apprcx ratio
 current_size = ( current_display.current_w, current_display.current_h )
 current_ratio = int(100 * float(current_size[0]) / current_size[1])
-print current_ratio
+print('current ratio {0}'.format(current_ratio))
 
 
  ## initialize array for close modes
@@ -53,16 +53,16 @@ for m in list_of_modes:
     ratio = int(100 * float(m[0]) / m[1])
     test_ratio = abs(ratio-current_ratio) < 2
     if test_ratio or fullscreen == False or screen_ratio_test == False:
-        print '{0: <4} {1: <30}'.format(len(good_modes), m)
+        print('{0: <4} {1: <30}'.format(len(good_modes), str(m)))
         good_modes.append(m)
 
-print 'number of good modes {0}'.format(len(good_modes))
+print('number of good modes {0}'.format(len(good_modes)))
 
 
 ## start setting properties for program
 size = WIDTH, HEIGHT = good_modes[best_mode]
 
-print 'current screen resolution {0}'.format(current_size)
+print('current screen resolution {0}'.format(current_size))
 
 ## inititalize a drawing surface
 if fullscreen == True:
@@ -198,11 +198,11 @@ class SpaceBlob(pygame.sprite.Sprite):
         self.image = pygame.Surface([width, height])
         self.image = self.image.convert_alpha()
         self.image.fill([0, 0, 0, 0])
-        self.centre = [width / 2, height / 2]
+        self.centre = [int(width / 2), int(height / 2)]
         points = []
         for r in range(0, point):
-            px = self.centre[0] + randint(width / 4,width / 2-1) * cos(2 * pi * float(r) / point)
-            py = self.centre[1] + randint(height / 4,height / 2-1) * sin(2 * pi * float(r) / point)
+            px = self.centre[0] + randint(int(width / 4),int(width / 2)-1) * cos(2 * pi * float(r) / point)
+            py = self.centre[1] + randint(int(height / 4),int(height / 2)-1) * sin(2 * pi * float(r) / point)
             points.append([px,py])
         
         pygame.draw.polygon(self.image, WHITE, points, 2)  
@@ -233,7 +233,7 @@ class SpaceBlob(pygame.sprite.Sprite):
         
         # if blob offscreen danger is passed
         if self.x < -self.width and self.speedx<0 or self.x + self.width > WIDTH and self.speedx>0:
-            print 'bye {0}'.format(self)
+            print('bye {0}'.format(self))
             self.kill()
             
         # check to see if its exploding
@@ -368,7 +368,7 @@ class SpacePerson(pygame.sprite.Sprite):
         self.thrust[1] = self.thrust[1] * self.DRAG
         
         if abs(self.thrust[0])<0.001 and abs(self.thrust[1])<0.001:
-            #print 'slow reset'
+            #print('slow reset')
             self.thrust=[0,0] 
         
         
@@ -396,15 +396,15 @@ class SpacePerson(pygame.sprite.Sprite):
     def update(self):    
         self.move()
         
-        #print ('drag' ,  self.DRAG , 'thrust' , self.thrust)
+        #print(('drag' ,  self.DRAG , 'thrust' , self.thrust))
         
-        #print self.dir
+        #print(self.dir)
         # define the sprites rect as that of the image
         #self.rect = self.image.get_rect()
         
         ## generate mask so we can do pixel-pixel collision
         #self.mask = pygame.mask.from_surface(self.image)
-        ##print (self.thrust)
+        ##print(self.thrust)
         
         
     def get_image():
@@ -438,14 +438,14 @@ while running:
     for event in pygame.event.get():
         ##print('event dict',event.type,pygame.event.event_name(event.type),event.dict)
         #if 'pos' in dir(event):
-        #    print (' pos',event.pos)
+        #    print(' pos',event.pos)
         #if 'state' in dir(event):
-        #    print (' state',event.state)
+        #    print(' state',event.state)
         #if event.type == 4:
         #    if last_mouse == None: last_mouse = event.pos
         #    pygame.draw.line(screen_surface, (255,255,255,128), last_mouse, event.pos)
         #    last_mouse = event.pos
-        #    #print event.pos
+        #    #print(event.pos)
         
             
         # quite important if you want to exit.
@@ -457,11 +457,11 @@ while running:
         if 'key' in event.dict:
         
             if pygame.event.event_name(event.type) == 'KeyDown':
-                #print 'key down'
+                #print('key down')
                 keys[event.dict['key']] = True
                 
             if pygame.event.event_name(event.type) == 'KeyUp':
-                #print 'key up'
+                #print('key up')
                 keys[event.dict['key']] = False
 
 
@@ -523,5 +523,5 @@ while running:
 
 
 
-print 'done'
+print('done')
 pygame.quit()
