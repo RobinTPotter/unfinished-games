@@ -125,7 +125,7 @@ def back_to_normal():
 
 
 
-NUM_STARS = 10
+NUM_STARS = 50
 MAX_STAR_SPEED = -1
 MIN_STAR_SPEED = -5
 MAX_BLOB_SPEED = 4
@@ -312,9 +312,10 @@ class SpacePerson(pygame.sprite.Sprite):
     INVINCIBLE_SIZE = 30
     frame = 0
     FRAMES = 8
-    thrust = [2.0,0.0]
-    DRAG = 0.8
+    velocity = [2.0,0.0]
+    DRAG = 0.85
     dir = (1.0, 0.0)
+    thrust = 0.75
 
     # Constructor. Pass in the color of the block,
     # and its x and y position
@@ -390,35 +391,35 @@ class SpacePerson(pygame.sprite.Sprite):
         except:
             pass
             
-        self.x = self.x + self.thrust[0]
-        self.y = self.y + self.thrust[1]        
+        self.x = self.x + self.velocity[0]
+        self.y = self.y + self.velocity[1]        
         
         self.rect.x = self.x
         self.rect.y = self.y
        
-        self.thrust[0] = self.thrust[0] * self.DRAG
-        self.thrust[1] = self.thrust[1] * self.DRAG
+        self.velocity[0] = self.velocity[0] * self.DRAG
+        self.velocity[1] = self.velocity[1] * self.DRAG
         
-        if abs(self.thrust[0])<0.001 and abs(self.thrust[1])<0.001:
+        if abs(self.velocity[0])<0.001 and abs(self.velocity[1])<0.001:
             #print('slow reset')
-            self.thrust=[0,0] 
+            self.velocity=[0,0] 
         
         
     def accell(self,dx,dy):
         
-        mag = self.thrust[0]*self.thrust[0] + self.thrust[1]*self.thrust[1]
+        mag = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1]
         mag = sqrt(mag)      
         
-        if mag < 10.0:
-            self.thrust[0] = self.thrust[0] + dx * 2
-            self.thrust[1] = self.thrust[1] + dy * 2
+        if mag < 20.0:
+            self.velocity[0] = self.velocity[0] + dx * 2
+            self.velocity[1] = self.velocity[1] + dy * 2
         
-        mag = self.thrust[0]*self.thrust[0] + self.thrust[1]*self.thrust[1]
+        mag = self.velocity[0]*self.velocity[0] + self.velocity[1]*self.velocity[1]
         mag = sqrt(mag)
             
         if mag > 0.5:
             
-            test = (round(self.thrust[0] / mag,0) , round(self.thrust[1] / mag,0))
+            test = (round(self.velocity[0] / mag,0) , round(self.velocity[1] / mag,0))
             if abs(test[0])+abs(test[1]) == 1:
                 self.dir = test
             else:
@@ -428,7 +429,7 @@ class SpacePerson(pygame.sprite.Sprite):
     def update(self):    
         self.move()
         
-        #print(('drag' ,  self.DRAG , 'thrust' , self.thrust))
+        #print(('drag' ,  self.DRAG , 'velocity' , self.velocity))
         
         #print(self.dir)
         # define the sprites rect as that of the image
@@ -436,7 +437,7 @@ class SpacePerson(pygame.sprite.Sprite):
         
         ## generate mask so we can do pixel-pixel collision
         #self.mask = pygame.mask.from_surface(self.image)
-        ##print(self.thrust)
+        ##print(self.velocity)
         
         
     def get_image():
@@ -519,13 +520,13 @@ while running:
                     keys[115] = False
 
     if keys[115]: #s down
-        robin.accell(0.0,1.0)
+        robin.accell(0.0,robin.thrust)
     if keys[119]: #w up
-        robin.accell(0.0,-1.0)
+        robin.accell(0.0,-robin.thrust)
     if keys[97]:  #a left
-        robin.accell(-1.0,0.0)
+        robin.accell(-robin.thrust,0.0)
     if keys[100]: #d right
-        robin.accell(1.0,0.0)
+        robin.accell(robin.thrust,0.0)
         
     for s in STARS:
         pygame.draw.line(screen_surface, WHITE, [s.x, s.y], [s.x + s.s, s.y])
@@ -560,7 +561,7 @@ while running:
             
     
     # make a sticker, like a dymo...
-    label = myfont.render('{0:03d} {1:05d} {2:02d}'.format(WAVE, TIME_SURVIVED, len(space_blobs.sprites())), 1, WHITE)
+    label = myfont.render('{0:03d} {1:05d} {2:02d}'.format(WAVE, TIME_SURVIVED, len(space_blobs.sprites())  ), 1, WHITE)
     
     # ...stick it to the telly
     screen_surface.blit(label, (WIDTH/2 - label.get_width()/2, HEIGHT - 20))  
