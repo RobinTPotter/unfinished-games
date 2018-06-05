@@ -7,6 +7,7 @@ from OpenGL.GL import *
 colours={}
 
 colours["gold"]=[1.0,0.9,0.0,1.0]
+colours["black"]=[0.0,0.0,0.0,1.0]
 colours["red"]=[1.0,0.0,0.0,1.0]
 colours["green"]=[0.0,1.0,0.0,1.0]
 colours["blue"]=[0.0,0.0,1.0,1.0]

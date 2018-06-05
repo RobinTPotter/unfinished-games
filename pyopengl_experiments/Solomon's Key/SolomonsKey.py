@@ -12,6 +12,9 @@ from Models import lists, MakeLists, colours
 from Action import Action, ActionGroup
 from Joystick import Joystick
 
+import Letters
+
+
 X=46.0
 
 name = "solomon\'s key"
@@ -30,13 +33,10 @@ class Sprite:
         self.x=x
         self.y=y
         self.draw_func=self.temp_drawfunc        
-    
         self.AG_move=ActionGroup()
-        
         self.AG_move.append("x_action",Action(func=self.x_action,max=100,cycle=True,min=0))
         self.AG_move.append("y_action",Action(func=self.y_action,max=100,cycle=True,min=0)) 
         self.AG_move.append("z_action",Action(func=self.z_action,max=100,cycle=True,min=0)) 
-
         self.AG_move.append("xrot_action",Action(func=self.xrot_action,max=360,cycle=True,min=0))
         self.AG_move.append("yrot_action",Action(func=self.yrot_action,max=360,cycle=True,min=0)) 
         self.AG_move.append("zrot_action",Action(func=self.zrot_action,max=360,cycle=True,min=0))        
@@ -49,7 +49,8 @@ class Sprite:
         glCallList(self.listnumber)  
         
     def runDetection(self,level):
-        level.detect(self.x,self.y,collision_bound=2.0,callback=self.collision_action,ignoreDots=True,ignoreTheseSprites=[self])   
+        #level.detect(self.x,self.y,collision_bound=2.0,callback=self.collision_action,ignoreDots=True,ignoreTheseSprites=[self])   
+        pass
 
     def draw(self):    
     
@@ -207,8 +208,11 @@ class Solomon:
 
     def draw(self,stickers=None):
             
-        #correction
-        glTranslate(0,-0.15,0)        
+        drawSolProperly=True
+    
+        if drawSolProperly:            
+            #correction
+            glTranslate(0,-0.15,0)        
 
         #main displacement
         glTranslate(self.x,self.y,0) 
@@ -241,16 +245,6 @@ class Solomon:
         #correction for drawing character        
         glRotatef(-90.0,1.0,0,0)   
         
-        
-        
-        
-            
-        
-        
-        
-        drawSolProperly=True
-    
-    
     
         #if not drawSolProperly:        
         #    glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
@@ -284,7 +278,6 @@ class Solomon:
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["arm"])
         if drawSolProperly: glutSolidSphere(0.5,24,12)            
         glPopMatrix()
-        
         
         #right arm
         glPushMatrix()
@@ -377,8 +370,6 @@ class Solomon:
         glPopMatrix()
         
         
-        
-        
         X+=1
         #if (X % 40)==0: self.AG_walk.kick() #ok that works
         
@@ -465,9 +456,7 @@ class Level:
             
         
     
-    def evaluate(self,joystick,keys): 
-    
-    
+    def evaluate(self,joystick,keys):   
         
         self.solomon.stickers=[]
         
@@ -475,10 +464,47 @@ class Level:
         
         """ TODO redo current_state was rubbish anyway """
         
+        self.solomon_block_below = [int(self.solomon.x+0.5),int(self.solomon.y-1+0.5)]
+        self.solomon_block_above = [int(self.solomon.x+0.5),int(self.solomon.y+1+0.5)]
+        self.solomon_block_left = [int(self.solomon.x-1+0.5),int(self.solomon.y+0.5)]
+        self.solomon_block_right = [int(self.solomon.x+1+0.5),int(self.solomon.y+0.5)]
+        
+        walktest=False
+        
+        if joystick.isLeft(keys):
+            self.solomon.x-=0.02
+            self.solomon.facing=-1
+            walktest=True
+            
+        if joystick.isRight(keys):
+            self.solomon.x+=0.02
+            self.solomon.facing=1
+            walktest=True
+            
+        if joystick.isUp(keys):
+            self.solomon.y+=0.02
+            walktest=True
+            
+        if joystick.isDown(keys):
+            self.solomon.y-=0.02
+            walktest=True
+        
+        self.solomon.current_state["walking"]=walktest
+        if walktest: self.solomon.AG_walk.do()
+        
+        self.solomon.current_state["standing"] 
+        self.solomon.current_state["crouching"]
+        self.solomon.current_state["walking"]  
+        self.solomon.current_state["jumping"]  
+        self.solomon.current_state["wandswish"]
+        self.solomon.current_state["falling"]  
+        
+        
         self.AG_twinklers.do() 
         
         
-
+    def detect(self):
+        pass
 
     def draw(self):
     
@@ -507,8 +533,8 @@ class Level:
                         if c=="b": color = [0.3,0.3,1.0,1.0]
                         elif c=="s": color = [1.0,1.0,0.0,1.0]
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,color)
-                        glutWireCube(1)
-                        #glutSolidCube(1)
+                        #glutWireCube(1)
+                        glutSolidCube(1)
                         
                     elif c in ["d","6"]: 
                     
@@ -526,12 +552,9 @@ class Level:
                         color = [0.3,0.3,1.0,1.0]
                         glMaterialfv(GL_FRONT,GL_DIFFUSE,color)                                        
                         #global lists
-                        glCallList(lists["broken brick"])        
-
-                   
-
-          
+                        glCallList(lists["broken brick"])  
                         
+                     
                     glPopMatrix()
 
                 cc+=1
@@ -542,9 +565,36 @@ class Level:
         self.solomon.draw(self.solomon.stickers)  
         glPopMatrix()
         
+        glPushMatrix()
+        glTranslate(self.solomon_block_below[0],self.solomon_block_below[1],0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
+        glutSolidCube(0.95) 
+        glPopMatrix()
         
+        glPushMatrix()
+        glTranslate(self.solomon_block_above[0],self.solomon_block_above[1],0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
+        glutSolidCube(0.95) 
+        glPopMatrix()
         
-
+        glPushMatrix()
+        glTranslate(self.solomon_block_left[0],self.solomon_block_left[1],0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
+        glutSolidCube(0.95) 
+        glPopMatrix()
+        
+        glPushMatrix()
+        glTranslate(self.solomon_block_right[0],self.solomon_block_right[1],0)
+        glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
+        glutSolidCube(0.95) 
+        glPopMatrix()
+        
+        '''
+        self.solomon_block_below
+        self.solomon_block_above
+        self.solomon_block_left 
+        self.solomon_block_right
+        '''
         
         for s in self.sprites:
             glPushMatrix()
@@ -652,6 +702,10 @@ class SolomonsKey:
         glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT1)
         
+        #initialization of letters 
+        self.letters = Letters.Letters()
+        
+        #for game models
         MakeLists()
         
         glutIgnoreKeyRepeat(1)
@@ -737,7 +791,7 @@ class SolomonsKey:
             "s...............s",
             "s...............s",
             "sssssssssssssssss"]
-            
+        )
         '''
         
         
@@ -808,29 +862,36 @@ class SolomonsKey:
         
         wdth=0.2
        
-        list=[x for x in dir(self.joystick) if x[0:2]=="is"]
-        glTranslate(0.0-(len(list)-1)*wdth/2.0,-1.0,0)  
+        joystick_actions=[x for x in dir(self.joystick) if x[0:2]=="is"]
+        glTranslate(0.0-(len(joystick_actions)-1)*wdth/2.0,-1.0,0)  
 
-        for k in list:
-            print(k)
-                        
+        for k in joystick_actions:
+            print(k)                        
             col="red"
             if getattr(self.joystick,k)(self.keys): col="green"
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])      
             glutSolidCube(wdth-0.02)
             glTranslate(wdth,0,0)
             
+            
      
+        glLoadIdentity()
         
-        
-        
-        
-        
-        
-        
+        #26 characters centred:
+        gluLookAt(0, 0, 2.5,
+                  0, 0, 0  ,
+                  0, 1, 0  )
+                  
+        glScale(0.01,0.01,-0.01)
+        glTranslate(-180,-70,0)
+        self.letters.drawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        glTranslate(0,0-15,0)
+        self.letters.drawString("GHIJKLMNOPQRSTUVWXYZABCDEF")
         
         
         glutSwapBuffers()
+        
+    
 
     def keydownevent(self,c,x,y):
         try:
