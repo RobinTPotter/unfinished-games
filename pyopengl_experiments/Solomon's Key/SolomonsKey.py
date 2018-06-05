@@ -232,7 +232,7 @@ class Solomon:
             for st in stickers:
                 glPushMatrix()   
                 ##glLoadIdentity()
-                print((st))
+                #print((st))
                 glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[st[3]]) 
                 glTranslate(st[0]*10,10*st[1],st[2])
                 glutSolidCube(0.5)      
@@ -379,6 +379,8 @@ class Level:
     baddies=[]
     solomon=None
     sprites=[]
+    status1 = "status1"
+    status2 = "status2"
     
     AG_twinklers=None
     
@@ -431,22 +433,27 @@ class Level:
         self.AG_twinklers.append("twinkle1",Action(func=self.sin_gen_1,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
         self.AG_twinklers.append("twinkle2",Action(func=self.sin_gen_2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
         
+    def eval_grid(self,coords):
+        return self.grid[coords[1]][coords[0]]
         
     def block_swap(self):
     
-        print("hi"+str(self.solomon))
+        self.solomon.current_state["wandswish"]=False
+        print("hi from block swap "+str(self.solomon))
         takeoff_for_crouching=0
         if self.solomon.state_test(["crouching"])>0 : takeoff_for_crouching=-0.8
-        res=self.detect(val(self.solomon.x,self.solomon.facing*1.0),val(self.solomon.y,takeoff_for_crouching),collision_bound=0.5)
-                
-        if res=="OK": return
+               
+        ##if res=="OK": return
         
-        ch,xx,yy,dist=res[0]
+        yy = self.block_to_action[1]
+        xx = self.block_to_action[0]
+        ch = self.grid[yy][xx]
+        
         if ch=="b":
             #print("break block")
             #self.grid[yy][xx]="B"   
             print("destroy block")
-            self.grid[yy][xx]="."            
+            self.grid[yy][xx]="B"            
         elif ch=="B":
             print("destroy block")
             self.grid[yy][xx]="."      
@@ -454,8 +461,6 @@ class Level:
             print("create")
             self.grid[yy][xx]="b"
             
-        
-    
     def evaluate(self,joystick,keys):   
         
         self.solomon.stickers=[]
@@ -470,26 +475,55 @@ class Level:
         self.solomon_block_right = [int(self.solomon.x+1+0.5),int(self.solomon.y+0.5)]
         
         walktest=False
+        #self.status1=""
+        #self.status2=""
         
-        if joystick.isLeft(keys):
-            self.solomon.x-=0.02
-            self.solomon.facing=-1
-            walktest=True
-            
-        if joystick.isRight(keys):
-            self.solomon.x+=0.02
-            self.solomon.facing=1
-            walktest=True
-            
-        if joystick.isUp(keys):
-            self.solomon.y+=0.02
-            walktest=True
-            
         if joystick.isDown(keys):
-            self.solomon.y-=0.02
-            walktest=True
+            self.solomon.current_state["crouching"]=True
+        else:
+            self.solomon.current_state["crouching"]=False
         
-        self.solomon.current_state["walking"]=walktest
+        if joystick.isFire(keys):
+            if self.solomon.current_state["wandswish"]==False:
+                #start swish
+                self.solomon.current_state["wandswish"]=True
+                
+                if self.solomon.facing==-1: self.block_to_action = self.solomon_block_left
+                elif self.solomon.facing==1: self.block_to_action = self.solomon_block_right
+                if self.solomon.current_state["crouching"]==True:
+                    print "crouched"
+                    self.block_to_action=[self.block_to_action[0],self.block_to_action[1]-1]
+                
+            else:
+                #continue swish
+                print "blah"
+                pass
+            
+        else:        
+            if joystick.isLeft(keys):
+                self.solomon.facing=-1
+                self.status1=self.eval_grid(self.solomon_block_left)
+                distance = (self.solomon.x-1+0.5)-(int(self.solomon.x-1+0.5))
+                self.status2=str(distance)
+                if (distance>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                    self.solomon.x-=0.05
+                    walktest=True
+                
+            if joystick.isRight(keys):
+                self.solomon.facing=1
+                self.status1=self.eval_grid(self.solomon_block_right)
+                distance = 1+(int(self.solomon.x+1+0.5))-(self.solomon.x+1+0.5)
+                self.status2=str(distance)
+                if (distance>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                    self.solomon.x+=0.05
+                    walktest=True
+            
+        #if joystick.isUp(keys):
+        #    self.solomon.y+=0.02
+        #    walktest=True
+            
+        
+        self.solomon.current_state["walking"] = walktest
         if walktest: self.solomon.AG_walk.do()
         
         self.solomon.current_state["standing"] 
@@ -568,25 +602,25 @@ class Level:
         glPushMatrix()
         glTranslate(self.solomon_block_below[0],self.solomon_block_below[1],0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
-        glutSolidCube(0.95) 
+        glutWireCube(0.85) 
         glPopMatrix()
         
         glPushMatrix()
         glTranslate(self.solomon_block_above[0],self.solomon_block_above[1],0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
-        glutSolidCube(0.95) 
+        glutWireCube(0.85) 
         glPopMatrix()
         
         glPushMatrix()
         glTranslate(self.solomon_block_left[0],self.solomon_block_left[1],0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
-        glutSolidCube(0.95) 
+        glutWireCube(0.85) 
         glPopMatrix()
         
         glPushMatrix()
         glTranslate(self.solomon_block_right[0],self.solomon_block_right[1],0)
         glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])      
-        glutSolidCube(0.95) 
+        glutWireCube(0.85) 
         glPopMatrix()
         
         '''
@@ -750,10 +784,10 @@ class SolomonsKey:
             "s.....b343b.....s",
             "s..g..sbbbs..g..s",
             "s......bbb......s",
-            "s...2.......2...s",
+            "s...2.@.....2...s",
             "s...sbs.1.sbs...s",
-            "s...b@bbbbbkb...s",
-            "s...sbs...sbs...s",
+            "s.....bbbbbkb...s",
+            "s..ssbs...sbs...s",
             "s...............s",
             ".sssssssssssssss."])
         
@@ -827,7 +861,7 @@ class SolomonsKey:
         
         
         self.level.draw()
-        print("DISPlAY")
+        #print("DISPlAY")
         
         
      
@@ -866,7 +900,7 @@ class SolomonsKey:
         glTranslate(0.0-(len(joystick_actions)-1)*wdth/2.0,-1.0,0)  
 
         for k in joystick_actions:
-            print(k)                        
+            #print(k)                        
             col="red"
             if getattr(self.joystick,k)(self.keys): col="green"
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])      
@@ -878,21 +912,23 @@ class SolomonsKey:
         glLoadIdentity()
         
         #26 characters centred:
+        
+        #self.status1 = ""
+        #self.status2 = ""
+                
+                    
         gluLookAt(0, 0, 2.5,
                   0, 0, 0  ,
                   0, 1, 0  )
                   
         glScale(0.01,0.01,-0.01)
         glTranslate(-180,-70,0)
-        self.letters.drawString("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        self.letters.drawString(self.level.status1)
         glTranslate(0,0-15,0)
-        self.letters.drawString("GHIJKLMNOPQRSTUVWXYZABCDEF")
-        
+        self.letters.drawString(self.level.status2)
         
         glutSwapBuffers()
-        
     
-
     def keydownevent(self,c,x,y):
         try:
             self.keys[c.lower()]=True

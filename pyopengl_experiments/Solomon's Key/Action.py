@@ -51,8 +51,9 @@ class Action:
                 self.overide=False
                 if not self.callback==None:
                     self.callback()                     
-                    print(dir(self))
+                    #print(dir(self))
                     print("callback called")
+                    self.kick()
                     
                      
         if not self.value==None: return self.value
