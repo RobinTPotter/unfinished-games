@@ -34,8 +34,9 @@ class Sprite:
         glCallList(self.listnumber)  
         
     def runDetection(self,level):
-        level.detect(self.x,self.y,collision_bound=2.0,callback=self.collision_action,ignoreDots=True,ignoreTheseSprites=[self])   
-
+        #level.detect(self.x,self.y,collision_bound=2.0,callback=self.collision_action,ignoreDots=True,ignoreTheseSprites=[self])   
+        pass
+    
     def draw(self):    
     
         #glPushMatrix()
