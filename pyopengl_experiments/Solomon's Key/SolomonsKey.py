@@ -18,7 +18,7 @@ import Letters
 X=46.0
 
 name = "solomon\'s key"
-debug=True
+debug=False
 
 def key_detected_something_test(stuff):
     print str(stuff)
@@ -334,7 +334,7 @@ class Level:
             cc=0
             for c in r:
                 if c=="@":
-                    self.solomon=Solomon(cc,rr,self)
+                    self.solomon=Solomon(cc,rr+0.3,self)
                     self.grid[rr][cc]="."
                     self.solomon.A_wandswish.callback=self.block_swap
                     
