@@ -18,7 +18,7 @@ import Letters
 X=46.0
 
 name = "solomon\'s key"
-debug=False # True
+debug=True
 
 def key_detected_something_test(stuff):
     print str(stuff)
@@ -415,21 +415,32 @@ class Level:
         yy = self.block_to_action[1]
         xx = self.block_to_action[0]
         ch = self.grid[yy][xx]
+        
+        
+        #wand flare!
         crouch=0
         if self.solomon.current_state["crouching"]==True: crouch=-0.4
         self.bursts.append(Burst(x=self.solomon.x+self.solomon.facing*0.5,y=self.solomon.y+crouch,z=0))
 
-        if ch=="b":
-            #print("break block")
-            #self.grid[yy][xx]="B"
-            print("destroy block")
-            self.grid[yy][xx]="B"
-        elif ch=="B":
-            print("destroy block")
-            self.grid[yy][xx]="."
-        elif ch==".":
-            print("create")
-            self.grid[yy][xx]="b"
+        #must be in correct place first
+        distanceLeft = (self.solomon.x-1+0.5)-(int(self.solomon.x-1+0.5))
+        distanceRight = 1+(int(self.solomon.x+1+0.5))-(self.solomon.x+1+0.5)
+        distance = 0
+        if self.solomon.facing==-1: distance=distanceLeft
+        elif self.solomon.facing==1: distance=distanceRight
+            
+        if distance > 0.2:
+            if ch=="b":
+                #print("break block")
+                #self.grid[yy][xx]="B"
+                print("destroy block")
+                self.grid[yy][xx]="B"
+            elif ch=="B":
+                print("destroy block")
+                self.grid[yy][xx]="."
+            elif ch==".":
+                print("create")
+                self.grid[yy][xx]="b"
 
     def evaluate(self,joystick,keys):
 
@@ -453,12 +464,14 @@ class Level:
         else:
             self.solomon.current_state["crouching"]=False
 
+        distanceLeft = (self.solomon.x-1+0.5)-(int(self.solomon.x-1+0.5))
+        distanceRight = 1+(int(self.solomon.x+1+0.5))-(self.solomon.x+1+0.5)
 
         under = self.eval_grid(self.solomon_block_below)
         distance = 1+(int(self.solomon.y+1+0.5))-(self.solomon.y+1+0.5)
         self.status3=str(self.solomon.y)
 
-        if under == '.':
+        if under == '.' and ((distanceLeft<0.9 and self.solomon.facing==-1) or (distanceRight<0.9 and self.solomon.facing==1)):
             self.solomon.current_state["falling"]=True
         else:
             self.solomon.current_state["falling"]=False
@@ -485,18 +498,16 @@ class Level:
             if joystick.isLeft(keys):
                 self.solomon.facing=-1
                 self.status1=self.eval_grid(self.solomon_block_left)
-                distance = (self.solomon.x-1+0.5)-(int(self.solomon.x-1+0.5))
-                self.status2=str(distance)
-                if (distance>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                self.status2=str(distanceLeft)+ " L"
+                if (distanceLeft>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
                     self.solomon.x-=0.05
                     walktest=True
 
             if joystick.isRight(keys):
                 self.solomon.facing=1
                 self.status1=self.eval_grid(self.solomon_block_right)
-                distance = 1+(int(self.solomon.x+1+0.5))-(self.solomon.x+1+0.5)
-                self.status2=str(distance)
-                if (distance>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                self.status2=str(distanceRight)+" R"
+                if (distanceRight>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
                     self.solomon.x+=0.05
                     walktest=True
 
