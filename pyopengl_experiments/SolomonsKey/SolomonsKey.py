@@ -312,15 +312,12 @@ class Burst:
         self.diminish=diminish
         self.delay=delay
         self.callback=callback
-        print 'bursting'
         
     def draw(self):
         
         if self.delay>0:
             self.delay-=1
             return False
-            
-        print 'burst draw'
             
         glDisable(GL_LIGHTING)
         glPushMatrix()
@@ -384,6 +381,8 @@ class Level:
     status2 = "status2"
     status3 = "status3"
     door=None
+    target_z=6
+    proper_z=6
 
     AG_twinklers=None
 
@@ -571,8 +570,9 @@ class Level:
             dist2 = (s.x-self.solomon.x) * (s.x-self.solomon.x) + (s.y-self.solomon.y) * (s.y-self.solomon.y)
             if dist2 < 0.1:
                 s.run_collision_action()
+                self.target_z=20
                 self.sprites.remove(s)
-                gotem = Burst().createBurst(burst_from=[s.x,s.y,0], steps=30, burst_to=[self.door[0],self.door[1],0],delay=0.2)
+                gotem = Burst().createBurst(burst_from=[s.x,s.y,0], steps=60, burst_to=[self.door[0],self.door[1],0], control=[self.door[0],self.door[1],5], delay=0.4, callback=self.reset_z)
                 print gotem
                 self.bursts=self.bursts + gotem
             
@@ -589,7 +589,10 @@ class Level:
 
         self.AG_twinklers.do()
 
-
+    def reset_z(self):
+        self.target_z=self.proper_z
+        print "reset z called"
+        
     def detect(self):
         pass
 
@@ -718,6 +721,7 @@ class SolomonsKey:
     topFPS=0
     camera_sweep = 20
     joystick=Joystick()
+    
 
     def animate(self,FPS=25):
 
@@ -756,8 +760,8 @@ class SolomonsKey:
             print("","\n")
             '''
 
-        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x+0.2*self.level.solomon.facing,self.level.solomon.y-0.5,3
-        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x+1*self.level.solomon.facing,self.level.solomon.y-0.2,6
+        self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x+0.2*self.level.solomon.facing,self.level.solomon.y-0.5,3.0
+        self.tcxx,self.tcyy,self.tczz=self.level.solomon.x+1*self.level.solomon.facing,self.level.solomon.y-0.2,float(self.level.target_z)
 
         if self.cxx==None: self.cxx=self.tcxx
         if self.cyy==None: self.cyy=self.tcyy
