@@ -20,10 +20,6 @@ X=46.0
 name = "solomon\'s key"
 debug=True
 
-def key_detected_something_test(stuff):
-    print str(stuff)
-    pass
-
 
 
 class Solomon:
@@ -305,7 +301,7 @@ class Solomon:
 
 class Burst:
     
-    def __init__(self,life=3,size=0.5,intensity=18,diminish=True,x=0,y=0,z=0,burst_colours=["gold","red","white","red","yellow"]):
+    def __init__(self,life=3,size=0.5,intensity=18,diminish=True,x=0,y=0,z=0,burst_colours=["gold","red","white","red","yellow"],delay=0,callback=None):
         self.life=life
         self.x=x
         self.y=y
@@ -314,8 +310,18 @@ class Burst:
         self.size=size
         self.intensity=intensity
         self.diminish=diminish
+        self.delay=delay
+        self.callback=callback
+        print 'bursting'
         
     def draw(self):
+        
+        if self.delay>0:
+            self.delay-=1
+            return False
+            
+        print 'burst draw'
+            
         glDisable(GL_LIGHTING)
         glPushMatrix()
         glTranslate(self.x,self.y,self.z)
@@ -334,8 +340,37 @@ class Burst:
         glEnable(GL_LIGHTING)
         self.life-=1
         if self.diminish: self.size-=0.1
-        if self.life==0: return True
+        if self.life==0:
+            if self.callback!=None: self.callback()
+            return True
+            
         return False
+    
+    def createBurst(self,burst_from=[0.0,0.0,0.0], burst_to=[1.0,0.0,0.0], control=None, steps=10, delay=15, callback=None):
+        list_of_burst=[]
+        if control==None:
+            control = [(burst_from[0]+burst_to[0])/2, (burst_from[1]+burst_to[1])/2, (burst_from[2]+burst_to[2])/2]
+        for s in range(0,steps+1):
+            
+            pfrxx=burst_from[0]+(float(s)/steps)*(control[0]-burst_from[0])
+            pfryy=burst_from[1]+(float(s)/steps)*(control[1]-burst_from[1])
+            pfrzz=burst_from[2]+(float(s)/steps)*(control[2]-burst_from[2])
+            
+            ptrxx=control[0]+(float(s)/steps)*(burst_to[0]-control[0])
+            ptryy=control[1]+(float(s)/steps)*(burst_to[1]-control[1])
+            ptrzz=control[2]+(float(s)/steps)*(burst_to[2]-control[2])
+            
+            pxx = pfrxx + (float(s)/steps)*(ptrxx-pfrxx)
+            pyy = pfryy + (float(s)/steps)*(ptryy-pfryy)
+            pzz = pfrzz + (float(s)/steps)*(ptrzz-pfrzz)
+            
+            cb=None
+            if s==steps: cb=callback
+            
+            list_of_burst.append(Burst(x=pxx,y=pyy,z=pzz,delay=s*delay,callback=cb))
+        
+        return list_of_burst
+            
         
 
 class Level:
@@ -348,6 +383,7 @@ class Level:
     status1 = "status1"
     status2 = "status2"
     status3 = "status3"
+    door=None
 
     AG_twinklers=None
 
@@ -380,11 +416,15 @@ class Level:
                     self.solomon=Solomon(cc,rr+0.3,self)
                     self.grid[rr][cc]="."
                     self.solomon.A_wandswish.callback=self.block_swap
+                    
+                elif c=="4":
+                    self.door=[cc,rr]
+                    self.grid[rr][cc]="."
 
                 elif c=="k":
                     ns=Sprite(cc,rr)
                     ns.setDrawFuncToList(lists["green_key"])
-                    ns.collision_action=key_detected_something_test
+                    ns.collision_action=self.key_detected_something_test
                     self.sprites.append(ns)
                     self.grid[rr][cc]="."
 
@@ -396,12 +436,21 @@ class Level:
 
             rr+=1
 
+        #gotem = Burst().createBurst(burst_from=[-10.0,-10.0,-10.0], steps=30, burst_to=[self.solomon.x,self.solomon.y,0],delay=0.2)
+        #print gotem
+        #self.bursts=self.bursts + gotem
+
         self.AG_twinklers=ActionGroup()
         self.AG_twinklers.append("twinkle1",Action(func=self.sin_gen_1,max=200,cycle=True,min=0,reverseloop=False,init_tick=0))
         self.AG_twinklers.append("twinkle2",Action(func=self.sin_gen_2,max=100,cycle=True,min=0,reverseloop=False,init_tick=10))
 
     def eval_grid(self,coords):
         return self.grid[coords[1]][coords[0]]
+
+    def key_detected_something_test(self):
+        print "KEY GOT!"
+
+
 
     def block_swap(self):
 
@@ -429,6 +478,7 @@ class Level:
         if self.solomon.facing==-1: distance=distanceLeft
         elif self.solomon.facing==1: distance=distanceRight
             
+        #check not in block space when casting
         if distance > 0.2:
             if ch=="b":
                 #print("break block")
@@ -441,6 +491,8 @@ class Level:
             elif ch==".":
                 print("create")
                 self.grid[yy][xx]="b"
+            elif ch=="k":
+                print "*****KEY STRUCK!*****"
 
     def evaluate(self,joystick,keys):
 
@@ -454,6 +506,7 @@ class Level:
         self.solomon_block_above = [int(self.solomon.x+0.5),int(self.solomon.y+1+0.5)]
         self.solomon_block_left = [int(self.solomon.x-1+0.5),int(self.solomon.y+0.5)]
         self.solomon_block_right = [int(self.solomon.x+1+0.5),int(self.solomon.y+0.5)]
+        self.solomon_block = [int(self.solomon.x+0.5),int(self.solomon.y+0.5)]
 
         walktest=False
         #self.status1=""
@@ -514,8 +567,15 @@ class Level:
         #if joystick.isUp(keys):
         #    self.solomon.y+=0.02
         #    walktest=True
-
-
+        for s in self.sprites:
+            dist2 = (s.x-self.solomon.x) * (s.x-self.solomon.x) + (s.y-self.solomon.y) * (s.y-self.solomon.y)
+            if dist2 < 0.1:
+                s.run_collision_action()
+                self.sprites.remove(s)
+                gotem = Burst().createBurst(burst_from=[s.x,s.y,0], steps=30, burst_to=[self.door[0],self.door[1],0],delay=0.2)
+                print gotem
+                self.bursts=self.bursts + gotem
+            
         self.solomon.current_state["walking"] = walktest
         if walktest: self.solomon.AG_walk.do()
 

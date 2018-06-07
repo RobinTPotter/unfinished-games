@@ -55,7 +55,10 @@ class Sprite:
     def temp_drawfunc(self):
         glutSolidCube(0.8)
 
-
+    def run_collision_action(self):
+        if self.collision_action!=None: self.collision_action()
+        return self
+            
     def do(self):
         self.AG_move.do()
 
