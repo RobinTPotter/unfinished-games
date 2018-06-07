@@ -203,7 +203,7 @@ class Thing:
 
             elif self.joystick.isKey("a"): ##add object
                 self.state="add"
-                self.menu=["COMMENT","PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","POLYGON","POINT","CONE","DISC","ROTATE"]
+                self.menu=["COMMENT","PUSH-POP","TRANSLATE","SCALE","CUBE","SPHERE","POLYGON","LINES","POINT","CONE","DISC","CYLINDER","ROTATE"]
                 for cc in colours.keys(): self.menu.append("COLOUR_"+cc.upper())
                 self.edititem=self.menuindex
                 self.menuindex=0
@@ -305,7 +305,6 @@ class Thing:
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="COMMENT":
-                    ##note there are two item to add so this is back to front
                     tmp.insert(self.edititem,"#COMMENT /*                  */")
                     self.state="browse"
                     #self.menuindex=0
@@ -325,6 +324,14 @@ class Thing:
                     tmp.insert(self.edititem,"glVertex3f(1.00,0.00,0.00) ###NO###XXX###YYY###ZZZ")
                     tmp.insert(self.edititem,"glVertex3f(0.00,1.00,0.00) ###NO###XXX###YYY###ZZZ")
                     tmp.insert(self.edititem,"glVertex3f(0.00,0.00,1.00) ###NO###XXX###YYY###ZZZ")    
+                    self.state="browse"
+                    #self.menuindex=0
+                elif self.menu[self.menuindex]=="LINES":
+                    tmp.insert(self.edititem,"glEnd()")
+                    tmp.insert(self.edititem,"glLineWidth(3.0) ###width")
+                    tmp.insert(self.edititem,"glBegin(GL_LINES)")
+                    tmp.insert(self.edititem,"glVertex3f(1.00,0.00,0.00) ###NO###XXX###YYY###ZZZ")
+                    tmp.insert(self.edititem,"glVertex3f(-1.00,0.00,0.00) ###NO###XXX###YYY###ZZZ")
                     self.state="browse"
                     #self.menuindex=0
                 elif self.menu[self.menuindex]=="POINT":
@@ -348,6 +355,8 @@ class Thing:
                     except:
                         tmp.insert(self.edititem,"q=gluNewQuadric()")
                     self.state="browse"
+                elif self.menu[self.menuindex]=="CYLINDER":
+                    tmp.insert(self.edititem,"gluCylinder(q,1,1,1,10,1) ###xxx###yyy###zzz###Isub###Istack")
                     #self.menuindex=0
                 #lif self.menu[self.menuindex]=="COLOR":
                 #    tmp.insert(self.edititem,"glColor(0.0,0.0,0.0) ###Icol_r###Icol_g###Icol_b")
