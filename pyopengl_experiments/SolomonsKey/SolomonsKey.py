@@ -31,6 +31,14 @@ class Solomon:
     AG_jump=None
     A_wandswish=None
     current_state={}
+    jumping_counter = 0
+    jumping_counter_max = 7
+    jump_inc_start = 0.5
+    jump_inc = 0.2
+    jump_inc_falloff = 0.6
+    step_inc = 0.05
+    jumping_dir=0
+    
 
     bound=0.3 #this is his bounding sphere
     step=0.100
@@ -451,7 +459,7 @@ class Level:
 
 
 
-    def block_swap(self):
+    def block_swap(self,bump_only=False):
 
         self.solomon.current_state["wandswish"]=False
         print("hi from block swap "+str(self.solomon))
@@ -464,11 +472,11 @@ class Level:
         xx = self.block_to_action[0]
         ch = self.grid[yy][xx]
         
-        
-        #wand flare!
-        crouch=0
-        if self.solomon.current_state["crouching"]==True: crouch=-0.4
-        self.bursts.append(Burst(x=self.solomon.x+self.solomon.facing*0.5,y=self.solomon.y+crouch,z=0))
+        if not bump_only:
+            #wand flare!
+            crouch=0
+            if self.solomon.current_state["crouching"]==True: crouch=-0.4
+            self.bursts.append(Burst(x=self.solomon.x+self.solomon.facing*0.5,y=self.solomon.y+crouch,z=0))
 
         #must be in correct place first
         distanceLeft = (self.solomon.x-1+0.5)-(int(self.solomon.x-1+0.5))
@@ -498,7 +506,6 @@ class Level:
         self.solomon.stickers=[]
 
         self.solomon.stickers.append([0,0,0,"white"])
-
         """ TODO redo current_state was rubbish anyway """
 
         self.solomon_block_below = [int(self.solomon.x+0.5),int(self.solomon.y-0.1)]
@@ -511,8 +518,9 @@ class Level:
         #self.status1=""
         #self.status2=""
 
-        if joystick.isDown(keys):
+        if joystick.isDown(keys) and self.solomon.current_state["jumping"]==False:
             self.solomon.current_state["crouching"]=True
+            print "crouched"
         else:
             self.solomon.current_state["crouching"]=False
 
@@ -521,24 +529,120 @@ class Level:
 
         under = self.eval_grid(self.solomon_block_below)
         distance = 1+(int(self.solomon.y+1+0.5))-(self.solomon.y+1+0.5)
-        self.status3=str(self.solomon.y)
+        
+        print "dinstance to grid under " + str(distance)
 
-        if under == '.' and ((distanceLeft<0.9 and self.solomon.facing==-1) or (distanceRight<0.9 and self.solomon.facing==1)):
+        if self.solomon.current_state["jumping"]==False and \
+            ( under == '.' and ((distanceLeft<0.8 and self.solomon.facing==-1) or (distanceRight<0.8 and self.solomon.facing==1)) ):
             self.solomon.current_state["falling"]=True
+            print "falling"
         else:
             self.solomon.current_state["falling"]=False
+            if distance!=0.49 and self.solomon.current_state["jumping"]==False:
+                self.solomon.y=round(self.solomon.y)+0.01
+                
+                
+                
+                
+                
+                
+                
+                
 
         if self.solomon.current_state["falling"]==True:
             self.solomon.y-=0.25
+            self.solomon.y=round(self.solomon.y,2)
+            
+
+        '''
+        jumping_counter = 0
+        jumping_counter_max = 10
+        jump_inc_start = 0.1
+        jump_inc = 0.1
+        jump_inc_falloff = 0.99
+        '''
+
+        if self.solomon.current_state["jumping"]==False and self.solomon.current_state["crouching"]==False and self.solomon.current_state["falling"]==False:
+            if joystick.isUp(keys):
+                self.solomon.current_state["jumping"]=True
+                self.solomon.jumping_counter=0
+                
+                if joystick.isLeft(keys): self.solomon.jumping_dir=-1
+                elif joystick.isRight(keys): self.solomon.jumping_dir=1
+                else: self.solomon.jumping_dir=0
+                self.solomon.jump_inc = self.solomon.jump_inc_start
+                
+                print "start jump"+str(self.solomon.jumping_dir)
+        
+        
+        
+        
+        
+        
+        
+
+        if self.solomon.current_state["jumping"]==True:
+            if self.solomon.jumping_counter>self.solomon.jumping_counter_max:
+                self.solomon.current_state["jumping"]=False
+                self.solomon.jumping_counter=0
+                print "stop jump"
+            else:
+                self.solomon.jumping_counter+=1
+            
+        #if self.solomon.jumping_counter>0: print str(self.solomon.jumping_counter)
+
+
+        if self.solomon.current_state["jumping"]==True:
+            self.solomon.x+=self.solomon.jumping_dir*self.solomon.step_inc
+            
+            self.solomon.y+=round(self.solomon.jump_inc,2)
+            self.solomon.jump_inc*=self.solomon.jump_inc_falloff
+            
+
+
+
+
+
+
+                
+        above = self.eval_grid(self.solomon_block_above)
+        distance_above = 1+(int(self.solomon.y-1+0.5))-(self.solomon.y-1+0.5)
+        
+        print "dinstance to grid above " + str(distance_above)
+
+        if self.solomon.current_state["jumping"]==True and \
+            ( above in [ 'B','b','s' ] and distance_above>0.88): ##and ((distanceLeft<0.8 and self.solomon.facing==-1) or (distanceRight<0.8 and self.solomon.facing==1)) ):
+            self.solomon.current_state["jumping"]=False
+            print "OUCH"
+            if not above=='s':
+                self.block_to_action=self.solomon_block_above
+                self.block_swap(bump_only=True)
+                
+                
+                
+                
+                
+                
+                
+
+
+
+
+
+
+
+
+
+
 
         if joystick.isFire(keys):
             if self.solomon.current_state["wandswish"]==False:
                 #start swish
-                self.solomon.current_state["wandswish"]=True                
+                self.solomon.current_state["wandswish"]=True   
+                print "swish"
                 if self.solomon.facing==-1: self.block_to_action = self.solomon_block_left
                 elif self.solomon.facing==1: self.block_to_action = self.solomon_block_right
                 if self.solomon.current_state["crouching"]==True:
-                    print "crouched"
                     self.block_to_action=[self.block_to_action[0],self.block_to_action[1]-1]
 
             else:
@@ -551,17 +655,19 @@ class Level:
                 self.solomon.facing=-1
                 self.status1=self.eval_grid(self.solomon_block_left)
                 self.status2=str(distanceLeft)+ " L"
-                if (distanceLeft>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
-                    self.solomon.x-=0.05
-                    walktest=True
+                if self.solomon.current_state["jumping"]==False:
+                    if (distanceLeft>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                        self.solomon.x-=self.solomon.step_inc
+                        walktest=True
 
             if joystick.isRight(keys):
                 self.solomon.facing=1
                 self.status1=self.eval_grid(self.solomon_block_right)
                 self.status2=str(distanceRight)+" R"
-                if (distanceRight>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
-                    self.solomon.x+=0.05
-                    walktest=True
+                if self.solomon.current_state["jumping"]==False:
+                    if (distanceRight>0.3 or self.status1==".") and self.solomon.current_state["crouching"]==False:
+                        self.solomon.x+=self.solomon.step_inc
+                        walktest=True
 
         #if joystick.isUp(keys):
         #    self.solomon.y+=0.02
@@ -573,11 +679,13 @@ class Level:
                 self.target_z=20
                 self.sprites.remove(s)
                 gotem = Burst().createBurst(burst_from=[s.x,s.y,0], steps=60, burst_to=[self.door[0],self.door[1],0], control=[self.door[0],self.door[1],5], delay=0.4, callback=self.reset_z)
-                print gotem
+                #print gotem
                 self.bursts=self.bursts + gotem
             
         self.solomon.current_state["walking"] = walktest
-        if walktest: self.solomon.AG_walk.do()
+        if walktest:
+            print "walking"
+            self.solomon.AG_walk.do()
 
         self.solomon.current_state["standing"]
         self.solomon.current_state["crouching"]
@@ -586,6 +694,8 @@ class Level:
         self.solomon.current_state["wandswish"]
         self.solomon.current_state["falling"]
 
+        self.status3=str(self.solomon.y)
+        print str(self.solomon.y)
 
         self.AG_twinklers.do()
 
@@ -723,7 +833,7 @@ class SolomonsKey:
     joystick=Joystick()
     
 
-    def animate(self,FPS=25):
+    def animate(self,FPS=10):
 
         currentTime=time()
 
