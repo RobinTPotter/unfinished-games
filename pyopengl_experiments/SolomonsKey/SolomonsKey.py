@@ -616,9 +616,9 @@ class Level:
                 self.block_swap(bump_only=True)
                 
         if joystick.isFire(keys):
-            if self.solomon.wand_rest==0:
-                self.solomon.wand_rest==self.solomon.wand_rest_start
-                if self.solomon.current_state["wandswish"]==False:
+            if self.solomon.current_state["wandswish"]==False:
+                if self.solomon.wand_rest==0:
+                    self.solomon.wand_rest=self.solomon.wand_rest_start
                     #start swish
                     self.solomon.current_state["wandswish"]=True   
                     print "swish"
@@ -626,13 +626,12 @@ class Level:
                     elif self.solomon.facing==1: self.block_to_action = self.solomon_block_right
                     if self.solomon.current_state["crouching"]==True:
                         self.block_to_action=[self.block_to_action[0],self.block_to_action[1]-1]
-
-                else:
-                    #continue swish
-                    print "blah"
-                    pass
+                    
             else:
-                self.solomon.wand_rest-=1
+                #continue swish
+                print "blah"
+                pass
+        
                 
 
         else:
@@ -682,6 +681,12 @@ class Level:
         self.status3=str(self.solomon.y)
 
         self.AG_twinklers.do()
+        
+        if self.solomon.wand_rest>0:
+            self.solomon.wand_rest-=1
+            
+
+
 
     def reset_z(self):
         self.target_z=self.proper_z
