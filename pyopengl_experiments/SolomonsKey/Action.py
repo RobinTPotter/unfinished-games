@@ -1,9 +1,9 @@
 class Action:
     
     tick=0
-    min=-5
-    max=5
-    value=0
+    min=-5.0
+    max=5.0
+    value=0.0
     cycle=False 
     reverseloop=False
     dir=1    
