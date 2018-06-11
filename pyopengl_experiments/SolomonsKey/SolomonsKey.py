@@ -491,7 +491,7 @@ class Level:
         elif self.solomon.facing==1: distance=distanceRight
             
         #check not in block space when casting
-        if distance > 0.2:
+        if distance > 0.075:
             if ch=="b":
                 #print("break block")
                 #self.grid[yy][xx]="B"
@@ -524,6 +524,7 @@ class Level:
 
         left_grid_is = self.eval_grid(self.solomon_block_left)
         right_grid_is = self.eval_grid(self.solomon_block_right)
+        below_grid_is = self.eval_grid(self.solomon_block_below)
 
         walktest=False
         #self.status1=""
@@ -542,13 +543,17 @@ class Level:
         distance = 1+(int(self.solomon.y+1+0.5))-(self.solomon.y+1+0.5)
         
         #print "dinstance to grid under " + str(distance)
+        
+        canwalk=False
 
         if self.solomon.current_state["jumping"]==False and \
             ( under == '.' and ((distanceLeft<0.8 and self.solomon.facing==-1) or (distanceRight<0.8 and self.solomon.facing==1)) ):
             self.solomon.current_state["falling"]=True
             print "falling"
+            canwalk=False
         else:
             self.solomon.current_state["falling"]=False
+            canwalk=True
             if distance!=0.49 and self.solomon.current_state["jumping"]==False:
                 self.solomon.y=round(self.solomon.y)+0.01
                 
@@ -565,7 +570,11 @@ class Level:
         jump_inc_falloff = 0.99
         '''
 
-        if self.solomon.current_state["jumping"]==False and self.solomon.current_state["crouching"]==False and self.solomon.current_state["falling"]==False:
+        floor_solid = below_grid_is in ("b","B","s")
+        
+
+
+        if self.solomon.current_state["jumping"]==False and self.solomon.current_state["crouching"]==False and self.solomon.current_state["falling"]==False and floor_solid:
             if joystick.isUp(keys):
                 if self.solomon.jumping_rest==0:
                     self.solomon.jumping_rest=self.solomon.jumping_rest_start
@@ -639,7 +648,7 @@ class Level:
                 self.solomon.facing=-1
                 self.status1=left_grid_is
                 self.status2=str(distanceLeft)+ " L"
-                if self.solomon.current_state["jumping"]==False:
+                if self.solomon.current_state["jumping"]==False and canwalk:
                     if (distanceLeft>0.4 or left_grid_is==".") and self.solomon.current_state["crouching"]==False:
                         self.solomon.x-=self.solomon.step_inc
                         walktest=True
@@ -648,7 +657,7 @@ class Level:
                 self.solomon.facing=1
                 self.status1=right_grid_is
                 self.status2=str(distanceRight)+" R"
-                if self.solomon.current_state["jumping"]==False:
+                if self.solomon.current_state["jumping"]==False and canwalk:
                     if (distanceRight>0.4 or right_grid_is==".") and self.solomon.current_state["crouching"]==False:
                         self.solomon.x+=self.solomon.step_inc
                         walktest=True
