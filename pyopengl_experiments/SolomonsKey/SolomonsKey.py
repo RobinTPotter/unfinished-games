@@ -183,7 +183,7 @@ class Solomon:
 
         #############################entering crouch section###############################
         glPushMatrix()
-        if "crouching" in self.state_test_on(): glTranslate(0,0,-0.3)
+        if "crouching" in self.state_test_on(): glTranslate(0,0,-0.4)
 
 
         #if "walking" in self.state_test_on(): glRotatef(0.0,1,0,-30*float(self.AG_walk.value("wobble")))
@@ -491,20 +491,32 @@ class Level:
         elif self.solomon.facing==1: distance=distanceRight
             
         #check not in block space when casting
+        
+        
         if distance > 0.075:
-            if ch=="b":
-                #print("break block")
-                #self.grid[yy][xx]="B"
-                print("destroy block")
-                self.grid[yy][xx]="B"
-            elif ch=="B":
-                print("destroy block")
-                self.grid[yy][xx]="."
-            elif ch==".":
-                print("create")
-                self.grid[yy][xx]="b"
-            elif ch=="k":
-                print "*****KEY STRUCK!*****"
+            if bump_only:
+                if ch=="b":
+                    #print("break block")
+                    #self.grid[yy][xx]="B"
+                    print("destroy block")
+                    self.grid[yy][xx]="B"
+                elif ch=="B":
+                    print("destroy block")
+                    self.grid[yy][xx]="."
+                elif ch==".":
+                    print("create")
+                    self.grid[yy][xx]="b"
+            else:
+                if ch=="b":
+                    #print("break block")
+                    #self.grid[yy][xx]="B"
+                    print("destroy block")
+                    self.grid[yy][xx]="."
+                elif ch==".":
+                    print("create")
+                    self.grid[yy][xx]="b"
+                elif ch=="k" and not bump_only:
+                    print "*****KEY STRUCK!*****"
 
     def evaluate(self,joystick,keys):
 
@@ -518,6 +530,8 @@ class Level:
         #if self.solomon.current_state["jumping"] or self.solomon.current_state["falling"]: isjumpingoffset=0.35
         self.solomon_block_below = [int(self.solomon.x+0.5),int(self.solomon.y-0.1-isjumpingoffset)]
         self.solomon_block_above = [int(self.solomon.x+0.5),int(self.solomon.y+1+0.5)]
+        self.solomon_block_above_brow1 = [int(self.solomon.x+0.5+self.solomon.facing*0.2),int(self.solomon.y+1+0.5)]
+        self.solomon_block_above_brow2 = [int(self.solomon.x+0.5-self.solomon.facing*0.2),int(self.solomon.y+1+0.5)]
         self.solomon_block_left = [int(self.solomon.x-1+0.5),int(self.solomon.y+0.5)]
         self.solomon_block_right = [int(self.solomon.x+1+0.5),int(self.solomon.y+0.5)]
         self.solomon_block = [int(self.solomon.x+0.5),int(self.solomon.y+0.5)]
@@ -525,6 +539,8 @@ class Level:
         left_grid_is = self.eval_grid(self.solomon_block_left)
         right_grid_is = self.eval_grid(self.solomon_block_right)
         below_grid_is = self.eval_grid(self.solomon_block_below)
+        above_brow1_grid_is = self.eval_grid(self.solomon_block_above_brow1)
+        above_brow2_grid_is = self.eval_grid(self.solomon_block_above_brow2)
 
         walktest=False
         #self.status1=""
@@ -648,7 +664,7 @@ class Level:
                 self.solomon.facing=-1
                 self.status1=left_grid_is
                 self.status2=str(distanceLeft)+ " L"
-                if self.solomon.current_state["jumping"]==False and canwalk:
+                if self.solomon.current_state["jumping"]==False: # and canwalk:
                     if (distanceLeft>0.4 or left_grid_is==".") and self.solomon.current_state["crouching"]==False:
                         self.solomon.x-=self.solomon.step_inc
                         walktest=True
@@ -657,7 +673,7 @@ class Level:
                 self.solomon.facing=1
                 self.status1=right_grid_is
                 self.status2=str(distanceRight)+" R"
-                if self.solomon.current_state["jumping"]==False and canwalk:
+                if self.solomon.current_state["jumping"]==False: # and canwalk:
                     if (distanceRight>0.4 or right_grid_is==".") and self.solomon.current_state["crouching"]==False:
                         self.solomon.x+=self.solomon.step_inc
                         walktest=True
@@ -675,6 +691,14 @@ class Level:
                 #print gotem
                 self.bursts=self.bursts + gotem
             
+            
+        
+        floor_solid = below_grid_is in ("b","B","s")
+        
+        if not floor_solid:
+            walktest=False
+            self.solomon.current_state["falling"]=True
+        
         self.solomon.current_state["walking"] = walktest
         if walktest:
             print "walking"
@@ -774,6 +798,18 @@ class Level:
             glPushMatrix()
             glTranslate(self.solomon_block_above[0],self.solomon_block_above[1],0)
             glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["white"])
+            glutWireCube(0.85)
+            glPopMatrix()
+            
+            glPushMatrix()
+            glTranslate(self.solomon_block_above_brow1[0],self.solomon_block_above_brow1[1],0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["green"])
+            glutWireCube(0.85)
+            glPopMatrix()
+            
+            glPushMatrix()
+            glTranslate(self.solomon_block_above_brow2[0],self.solomon_block_above_brow2[1],0)
+            glMaterialfv(GL_FRONT,GL_DIFFUSE,colours["green"])
             glutWireCube(0.85)
             glPopMatrix()
 
@@ -1083,6 +1119,14 @@ class SolomonsKey:
                 glMaterialfv(GL_FRONT,GL_DIFFUSE,colours[col])
                 glutSolidCube(wdth-0.02)
                 glTranslate(wdth,0,0)
+                glPushMatrix()
+                #glLoadIdentity()
+                glScale(0.006,0.01,-0.01)
+                glTranslate(-70,4,-20)
+                #glTranslate(-180,-70,0)
+                glTranslate(wdth,0,0)
+                self.letters.drawString(k[:3])
+                glPopMatrix()
 
 
 
