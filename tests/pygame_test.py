@@ -10,9 +10,14 @@ pg.joystick.init()
 joystick = None
 
 
+## initialize font
+
 pg.font.init()
 font = pg.font.SysFont(None, 12)
 print (font)
+
+
+## set config file name and define config load/save functions
 
 config_file = 'config.file.txt'
 
@@ -34,13 +39,15 @@ def load_config():
 config = load_config()
 save_config(config)
 
-
+517
+705
 
 
 pg.display.set_mode(config['size'])
 FPS = config['FPS']
 
-
+##https://learn.adafruit.com/pi-video-output-using-pygame/pointing-pygame-to-the-framebuffer
+##stolen from here with grateful thanks
 class main_screen :
     screen = None
     textsurface_counter = 0 
@@ -81,8 +88,13 @@ class main_screen :
         # Initialise font support
         pg.font.init()
         # Render the screen
+        pg.mouse.set_visible(False)
         pg.display.update()
+       
+    def __del__(self):
+        "Destructor to make sure pg shuts down, etc."
  
+    ##didn't steal this. attempt to read ast joystick from a config file
     def joystick_setup(self):                
         try:
             for j in range(pg.joystick.get_count()):
@@ -99,24 +111,36 @@ class main_screen :
         except:
             self.output("no joysticks")
             
+            
+            
+    ##one line feed back to screen, setting a opacity/counter for fade out
     def output(self, message):
         print(message)
         self.textsurface = font.render(message, True, (0, 0, 0),(255,255,255))
         self.textsurface_counter = 255
-            
-    def __del__(self):
-        "Destructor to make sure pg shuts down, etc."
- 
-    def test(self,clock):
+      
+      
+      
+    ##start function for main loop
+    def start(self,clock):
+        
+        prev_m = None
 
         done = False
         try:    
             while done==False:
                 
-                # Fill the screen with red (255, 0, 0)
-                red = (255, 0, 0)
+                
+                red = (0, 0, 0)
                 self.screen.fill(red)
-                # Update the display
+                
+                
+                
+                m = pg.mouse.get_pos()
+                mx,my = m[0],m[1]
+                if prev_m!=m: self.output("mouse {0},{1}".format(mx,my))
+                
+                
                 
                 if self.textsurface_counter > 0:
                     self.screen.blit(self.textsurface,(0,0))
@@ -124,20 +148,38 @@ class main_screen :
                     self.textsurface_counter -= 10
                     #print("zzzz {0}".format(self.textsurface_counter))
                     
+                    
+                    
+                    
                 # EVENT PROCESSING STEP
+                # heavily doctored from Adafruit example
                 for event in pg.event.get(): # User did something
                     if event.type == pg.QUIT or ( event.type == pg.KEYDOWN and event.key == 27 ): # If user clicked close
                         done=True # Flag that we are done so we exit this loop
                     
                     # Possible joystick actions: JOYAXISMOTION JOYBALLMOTION JOYBUTTONDOWN JOYBUTTONUP JOYHATMOTION
                     if event.type == pg.JOYBUTTONDOWN or ( event.type == pg.KEYDOWN ):
-                        self.output("Joystick button pressed or key "+str(event.key)+" pressed")
+                        if 'button' in event.dict: self.output("Joystick button {0} pressed".format(event.button))
+                        if 'key' in event.dict: self.output("Key {0} pressed".format(event.key))
                         
                     if event.type == pg.JOYBUTTONUP or ( event.type == pg.KEYUP ):
-                        self.output("Joystick button released or key "+str(event.key)+" released")
-                        
+                        if 'button' in event.dict: self.output("Joystick button {0} released".format(event.button))
+                        if 'key' in event.dict: self.output("Key {0} released".format(event.key))
+
+
+
+
+                ## added a clock to control FPS
                 clock.tick(FPS)
+                
+                ## update screen
                 pg.display.flip()
+                
+                
+                ## retain prev mouse pos
+                prev_m = m
+                
+                
                 
         except Exception as al:
             print("{0}".format(al))
@@ -152,4 +194,5 @@ if __name__ == "__main__":
     # Create an instance of the class
     clock = pg.time.Clock()
     player = main_screen()
-    player.test(clock)
+    player.joystick_setup()
+    player.start(clock)
