@@ -1,9 +1,24 @@
 #!/bin/python
 
-from OpenGL import *
-from OpenGL.GLUT import *
-from OpenGL.GLU import *
-from OpenGL.GL import *
+#from OpenGL import 
+from OpenGL.GLUT import glutSwapBuffers, glutSolidCube, glutKeyboardFunc, glutKeyboardUpFunc, glutDisplayFunc, \
+glutIdleFunc, glutInit, glutInitDisplayMode, glutCreateWindow, glutMainLoop, \
+glutInitWindowSize, glutIgnoreKeyRepeat, glutSpecialFunc, glutReshapeFunc, glutSpecialUpFunc, glutTimerFunc, glutPostRedisplay, GLUT_DOUBLE, GLUT_RGBA, GLUT_DEPTH
+
+
+from OpenGL.GLU import gluPerspective, gluLookAt
+
+
+from OpenGL.GL import GL_PROJECTION,  GL_MODELVIEW, GL_DEPTH_TEST, GL_SMOOTH, \
+GL_CULL_FACE, GL_LIGHTING, GL_POSITION, GL_LIGHT0, glLoadIdentity, \
+glMatrixMode, glPushMatrix, glBlendFunc, glEnable, glClearColor, glShadeModel, glLightfv, \
+GL_LINEAR_ATTENUATION, GL_CONSTANT_ATTENUATION, GL_DIFFUSE, \
+glMaterialfv, glTranslate, glPopMatrix, glScale, GL_LIGHT1, GL_FRONT, glLightf, \
+glViewport, GL_SRC_ALPHA, GL_ONE, GL_DEPTH_BUFFER_BIT, glClear, GL_COLOR_BUFFER_BIT
+
+
+
+
 import sys
 from time import time
 from math import sin, cos, pi, floor, ceil, sqrt
@@ -186,7 +201,7 @@ class SolomonsKey:
 
         print("about to loop...")
         glutMainLoop()
-        
+
         return
 
 
