@@ -49,8 +49,8 @@ class Action:
             if self.tick>=self.max:
                 self.working=False
                 self.overide=False
-                if not self.callback==None:
-                    self.callback()                     
+                if self.callback is not None:
+                    self.callback.__call__()  #for pylint                   
                     #print(dir(self))
                     print("callback called")
                     self.kick()
@@ -69,7 +69,7 @@ class ActionGroup:
         
     def append(self,action_name,action):
         if self.actions.has_key(action_name):
-            raise Error("action defined "+action_name)
+            raise Exception("action defined "+action_name)
         else:
             self.actions[action_name]=action
             
@@ -92,11 +92,11 @@ class ActionGroup:
             #print "action "+str(action_name)+" "+str(self.actions[action_name].value)
             return self.actions[action_name].value
         else:
-            raise Error("no such action registered "+action_name)
+            raise Exception("no such action registered "+action_name)
             
     def action(self,action_name):
         if self.actions.has_key(action_name):
             return self.actions[action_name]
         else:
-            raise Error("no such action registered "+action_name)
+            raise Exception("no such action registered "+action_name)
             
