@@ -48,6 +48,7 @@ class SolomonsKey:
 
         currentTime=time()
 
+        #key movement for omnicontrol
         try:
             if self.keys["x"]: self.fxx+=1
             if self.keys["z"]: self.fxx-=1
@@ -58,53 +59,46 @@ class SolomonsKey:
         except:
             pass
 
+        # run calculations for level inc collision etc
         if not self.level==None: self.level.evaluate(self.joystick,self.keys)
+
         glutPostRedisplay()
 
         glutTimerFunc(int(1000/FPS), self.animate, FPS)
 
         drawTime=currentTime-self.lastFrameTime
+
         self.topFPS=int(1000/drawTime)
-        if int(100*time())%100==0:
 
-            print("draw time "+str(drawTime)+" top FPS "+str(1000/drawTime)     )
-            '''
-            gr=0
-
-            print(("solomon",self.level.solomon.x,self.level.solomon.y))
-            for gg in range(len(self.level.grid)-1,-1,-1):
-                temp=list(self.level.grid[gg])
-
-                if int(self.level.solomon.y)==gg: temp[int(self.level.solomon.x)]="#"
-                print((temp),"\n")
-            #self.tcxx,self.tcyy,self.tczz=random.randint(5,14),random.randint(5,14),random.randint(5,14)
-            print("","\n")
-            '''
-
+        # set camera target focus points
         self.tfxx,self.tfyy,self.tfzz=self.level.solomon.x+0.2*self.level.solomon.facing,self.level.solomon.y-0.5,3.0
+
+        # set camera target position
         self.tcxx,self.tcyy,self.tczz=self.level.solomon.x+1*self.level.solomon.facing,self.level.solomon.y-0.2,float(self.level.target_z)
 
+
+        # inititalize current camera positions and focal targets
         if self.cxx==None: self.cxx=self.tcxx
         if self.cyy==None: self.cyy=self.tcyy
         if self.czz==None: self.czz=self.tczz
-
+        # ....
         if self.fxx==None: self.fxx=self.tfxx
         if self.fyy==None: self.fyy=self.tfyy
         if self.fzz==None: self.fzz=self.tfzz
 
-
-
-
+        # calculate current focal point and camera position
+        # self.camera_sweep is the "speed" at which transitions are being made
         self.cxx+=(self.tcxx-self.cxx)/self.camera_sweep
         self.cyy+=(self.tcyy-self.cyy)/self.camera_sweep
         self.czz+=(self.tczz-self.czz)/self.camera_sweep
-
+        # ...
         self.fxx+=(self.tfxx-self.fxx)/self.camera_sweep
         self.fyy+=(self.tfyy-self.fyy)/self.camera_sweep
         self.fzz+=(self.tfzz-self.fzz)/self.camera_sweep
 
         self.lastFrameTime=time()
 
+    # if windowed ensure aspect ratio correct
     def reshape(self,width, height):
         r = float(width) / float(height);
         glViewport(0, 0, width, height)
@@ -118,18 +112,26 @@ class SolomonsKey:
     def __init__(self):
 
         print(str(bool(glutInit)))
+        print("hello and weolcome")
+        print("if you see an error next try the unofficial binaries of pyopengl")
+
+        print("initializing glut etc")
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH)
         glutInitWindowSize(640,480)
         glutCreateWindow(name)
 
+        print("set blend function")
         glBlendFunc(GL_SRC_ALPHA, GL_ONE)
 
+        print("set colours and lights")
         glClearColor(0.,0.,0.,1.)
         glShadeModel(GL_SMOOTH)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
+
+        print ("set light 1")
         lightZeroPosition = [10.,4.,10.,1.]
         lightZeroColor = [0.9,1.0,0.9,1.0] #green tinged
         glLightfv(GL_LIGHT0, GL_POSITION, lightZeroPosition)
@@ -138,6 +140,7 @@ class SolomonsKey:
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.05)
         glEnable(GL_LIGHT0)
 
+        print ("set light 2")
         lightZeroPosition2 = [-10.,-4.,10.,1.]
         lightZeroColor2 = [1.0,0.9,0.9,1.0] #green tinged
         glLightfv(GL_LIGHT1, GL_POSITION, lightZeroPosition2)
@@ -147,13 +150,18 @@ class SolomonsKey:
         glEnable(GL_LIGHT1)
 
         #initialization of letters
+        print("initialzing letters")
         self.letters = Letters.Letters()
 
         #for game models
+        print("making model lists")
         MakeLists()
 
+        
+        print("ignore key repeat")
         glutIgnoreKeyRepeat(1)
 
+        print ("attach glut events to functions")
         glutSpecialFunc(self.keydownevent)
         glutSpecialUpFunc(self.keyupevent)
         glutReshapeFunc(self.reshape)
@@ -163,16 +171,22 @@ class SolomonsKey:
         glutDisplayFunc(self.display)
         #glutIdleFunc(self.display)
 
+        print("initial projection")
         glMatrixMode(GL_PROJECTION)
         gluPerspective(60.0,640.0/480.,1.,50.)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
 
+        print("generating level")
         self.level=generateLevel(0)
 
+        print("keys set up")
         self.initkey("zxdcfvqaopm")
         self.animate()
+
+        print("about to loop...")
         glutMainLoop()
+        
         return
 
 
