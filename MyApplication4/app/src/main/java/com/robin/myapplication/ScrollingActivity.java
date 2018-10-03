@@ -21,7 +21,7 @@ import java.io.File;
 public class ScrollingActivity extends Activity {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
-    GridView gridView;
+    GridView gridview;
     File[] files;
 
     @Override
@@ -42,6 +42,8 @@ public class ScrollingActivity extends Activity {
         files = cam.listFiles();
         imad.setFiles(files);
 
+        setGridViewHeight();
+
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
 
 
@@ -54,6 +56,36 @@ public class ScrollingActivity extends Activity {
             }
         });
 
+
+    }
+
+    public void setGridViewHeight() {
+
+        ListAdapter listAdapter = gridview.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int columns = gridview.getNumColumns();
+        int totalHeight = 0;
+        int items = listAdapter.getCount();
+        int rows = 0;
+
+        View listItem = listAdapter.getView(0, null, gridview);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if (items > columns) {
+            x = items / columns;
+            rows = (int) (x + 1);
+            totalHeight *= rows;
+        }
+
+        ViewGroup.LayoutParams params = gridview.getLayoutParams();
+        params.height = totalHeight;
+        gridview.setLayoutParams(params);
 
     }
 
