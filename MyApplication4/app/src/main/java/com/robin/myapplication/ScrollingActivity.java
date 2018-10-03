@@ -61,27 +61,7 @@ public class ScrollingActivity extends Activity {
 
     public void setGridViewHeight() {
 
-        ListAdapter listAdapter = gridview.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-
-        int columns = gridview.getNumColumns();
-        int totalHeight = 0;
-        int items = listAdapter.getCount();
-        int rows = 0;
-
-        View listItem = listAdapter.getView(0, null, gridview);
-        listItem.measure(0, 0);
-        totalHeight = listItem.getMeasuredHeight();
-
-        float x = 1;
-        if (items > columns) {
-            x = items / columns;
-            rows = (int) (x + 1);
-            totalHeight *= rows;
-        }
+    int totalHeight = files.length * 256;
 
         ViewGroup.LayoutParams params = gridview.getLayoutParams();
         params.height = totalHeight;
