@@ -16,14 +16,13 @@ public class ImageAdapter extends BaseAdapter {
     File[] files;
     public ImageAdapter(Context c) {
         mContext = c;
-        File cam = new File( Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM)
-                , "Camera");
-
-         files = cam.listFiles();
 
     }
+public void setFiles(File[] files) {
 
+   this.files = files;
+
+}
     public int getCount() {
         return files.length;
     }
