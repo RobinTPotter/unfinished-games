@@ -21,13 +21,43 @@ public class ScrollingActivity extends Activity {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     GridView gridView;
+    File[] files;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_scrolling);
         GridView gridview = (GridView) findViewById(R.id.grid_view);
-        Toast.makeText(ScrollingActivity.this, gridview.toString(), Toast.LENGTH_SHORT).show();
+
+        permissionCheck();
+
+        ImageAdapter imad = new ImageAdapter(this);
+        File cam = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM)
+                , "Camera");
+
+         files = cam.listFiles();
+        imad.setFiles(files);
+
+
+
+        //Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
+
+
+        gridview.setAdapter(imad);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(ScrollingActivity.this, "" + files[position].getPath(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public void permissionCheck() {
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -54,24 +84,5 @@ public class ScrollingActivity extends Activity {
             Toast.makeText(ScrollingActivity.this, "permission granted", Toast.LENGTH_SHORT).show();
         }
 
-
-        ImageAdapter imad = new ImageAdapter(this);
-
-
-        File cam = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DCIM)
-                , "Camera");
-
-        imad.setFiles(cam.listFiles());
-
-        //Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
-        gridview.setAdapter(imad);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(ScrollingActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }
