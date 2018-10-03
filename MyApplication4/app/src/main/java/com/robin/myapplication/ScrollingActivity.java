@@ -40,9 +40,7 @@ public class ScrollingActivity extends Activity {
          files = cam.listFiles();
         imad.setFiles(files);
 
-
-
-        //Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
 
 
         gridview.setAdapter(imad);

@@ -58,7 +58,7 @@ public void setFiles(File[] files) {
          //   for ( File f : files)
           //      s.append(f.getName());
           //  return s.toString();
-            return super.toString();
+            return String.valueOf(files.length);
         }
     // references to our images
 
