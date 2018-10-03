@@ -53,6 +53,12 @@ public class ImageAdapter extends BaseAdapter {
         return imageView;
     }
 
+        public String toString() {
+            StringBuilder s=new StringBuilder();
+            for ( File f : files)
+                s.append(f.getName());
+            return s.toString();
+        }
     // references to our images
 
 }

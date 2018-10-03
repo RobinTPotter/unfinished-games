@@ -17,8 +17,11 @@ GridView gridView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
         GridView gridview = (GridView) findViewById(R.id.grid_view);
-        gridview.setAdapter(new ImageAdapter(this));
+        Toast.makeText(ScrollingActivity.this, gridview.toString() , Toast.LENGTH_SHORT).show();
+        ImageAdapter imad = new ImageAdapter(this);
 
+        Toast.makeText(ScrollingActivity.this, imad.toString() ,          Toast.LENGTH_SHORT).show();
+        gridview.setAdapter(imad);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
