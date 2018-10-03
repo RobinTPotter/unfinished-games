@@ -4,7 +4,6 @@ package com.robin.myapplication;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
-import android.os.storage.StorageManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,9 +16,11 @@ public class ImageAdapter extends BaseAdapter {
     File[] files;
     public ImageAdapter(Context c) {
         mContext = c;
-         files = new File( Environment.getExternalStoragePublicDirectory(
+        File cam = new File( Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM)
-                , "Camera").listFiles();
+                , "Camera");
+
+         files = cam.listFiles();
 
     }
 
