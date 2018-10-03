@@ -41,7 +41,7 @@ public void setFiles(File[] files) {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(85, 85));
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(256, 256));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -54,10 +54,11 @@ public void setFiles(File[] files) {
     }
 
         public String toString() {
-            StringBuilder s=new StringBuilder();
-            for ( File f : files)
-                s.append(f.getName());
-            return s.toString();
+         //   StringBuilder s=new StringBuilder();
+         //   for ( File f : files)
+          //      s.append(f.getName());
+          //  return s.toString();
+            return super.toString();
         }
     // references to our images
 
