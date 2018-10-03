@@ -42,12 +42,16 @@ public class ScrollingActivity extends Activity {
         files = cam.listFiles();
         imad.setFiles(files);
 
-        setGridViewHeight();
 
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
 
 
         gridview.setAdapter(imad);
+        resizeGridView(gridview, files.length, 3);
+
+
+
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -59,16 +63,13 @@ public class ScrollingActivity extends Activity {
 
     }
 
-    public void setGridViewHeight() {
-
-    int totalHeight = files.length * 256;
-
-        ViewGroup.LayoutParams params = gridview.getLayoutParams();
-        params.height = totalHeight;
-        gridview.setLayoutParams(params);
-
+    private void resizeGridView(GridView gridView, int items, int columns) {
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        int oneRowHeight = gridView.getHeight();
+        int rows = (int) (items / columns);
+        params.height = oneRowHeight * rows;
+        gridView.setLayoutParams(params);
     }
-
     public void permissionCheck() {
 
         if (ContextCompat.checkSelfPermission(this,
