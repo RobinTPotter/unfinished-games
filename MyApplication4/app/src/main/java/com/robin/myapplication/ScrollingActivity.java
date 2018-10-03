@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,7 +30,8 @@ public class ScrollingActivity extends Activity {
 
         setContentView(R.layout.activity_scrolling);
         GridView gridview = (GridView) findViewById(R.id.grid_view);
-
+        NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
+        nsv.setEnabled(true);
         permissionCheck();
 
         ImageAdapter imad = new ImageAdapter(this);
@@ -37,7 +39,7 @@ public class ScrollingActivity extends Activity {
                 Environment.DIRECTORY_DCIM)
                 , "Camera");
 
-         files = cam.listFiles();
+        files = cam.listFiles();
         imad.setFiles(files);
 
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
