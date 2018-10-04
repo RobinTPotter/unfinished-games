@@ -32,9 +32,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ScaleGestureDetector.OnScaleGestureListener  {
 
-    private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
@@ -42,12 +41,6 @@ public class MainActivity extends AppCompatActivity
     private boolean locked = false;
     ImageView pictureView;
 
-
-    public boolean onTouchEvent(MotionEvent motionEvent) {
-        if (locked) return true;
-        mScaleGestureDetector.onTouchEvent(motionEvent);
-        return true;
-    }
 
 
     @Override
@@ -69,9 +62,9 @@ public class MainActivity extends AppCompatActivity
                 if (locked) {
                     Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                   // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
+                    // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
                 } else {
-                  //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+                    //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
                 }
             }
         });
@@ -88,8 +81,7 @@ public class MainActivity extends AppCompatActivity
         pictureView = (ImageView) findViewById(R.id.pictureView);
         if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
 
-
-        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
+        ScaleGestureDetector detector = new ScaleGestureDetector(this,this);
 
     }
 
@@ -210,16 +202,26 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-        @Override
-        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-            mScaleFactor *= scaleGestureDetector.getScaleFactor();
+    @Override
+    public boolean onScale(ScaleGestureDetector detector) {
+            mScaleFactor *= detector.getScaleFactor();
             mScaleFactor = Math.max(0.1f,
                     Math.min(mScaleFactor, 10.0f));
             pictureView.setScaleX(mScaleFactor);
             pictureView.setScaleY(mScaleFactor);
-            Toast.makeText(MainActivity.this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
             return true;
-        }
+
     }
+
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector detector) {
+return true;
+    }
+
+    @Override
+    public void onScaleEnd(ScaleGestureDetector detector) {
+//return ;
+    }
+
 }
