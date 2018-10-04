@@ -49,7 +49,7 @@ public class ScrollingActivity extends Activity {
         resizeGridView(files.length, 3);
 
 
-        Toast.makeText(ScrollingActivity.this, gridview.getClipBounds().toString(), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ScrollingActivity.this, gridview.getClipBounds().toString(), Toast.LENGTH_SHORT).show();
 
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
