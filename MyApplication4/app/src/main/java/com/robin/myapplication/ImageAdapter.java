@@ -52,12 +52,7 @@ public void setFiles(File[] files) {
         }
 
         Drawable im = Drawable.createFromPath(files[position].getPath());
-
-        Bitmap b = ((BitmapDrawable)im).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 256, 256, false);
-
-        imageView.setImageDrawable(new BitmapDrawable(mContext.getResources() , bitmapResized));
-
+        imageView.setImageDrawable(im);
         return imageView;
     }
 

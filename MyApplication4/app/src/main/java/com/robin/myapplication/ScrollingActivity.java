@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class ScrollingActivity extends Activity {
 
@@ -37,7 +38,8 @@ public class ScrollingActivity extends Activity {
                 , "Camera");
 
         files = cam.listFiles();
-        imad.setFiles(files);
+        
+        imad.setFiles(Arrays.copyOfRange(files,0,10));
 
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
 
