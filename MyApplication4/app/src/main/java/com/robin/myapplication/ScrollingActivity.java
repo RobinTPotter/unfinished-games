@@ -41,16 +41,10 @@ public class ScrollingActivity extends Activity {
         files = cam.listFiles();
         imad.setFiles(files);
 
-
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
-
 
         gridview.setAdapter(imad);
         resizeGridView(files.length, 3);
-
-
-       // Toast.makeText(ScrollingActivity.this, gridview.getClipBounds().toString(), Toast.LENGTH_SHORT).show();
-
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -59,8 +53,6 @@ public class ScrollingActivity extends Activity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     private void resizeGridView(int items, int columns) {
