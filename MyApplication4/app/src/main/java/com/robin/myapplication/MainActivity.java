@@ -81,7 +81,15 @@ public class MainActivity extends AppCompatActivity
         pictureView = (ImageView) findViewById(R.id.pictureView);
         if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
 
-        ScaleGestureDetector detector = new ScaleGestureDetector(this,this);
+        final ScaleGestureDetector detector = new ScaleGestureDetector(this,this);
+
+        pictureView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return detector.onTouchEvent(event);
+            }
+        });
+
 
     }
 
