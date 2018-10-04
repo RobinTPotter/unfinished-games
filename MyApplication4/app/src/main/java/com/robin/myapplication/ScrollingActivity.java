@@ -69,7 +69,10 @@ public class ScrollingActivity extends Activity {
         int rows = (int) (items / columns);
         params.height = oneRowHeight * rows;
         gridView.setLayoutParams(params);
+        gridView.invalidate();
     }
+
+
     public void permissionCheck() {
 
         if (ContextCompat.checkSelfPermission(this,
