@@ -11,6 +11,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,9 +34,21 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ScaleGestureDetector mScaleGestureDetector;
+    private float mScaleFactor = 1.0f;
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
+
+    private boolean locked = false;
     ImageView pictureView;
+
+
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        if (locked) return false;
+        mScaleGestureDetector.onTouchEvent(motionEvent);
+        return true;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +61,19 @@ public class MainActivity extends AppCompatActivity
 
         permissionCheck();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                locked = !locked;
+                if (locked) {
+                    Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+                } else {
+
+                    fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
+                }
             }
         });
 
@@ -67,6 +89,8 @@ public class MainActivity extends AppCompatActivity
         pictureView = (ImageView) findViewById(R.id.pictureView);
         if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
 
+
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
     }
 
@@ -87,6 +111,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        if (locked) return false;
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -183,5 +208,17 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+            mScaleFactor *= scaleGestureDetector.getScaleFactor();
+            mScaleFactor = Math.max(0.1f,
+                    Math.min(mScaleFactor, 10.0f));
+            pictureView.setScaleX(mScaleFactor);
+            pictureView.setScaleY(mScaleFactor);
+            return true;
+        }
     }
 }
