@@ -44,7 +44,7 @@ public class ScrollingActivity extends Activity {
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();
 
         gridview.setAdapter(imad);
-        resizeGridView(files.length, 3);
+        //resizeGridView(files.length, 3);
 
         Toast.makeText(ScrollingActivity.this, "" + String.valueOf(gridview.getWidth())+" "+ String.valueOf(gridview.getHeight()), Toast.LENGTH_SHORT).show();
 
