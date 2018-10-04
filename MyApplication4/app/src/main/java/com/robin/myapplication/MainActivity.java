@@ -5,12 +5,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -32,15 +38,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ScaleGestureDetector.OnScaleGestureListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, ScaleGestureDetector.OnScaleGestureListener {
 
     private float mScaleFactor = 1.0f;
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
-
+    private String currentPicture;
     private boolean locked = false;
     ImageView pictureView;
-
 
 
     @Override
@@ -81,12 +86,13 @@ public class MainActivity extends AppCompatActivity
         pictureView = (ImageView) findViewById(R.id.pictureView);
         if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
 
-        final ScaleGestureDetector detector = new ScaleGestureDetector(this,this);
+        final ScaleGestureDetector detector = new ScaleGestureDetector(this, this);
 
         pictureView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                return detector.onTouchEvent(event);
+                detector.onTouchEvent(event);
+                return true;
             }
         });
 
@@ -94,7 +100,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setPicture(String imgstr) {
-        pictureView.setImageURI(Uri.fromFile(new File(imgstr)));
+        currentPicture = imgstr;
+        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+    }
+
+    public void resetPicture() {
+        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+    }
+
+    public void gridDraw() {
+        gridDraw(2, 2, 0, 0);
+    }
+
+    public void gridDraw(int c, int r, int l, int t) {
+        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+
+        Canvas canvas = new Canvas(bitmap);
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.BLACK);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x / c;
+        int height = size.y / r;
+
+        for (int cc = 0; cc < c; cc++) {
+            for (int rr = 0; rr < r; rr++) {
+                canvas.drawRect(l + cc * width, t + rr * height, l + (cc + 1) * width - 1, t + (rr + 1) * height - 1, paint);
+            }
+        }
+        pictureView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -142,17 +180,18 @@ public class MainActivity extends AppCompatActivity
             selectImageIntent.setType("image/*");
             Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
             startActivityForResult(chooser, SELECT_PHOTO);
-
         } else if (id == R.id.rtp_2x2) {
-
+            gridDraw(2, 2, 0, 0);
         } else if (id == R.id.rtp_3x3) {
-
+            gridDraw(3, 3, 0, 0);
         } else if (id == R.id.rtp_3x4) {
-
+            gridDraw(3, 4, 0, 0);
         } else if (id == R.id.rtp_4x3) {
-
+            gridDraw(4, 3, 0, 0);
         } else if (id == R.id.rtp_4x4) {
-
+            gridDraw(4, 4, 0, 0);
+        } else if (id == R.id.rtp_reset) {
+            resetPicture();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -212,19 +251,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor *= detector.getScaleFactor();
-            mScaleFactor = Math.max(0.1f,
-                    Math.min(mScaleFactor, 10.0f));
-            pictureView.setScaleX(mScaleFactor);
-            pictureView.setScaleY(mScaleFactor);
-            Toast.makeText(this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
-            return true;
+        mScaleFactor *= detector.getScaleFactor();
+        mScaleFactor = Math.max(0.1f,
+                Math.min(mScaleFactor, 10.0f));
+        pictureView.setScaleX(mScaleFactor);
+        pictureView.setScaleY(mScaleFactor);
+        Toast.makeText(this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
+        return true;
 
     }
 
     @Override
     public boolean onScaleBegin(ScaleGestureDetector detector) {
-return true;
+        return true;
     }
 
     @Override
