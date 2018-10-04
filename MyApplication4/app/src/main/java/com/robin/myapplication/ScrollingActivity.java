@@ -30,8 +30,7 @@ public class ScrollingActivity extends Activity {
 
         setContentView(R.layout.activity_scrolling);
         gridview = (GridView) findViewById(R.id.grid_view);
-        NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
-        nsv.setEnabled(true);
+      
         permissionCheck();
 
         ImageAdapter imad = new ImageAdapter(this);
