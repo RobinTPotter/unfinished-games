@@ -30,7 +30,7 @@ public class ScrollingActivity extends Activity {
 
         setContentView(R.layout.activity_scrolling);
         gridview = (GridView) findViewById(R.id.grid_view);
-      
+
         permissionCheck();
 
         ImageAdapter imad = new ImageAdapter(this);
@@ -46,7 +46,7 @@ public class ScrollingActivity extends Activity {
 
 
         gridview.setAdapter(imad);
-        resizeGridView(files.length, 3);
+        //resizeGridView(files.length, 3);
 
 
 
