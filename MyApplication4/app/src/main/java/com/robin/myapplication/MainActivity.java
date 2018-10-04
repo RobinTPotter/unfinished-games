@@ -3,6 +3,8 @@ package com.robin.myapplication;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,11 +25,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
+    private final int SELECT_PHOTO = 1;
     ImageView pictureView;
 
     @Override
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         pictureView = (ImageView) findViewById(R.id.pictureView);
-        if  (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
+        if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
 
 
     }
@@ -108,8 +113,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, ScrollingActivity.class);
-            startActivity(intent);
+            Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
+            selectImageIntent.setType("image/*");
+            Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
+            startActivityForResult(chooser, SELECT_PHOTO);
 
         } else if (id == R.id.rtp_2x2) {
 
@@ -128,6 +135,25 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        final Uri imageUri = imageReturnedIntent.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        pictureView.setImageBitmap(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+        }
+    }
 
 
     public void permissionCheck() {
