@@ -7,9 +7,6 @@ import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,7 +35,7 @@ public class ScrollingActivity extends Activity {
                 , "Camera");
 
         files = cam.listFiles();
-        
+
         imad.setFiles(Arrays.copyOfRange(files,0,10));
 
         Toast.makeText(ScrollingActivity.this, imad.toString(), Toast.LENGTH_SHORT).show();

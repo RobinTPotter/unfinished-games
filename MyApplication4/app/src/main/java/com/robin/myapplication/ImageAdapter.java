@@ -3,10 +3,12 @@ package com.robin.myapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -51,8 +53,19 @@ public void setFiles(File[] files) {
             imageView = (ImageView) convertView;
         }
 
-        Drawable im = Drawable.createFromPath(files[position].getPath());
-        imageView.setImageDrawable(im);
+     //   Drawable im = Drawable.createFromPath(files[position].getPath());
+      //  imageView.setImageDrawable(im);
+
+        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail( null,
+         position,
+         0,
+                MediaStore.Images.Thumbnails.MINI_KIND,
+        new BitmapFactory.Options());
+
+        imageView.setImageDrawable(new BitmapDrawable(mContext.getResources(),  bmp));
+
+
+
         return imageView;
     }
 
