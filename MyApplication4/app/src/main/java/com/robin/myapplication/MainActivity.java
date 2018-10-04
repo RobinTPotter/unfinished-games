@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
 
     public void gridDraw(int c, int r, int l, int t) {
         pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
-        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap();
+        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888,true);
 
         Canvas canvas = new Canvas(bitmap);
 

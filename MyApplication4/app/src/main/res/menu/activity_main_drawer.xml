@@ -25,9 +25,10 @@
         <item
             android:id="@+id/rtp_4x4"
             android:icon="@drawable/rtp_4x4"
-            android:title="4 x 4" />  <item
-        android:id="@+id/rtp_reset"
-        android:icon="@drawable/rtp_reset"
-        android:title="4 x 4" />
+            android:title="4 x 4" />
+        <item
+            android:id="@+id/rtp_reset"
+            android:icon="@drawable/rtp_reset"
+            android:title="reset" />
     </group>
 </menu>
