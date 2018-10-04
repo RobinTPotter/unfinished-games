@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
-        <dex dex="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_d6739ddb0cd3fcacb45e5e08f8a51830adb17359.jar" />
-    </item>
-    <item
         jar="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.4.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -21,6 +14,13 @@
         revision="23.0.1"
         sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
         <dex dex="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_72fb27c11508bc7b74608613b12636d49920579f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.4.0_d6739ddb0cd3fcacb45e5e08f8a51830adb17359.jar" />
     </item>
     <item
         jar="C:\Users\Potterr\unfinished-games\MyApplication4\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.4.0\jars\classes.jar"
