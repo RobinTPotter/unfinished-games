@@ -29,7 +29,7 @@ public class ScrollingActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_scrolling);
-        GridView gridview = (GridView) findViewById(R.id.grid_view);
+        gridview = (GridView) findViewById(R.id.grid_view);
         NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nsv);
         nsv.setEnabled(true);
         permissionCheck();
@@ -47,7 +47,7 @@ public class ScrollingActivity extends Activity {
 
 
         gridview.setAdapter(imad);
-        resizeGridView(gridview, files.length, 3);
+        resizeGridView(files.length, 3);
 
 
 
@@ -63,13 +63,13 @@ public class ScrollingActivity extends Activity {
 
     }
 
-    private void resizeGridView(GridView gridView, int items, int columns) {
-        ViewGroup.LayoutParams params = gridView.getLayoutParams();
-        int oneRowHeight = gridView.getHeight();
+    private void resizeGridView( int items, int columns) {
+        ViewGroup.LayoutParams params = gridview.getLayoutParams();
+        int oneRowHeight = gridview.getHeight();
         int rows = (int) (items / columns);
         params.height = oneRowHeight * rows;
-        gridView.setLayoutParams(params);
-        gridView.invalidate();
+        gridview.setLayoutParams(params);
+        gridview.invalidate();
     }
 
 
