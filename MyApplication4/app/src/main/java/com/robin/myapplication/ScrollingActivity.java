@@ -46,6 +46,9 @@ public class ScrollingActivity extends Activity {
         gridview.setAdapter(imad);
         resizeGridView(files.length, 3);
 
+        Toast.makeText(ScrollingActivity.this, ""+gridview.getWidth()+" "+gridview.getHeight(), Toast.LENGTH_SHORT).show();
+
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
