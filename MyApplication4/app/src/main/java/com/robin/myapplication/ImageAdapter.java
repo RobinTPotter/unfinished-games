@@ -2,7 +2,10 @@ package com.robin.myapplication;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +51,12 @@ public void setFiles(File[] files) {
             imageView = (ImageView) convertView;
         }
 
-        imageView.setImageDrawable(Drawable.createFromPath(files[position].getPath()));
+        Drawable im = Drawable.createFromPath(files[position].getPath());
+
+        Bitmap b = ((BitmapDrawable)im).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 256, 256, false);
+
+        imageView.setImageDrawable(new BitmapDrawable(mContext.getResources() , bitmapResized));
 
         return imageView;
     }

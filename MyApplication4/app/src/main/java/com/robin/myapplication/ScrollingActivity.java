@@ -46,7 +46,7 @@ public class ScrollingActivity extends Activity {
 
 
         gridview.setAdapter(imad);
-        //resizeGridView(files.length, 3);
+        resizeGridView(files.length, 3);
 
 
 
@@ -62,7 +62,7 @@ public class ScrollingActivity extends Activity {
 
     }
 
-    private void resizeGridView( int items, int columns) {
+    private void resizeGridView(int items, int columns) {
         ViewGroup.LayoutParams params = gridview.getLayoutParams();
         int oneRowHeight = gridview.getHeight();
         int rows = (int) (items / columns);
