@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        if (locked) return false;
+        if (locked) return true;
         mScaleGestureDetector.onTouchEvent(motionEvent);
         return true;
     }
@@ -69,10 +69,9 @@ public class MainActivity extends AppCompatActivity
                 if (locked) {
                     Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
-                    fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+                   // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
                 } else {
-
-                    fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
+                  //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
                 }
             }
         });
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (locked) return false;
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -121,6 +120,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        if (locked) return true;
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity
                     Math.min(mScaleFactor, 10.0f));
             pictureView.setScaleX(mScaleFactor);
             pictureView.setScaleY(mScaleFactor);
+            Toast.makeText(MainActivity.this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
             return true;
         }
     }
