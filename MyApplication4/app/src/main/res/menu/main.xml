@@ -10,10 +10,12 @@
         android:id="@+id/action_grid_2x2"
         android:orderInCategory="100"
         android:title="2 x 2"
+        android:icon="@drawable/rtp_2x2"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_grid_3x3"
         android:orderInCategory="100"
         android:title="3 x 3"
+        android:icon="@drawable/rtp_3x3"
         app:showAsAction="never" />
 </menu>

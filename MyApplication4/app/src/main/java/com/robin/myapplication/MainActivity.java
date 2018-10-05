@@ -134,9 +134,7 @@ public class MainActivity extends AppCompatActivity
 
     public void gridDraw(int c, int r) {
         Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
-    }
 
-    public void killmenow(int c, int r) {
        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
 
@@ -219,18 +217,6 @@ public class MainActivity extends AppCompatActivity
             selectImageIntent.setType("image/*");
             Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
             startActivityForResult(chooser, SELECT_PHOTO);
-        } else if (id == R.id.rtp_2x2) {
-            gridDraw(2, 2);
-        } else if (id == R.id.rtp_3x3) {
-            gridDraw(3, 3);
-        } else if (id == R.id.rtp_3x4) {
-            gridDraw(3, 4);
-        } else if (id == R.id.rtp_4x3) {
-            gridDraw(4, 3);
-        } else if (id == R.id.rtp_4x4) {
-            gridDraw(4, 4);
-        } else if (id == R.id.rtp_reset) {
-            resetPicture();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
