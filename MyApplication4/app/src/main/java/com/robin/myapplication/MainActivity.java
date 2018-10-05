@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity
     private final int SELECT_PHOTO = 1;
 
 
+    private int offsetx=0;
+    private int offsety=0;
+
+
     private String currentPicture;
     private Bitmap bitmap;
 
@@ -92,6 +96,9 @@ public class MainActivity extends AppCompatActivity
         if (getIntent().hasExtra("Picture")) {
             setPicture(getIntent().getStringExtra("Picture"));
         }
+        if (getIntent().hasExtra("Grid")) {
+            gridDraw(getIntent().getStringExtra("Grid"));
+        }
 
         final ScaleGestureDetector detector = new ScaleGestureDetector(this, this);
 
@@ -118,14 +125,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void gridDraw() {
-        gridDraw(2, 2, 0, 0);
+        gridDraw(2, 2);
     }
 
-    public void gridDraw(int c, int r, int l, int t) {
+    public void gridDraw(String grid) {
+        gridDraw(2, 2);
+    }
+
+    public void gridDraw(int c, int r) {
         Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
     }
 
-    public void killmenow(int c, int r, int l, int t) {
+    public void killmenow(int c, int r) {
        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
 
@@ -147,7 +158,7 @@ public class MainActivity extends AppCompatActivity
 
         for (int cc = 0; cc < c; cc++) {
             for (int rr = 0; rr < r; rr++) {
-                Rect rect = new Rect(l + cc * width, t + rr * height, l + (cc + 1) * width - 1, t + (rr + 1) * height - 1);
+                Rect rect = new Rect(offsetx + cc * width, offsety + rr * height, offsetx + (cc + 1) * width - 1, offsety + (rr + 1) * height - 1);
 
                 Toast.makeText(this, ""+rect, Toast.LENGTH_SHORT).show();
                 canvas.drawRect(rect, paint);
@@ -186,6 +197,12 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else  if (id == R.id.action_grid_2x2) {
+            gridDraw(2, 2);
+            return true;
+        }else  if (id == R.id.action_grid_3x3) {
+            gridDraw(3, 3);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -203,15 +220,15 @@ public class MainActivity extends AppCompatActivity
             Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
             startActivityForResult(chooser, SELECT_PHOTO);
         } else if (id == R.id.rtp_2x2) {
-            gridDraw(2, 2, 0, 0);
+            gridDraw(2, 2);
         } else if (id == R.id.rtp_3x3) {
-            gridDraw(3, 3, 0, 0);
+            gridDraw(3, 3);
         } else if (id == R.id.rtp_3x4) {
-            gridDraw(3, 4, 0, 0);
+            gridDraw(3, 4);
         } else if (id == R.id.rtp_4x3) {
-            gridDraw(4, 3, 0, 0);
+            gridDraw(4, 3);
         } else if (id == R.id.rtp_4x4) {
-            gridDraw(4, 4, 0, 0);
+            gridDraw(4, 4);
         } else if (id == R.id.rtp_reset) {
             resetPicture();
         }
