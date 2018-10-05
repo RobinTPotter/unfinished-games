@@ -99,8 +99,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/robin/myapplication/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="275">
-              <caret line="167" column="48" lean-forward="false" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="48" />
+            <state relative-caret-position="258">
+              <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
               <folding>
                 <element signature="e#3004#3035#0" expanded="true" />
                 <element signature="e#3037#3069#0" expanded="true" />
@@ -112,8 +112,8 @@
                 <element signature="e#4355#4356#0" expanded="true" />
                 <element signature="e#4396#4397#0" expanded="true" />
                 <element signature="e#4426#4427#0" expanded="true" />
-                <element signature="e#10316#10317#0" expanded="true" />
-                <element signature="e#10343#10344#0" expanded="true" />
+                <element signature="e#10304#10305#0" expanded="true" />
+                <element signature="e#10331#10332#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2859,8 +2859,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/robin/myapplication/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="167" column="48" lean-forward="false" selection-start-line="167" selection-start-column="35" selection-end-line="167" selection-end-column="48" />
+        <state relative-caret-position="258">
+          <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
           <folding>
             <element signature="e#3004#3035#0" expanded="true" />
             <element signature="e#3037#3069#0" expanded="true" />
@@ -2872,8 +2872,8 @@
             <element signature="e#4355#4356#0" expanded="true" />
             <element signature="e#4396#4397#0" expanded="true" />
             <element signature="e#4426#4427#0" expanded="true" />
-            <element signature="e#10316#10317#0" expanded="true" />
-            <element signature="e#10343#10344#0" expanded="true" />
+            <element signature="e#10304#10305#0" expanded="true" />
+            <element signature="e#10331#10332#0" expanded="true" />
           </folding>
         </state>
       </provider>

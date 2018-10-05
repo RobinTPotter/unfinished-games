@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity
         }
 
         // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
-        Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
-        Canvas canvas = new Canvas(griddedBitmap);
+       // Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
+        Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         paint.setColor(Color.BLACK);
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        pictureView.setImageBitmap(griddedBitmap);
+        pictureView.setImageBitmap(bitmap);
     }
 
     @Override
