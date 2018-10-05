@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity
     private final int SELECT_PHOTO = 1;
 
 
-    private int offsetx=0;
-    private int offsety=0;
+    private int offsetx = 0;
+    private int offsety = 0;
 
 
     private String currentPicture;
@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         pictureView = (ImageView) findViewById(R.id.pictureView);
-        if (getIntent().hasExtra("Picture")) {
-            setPicture(getIntent().getStringExtra("Picture"));
-        }
+        //if (getIntent().hasExtra("Picture")) {
+        //    setPicture(getIntent().getStringExtra("Picture"));
+       // }
         if (getIntent().hasExtra("Grid")) {
             gridDraw(getIntent().getStringExtra("Grid"));
         }
@@ -113,11 +113,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void setPicture(String imgstr) {
-        currentPicture = imgstr;
-        bitmap = BitmapFactory.decodeFile(currentPicture);
+    public void setPicture() {
+        //currentPicture = imgstr;
+        //bitmap = BitmapFactory.decodeFile(currentPicture);
         pictureView.setImageBitmap(bitmap);
-        Toast.makeText(this, "set to "+imgstr, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "set to " + bitmap.toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void resetPicture() {
@@ -134,31 +134,33 @@ public class MainActivity extends AppCompatActivity
 
     public void gridDraw(int c, int r) {
         Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
+        if (bitmap == null) {
+            Toast.makeText(this, "bmp is null", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-       // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
-
         Canvas canvas = new Canvas(griddedBitmap);
-
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         paint.setColor(Color.BLACK);
 
         Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
         Display display = getWindowManager().getDefaultDisplay();
-        Toast.makeText(this, "got display "+display.toString() , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "got display " + display.toString(), Toast.LENGTH_SHORT).show();
         Point size = new Point();
         display.getSize(size);
         int width = size.x / c;
         int height = size.y / r;
 
-        Toast.makeText(this, ""+width+","+height, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
 
         for (int cc = 0; cc < c; cc++) {
             for (int rr = 0; rr < r; rr++) {
                 Rect rect = new Rect(offsetx + cc * width, offsety + rr * height, offsetx + (cc + 1) * width - 1, offsety + (rr + 1) * height - 1);
 
-                Toast.makeText(this, ""+rect, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + rect, Toast.LENGTH_SHORT).show();
                 canvas.drawRect(rect, paint);
             }
         }
@@ -195,10 +197,10 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else  if (id == R.id.action_grid_2x2) {
+        } else if (id == R.id.action_grid_2x2) {
             gridDraw(2, 2);
             return true;
-        }else  if (id == R.id.action_grid_3x3) {
+        } else if (id == R.id.action_grid_3x3) {
             gridDraw(3, 3);
             return true;
         }
@@ -234,8 +236,9 @@ public class MainActivity extends AppCompatActivity
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        pictureView.setImageBitmap(selectedImage);
+                        bitmap = BitmapFactory.decodeStream(imageStream);
+                    //    pictureView.setImageBitmap(selectedImage);
+                        setPicture();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
