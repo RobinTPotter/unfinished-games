@@ -137,11 +137,18 @@ public class MainActivity extends AppCompatActivity
         if (bitmap == null) {
             Toast.makeText(this, "bmp is null", Toast.LENGTH_SHORT).show();
             return;
+        }else if (!bitmap.isMutable()) {
+            Toast.makeText(this, "bmp is not mutable", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
        // Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
         Canvas canvas = new Canvas(bitmap);
+
+
+        Toast.makeText(this, "canvas is "+ canvas.toString(), Toast.LENGTH_SHORT).show();
+
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         paint.setColor(Color.BLACK);
@@ -236,7 +243,8 @@ public class MainActivity extends AppCompatActivity
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        bitmap = BitmapFactory.decodeStream(imageStream);
+                        bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);;
+
                     //    pictureView.setImageBitmap(selectedImage);
                         setPicture();
                     } catch (FileNotFoundException e) {
