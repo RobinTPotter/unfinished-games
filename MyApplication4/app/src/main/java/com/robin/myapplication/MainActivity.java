@@ -122,8 +122,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void gridDraw(int c, int r, int l, int t) {
-        Toast.makeText(this, "going to draw grid" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
+    }
 
+    public void killmenow(int c, int r, int l, int t) {
        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
 
