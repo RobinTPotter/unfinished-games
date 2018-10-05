@@ -89,7 +89,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         pictureView = (ImageView) findViewById(R.id.pictureView);
-        if (getIntent().hasExtra("Picture")) setPicture(getIntent().getStringExtra("Picture"));
+        if (getIntent().hasExtra("Picture")) {
+            setPicture(getIntent().getStringExtra("Picture"));
+        }
 
         final ScaleGestureDetector detector = new ScaleGestureDetector(this, this);
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void gridDraw(int c, int r, int l, int t) {
-
+        Toast.makeText(this, "going to draw grid" , Toast.LENGTH_SHORT).show();
 
        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
@@ -274,7 +276,7 @@ public class MainActivity extends AppCompatActivity
                 Math.min(mScaleFactor, 10.0f));
         pictureView.setScaleX(mScaleFactor);
         pictureView.setScaleY(mScaleFactor);
-        Toast.makeText(this, "" + mScaleFactor, Toast.LENGTH_SHORT).show();
+
         return true;
 
     }
