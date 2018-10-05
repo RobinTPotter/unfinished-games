@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,7 +44,11 @@ public class MainActivity extends AppCompatActivity
     private float mScaleFactor = 1.0f;
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
+
+
     private String currentPicture;
+    private Bitmap bitmap;
+
     private boolean locked = false;
     ImageView pictureView;
 
@@ -101,11 +106,12 @@ public class MainActivity extends AppCompatActivity
 
     public void setPicture(String imgstr) {
         currentPicture = imgstr;
-        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+        bitmap = BitmapFactory.decodeFile(currentPicture);
+        pictureView.setImageBitmap(bitmap);
     }
 
     public void resetPicture() {
-        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+        pictureView.setImageBitmap(bitmap);
     }
 
     public void gridDraw() {
@@ -113,12 +119,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void gridDraw(int c, int r, int l, int t) {
-        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
-        Bitmap bitmap = ((BitmapDrawable) pictureView.getDrawable()).getBitmap().copy(Bitmap.Config.ARGB_8888,true);
 
-        Canvas canvas = new Canvas(bitmap);
+
+        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+        Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
+
+        Canvas canvas = new Canvas(griddedBitmap);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
         paint.setColor(Color.BLACK);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -127,12 +136,17 @@ public class MainActivity extends AppCompatActivity
         int width = size.x / c;
         int height = size.y / r;
 
+        Toast.makeText(this, ""+width+","+height, Toast.LENGTH_SHORT).show();
+
         for (int cc = 0; cc < c; cc++) {
             for (int rr = 0; rr < r; rr++) {
-                canvas.drawRect(l + cc * width, t + rr * height, l + (cc + 1) * width - 1, t + (rr + 1) * height - 1, paint);
+                Rect rect = new Rect(l + cc * width, t + rr * height, l + (cc + 1) * width - 1, t + (rr + 1) * height - 1);
+
+                Toast.makeText(this, ""+rect, Toast.LENGTH_SHORT).show();
+                canvas.drawRect(rect, paint);
             }
         }
-        pictureView.setImageBitmap(bitmap);
+        pictureView.setImageBitmap(griddedBitmap);
     }
 
     @Override
