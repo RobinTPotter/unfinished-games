@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         currentPicture = imgstr;
         bitmap = BitmapFactory.decodeFile(currentPicture);
         pictureView.setImageBitmap(bitmap);
+        Toast.makeText(this, "set to "+imgstr, Toast.LENGTH_SHORT).show();
     }
 
     public void resetPicture() {
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity
     public void gridDraw(int c, int r, int l, int t) {
 
 
-        pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
+       // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
         Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
 
         Canvas canvas = new Canvas(griddedBitmap);
@@ -130,7 +131,9 @@ public class MainActivity extends AppCompatActivity
 
         paint.setColor(Color.BLACK);
 
+        Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
         Display display = getWindowManager().getDefaultDisplay();
+        Toast.makeText(this, "got display "+display.toString() , Toast.LENGTH_SHORT).show();
         Point size = new Point();
         display.getSize(size);
         int width = size.x / c;
@@ -146,6 +149,7 @@ public class MainActivity extends AppCompatActivity
                 canvas.drawRect(rect, paint);
             }
         }
+
         pictureView.setImageBitmap(griddedBitmap);
     }
 
