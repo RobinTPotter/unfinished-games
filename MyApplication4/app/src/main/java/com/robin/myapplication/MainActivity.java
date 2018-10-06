@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "canvas is "+ canvas.toString(), Toast.LENGTH_SHORT).show();
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(0.5f);
+        paint.setStrokeWidth(1.0f);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.BLACK);
 
