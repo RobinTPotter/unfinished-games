@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:2:1-32:12
+ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:2:1-33:12
 	package
 		ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:3:5-38
 		INJECTED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml
@@ -60,6 +60,10 @@ uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:31:5-96
 	android:name
 		ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:31:22-77
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:32:5-97
+	android:name
+		ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:32:22-78
 uses-sdk
 INJECTED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:23.4.0] C:\Users\Potterr\.android\build-cache\d5370d31f1a7a2a05886f14a44ee4fdf01acb738\output\AndroidManifest.xml:20:5-43
