@@ -155,12 +155,11 @@ public class MainActivity extends AppCompatActivity
         paint.setColor(Color.BLACK);
 
         Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
-        Display display = getWindowManager().getDefaultDisplay();
-        Toast.makeText(this, "got display " + display.toString(), Toast.LENGTH_SHORT).show();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x / c;
-        int height = size.y / r;
+
+        int width = pictureView.getWidth()/c;
+        int height = pictureView.getHeight()/r;
+        if (width<height) height=width;
+        else width=height;
 
         Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
 
