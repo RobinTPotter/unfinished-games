@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
 
+    private int colour = Color.BLACK;
 
     private int offsetx = 0;
     private int offsety = 0;
@@ -95,10 +96,10 @@ public class MainActivity extends AppCompatActivity
         pictureView = (ImageView) findViewById(R.id.pictureView);
         //if (getIntent().hasExtra("Picture")) {
         //    setPicture(getIntent().getStringExtra("Picture"));
+        // }
+        //if (getIntent().hasExtra("Grid")) {
+         //   gridDraw(getIntent().getStringExtra("Grid"));
        // }
-        if (getIntent().hasExtra("Grid")) {
-            gridDraw(getIntent().getStringExtra("Grid"));
-        }
 
         final ScaleGestureDetector detector = new ScaleGestureDetector(this, this);
 
@@ -120,46 +121,35 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(this, "set to " + bitmap.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    public void resetPicture() {
-        pictureView.setImageBitmap(bitmap);
-    }
-
-    public void gridDraw() {
-        gridDraw(2, 2);
-    }
-
-    public void gridDraw(String grid) {
-        gridDraw(2, 2);
-    }
 
     public void gridDraw(int c, int r) {
         Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
         if (bitmap == null) {
             Toast.makeText(this, "bmp is null", Toast.LENGTH_SHORT).show();
             return;
-        }else if (!bitmap.isMutable()) {
+        } else if (!bitmap.isMutable()) {
             Toast.makeText(this, "bmp is not mutable", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
-       // Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
+        // Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
         Canvas canvas = new Canvas(bitmap);
 
 
-        Toast.makeText(this, "canvas is "+ canvas.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "canvas is " + canvas.toString(), Toast.LENGTH_SHORT).show();
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(1.0f);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
+        paint.setColor(colour);
 
         Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
 
-        int width = pictureView.getWidth()/c;
-        int height = pictureView.getHeight()/r;
-        if (width<height) height=width;
-        else width=height;
+        int width = pictureView.getWidth() / c;
+        int height = pictureView.getHeight() / r;
+        if (width < height) height = width;
+        else width = height;
 
         Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
 
@@ -206,9 +196,19 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_grid_2x2) {
             gridDraw(2, 2);
+            pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_3x3) {
             gridDraw(3, 3);
+            pictureView.invalidate();
+            return true;
+        } else if (id == R.id.action_grid_colour_black) {
+            colour = Color.BLACK;
+            pictureView.invalidate();
+            return true;
+        } else if (id == R.id.action_grid_colour_yellow) {
+            colour = Color.BLACK;
+            pictureView.invalidate();
             return true;
         }
 
@@ -243,9 +243,10 @@ public class MainActivity extends AppCompatActivity
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);;
+                        bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
+                        ;
 
-                    //    pictureView.setImageBitmap(selectedImage);
+                        //    pictureView.setImageBitmap(selectedImage);
                         setPicture();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

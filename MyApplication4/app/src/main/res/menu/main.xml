@@ -18,4 +18,16 @@
         android:title="3 x 3"
         android:icon="@drawable/rtp_3x3"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_grid_colour_black"
+        android:orderInCategory="100"
+        android:title="Black"
+        android:icon="@drawable/rtp_black"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_grid_colour_yellow"
+        android:orderInCategory="100"
+        android:title="Yellow"
+        android:icon="@drawable/rtp_yellow"
+        app:showAsAction="never" />
 </menu>
