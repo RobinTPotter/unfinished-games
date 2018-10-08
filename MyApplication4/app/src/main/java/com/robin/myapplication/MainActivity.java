@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -36,6 +37,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private final int SELECT_PHOTO = 1;
 
 
+   Process process;
     private boolean locked = false;
     PictureView pictureView;
 
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        process = launchLogcat();
 
     }
 
@@ -230,4 +234,17 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    private Process launchLogcat() {
+
+        try {
+            File filename = new File(Environment.getExternalStorageDirectory() + "/gridthing-logfile.log");
+            filename.createNewFile();
+            String cmd = "logcat -d -f " + filename.getAbsolutePath();
+            return Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
