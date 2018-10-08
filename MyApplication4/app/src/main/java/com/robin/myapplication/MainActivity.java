@@ -107,42 +107,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-<<<<<<< HEAD
-=======
-        // pictureView.setImageURI(Uri.fromFile(new File(currentPicture)));
-       // Bitmap griddedBitmap = Bitmap.createBitmap(bitmap);
-        Canvas canvas = new Canvas(bitmap);
-
-
-        Toast.makeText(this, "canvas is "+ canvas.toString(), Toast.LENGTH_SHORT).show();
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(1.0f);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.BLACK);
-
-        Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
-        Display display = getWindowManager().getDefaultDisplay();
-        Toast.makeText(this, "got display " + display.toString(), Toast.LENGTH_SHORT).show();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x / c;
-        int height = size.y / r;
-
-        Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
-
-        for (int cc = 0; cc < c; cc++) {
-            for (int rr = 0; rr < r; rr++) {
-                Rect rect = new Rect(offsetx + cc * width, offsety + rr * height, offsetx + (cc + 1) * width - 1, offsety + (rr + 1) * height - 1);
-
-                Toast.makeText(this, "" + rect, Toast.LENGTH_SHORT).show();
-                canvas.drawRect(rect, paint);
-            }
-        }
-
-        pictureView.setImageBitmap(bitmap);
-    }
->>>>>>> 233b203caa02fa300335a686f53165b46777d332
 
     @Override
     public void onBackPressed() {
