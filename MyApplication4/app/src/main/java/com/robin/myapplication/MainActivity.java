@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         permissionCheck();
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
