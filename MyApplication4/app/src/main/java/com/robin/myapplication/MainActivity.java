@@ -232,7 +232,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
         }
 
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
