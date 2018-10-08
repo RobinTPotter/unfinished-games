@@ -39,23 +39,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ScaleGestureDetector.OnScaleGestureListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private float mScaleFactor = 1.0f;
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private final int SELECT_PHOTO = 1;
 
-    private int colour = Color.BLACK;
-
-    private int offsetx = 0;
-    private int offsety = 0;
-
-
-    private String currentPicture;
-    private Bitmap bitmap;
 
     private boolean locked = false;
-    ImageView pictureView;
+    PictureView pictureView;
 
 
     @Override
@@ -93,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        pictureView = (ImageView) findViewById(R.id.pictureView);
+        pictureView = (PictureView) findViewById(R.id.pictureView);
         //if (getIntent().hasExtra("Picture")) {
         //    setPicture(getIntent().getStringExtra("Picture"));
         // }
@@ -101,7 +92,7 @@ public class MainActivity extends AppCompatActivity
          //   gridDraw(getIntent().getStringExtra("Grid"));
        // }
 
-        final ScaleGestureDetector detector = new ScaleGestureDetector(this, this);
+        final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
 
         pictureView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -114,53 +105,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void setPicture() {
-        //currentPicture = imgstr;
-        //bitmap = BitmapFactory.decodeFile(currentPicture);
-        pictureView.setImageBitmap(bitmap);
-        Toast.makeText(this, "set to " + bitmap.toString(), Toast.LENGTH_SHORT).show();
-    }
 
 
-    public void gridDraw(int c, int r) {
-
-        Toast.makeText(this, "going to draw grid", Toast.LENGTH_SHORT).show();
-        if (bitmap == null) {
-            Toast.makeText(this, "bmp is null", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (!bitmap.isMutable()) {
-            Toast.makeText(this, "bmp is not mutable", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-
-        //Toast.makeText(this, "canvas is " + canvas.toString(), Toast.LENGTH_SHORT).show();
-
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setStrokeWidth(1.0f);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(colour);
-
-        //Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
-
-        int width = bitmap.getWidth() / c;
-        int height = bitmap.getHeight() / r;
-        if (width < height) height = width;
-        else width = height;
-
-        //Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
-
-        for (int cc = 0; cc < c; cc++) {
-            for (int rr = 0; rr < r; rr++) {
-                Rect rect = new Rect(offsetx + cc * width, offsety + rr * height, offsetx + (cc + 1) * width - 1, offsety + (rr + 1) * height - 1);
-                //Toast.makeText(this, "" + rect, Toast.LENGTH_SHORT).show();
-                canvas.drawRect(rect, paint);
-            }
-        }
-
-        pictureView.setImageBitmap(bitmap);
-    }
 
     @Override
     public void onBackPressed() {
@@ -192,19 +138,19 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_grid_2x2) {
-            gridDraw(2, 2);
+            pictureView.setRowsCols(2,2);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_3x3) {
-            gridDraw(3, 3);
+            pictureView.setRowsCols(3,3);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_colour_black) {
-            colour = Color.BLACK;
+            pictureView.setColour(Color.BLACK);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_colour_yellow) {
-            colour = Color.YELLOW;
+            pictureView.setColour(Color.YELLOW);
             pictureView.invalidate();
             return true;
         }
@@ -240,11 +186,11 @@ public class MainActivity extends AppCompatActivity
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
-                        ;
+                       Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
 
-                        //    pictureView.setImageBitmap(selectedImage);
-                        setPicture();
+
+                          pictureView.setBitmap(bitmap);
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -283,26 +229,5 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public boolean onScale(ScaleGestureDetector detector) {
-        mScaleFactor *= detector.getScaleFactor();
-        mScaleFactor = Math.max(0.1f,
-                Math.min(mScaleFactor, 10.0f));
-        pictureView.setScaleX(mScaleFactor);
-        pictureView.setScaleY(mScaleFactor);
-
-        return true;
-
-    }
-
-    @Override
-    public boolean onScaleBegin(ScaleGestureDetector detector) {
-        return true;
-    }
-
-    @Override
-    public void onScaleEnd(ScaleGestureDetector detector) {
-//return ;
-    }
 
 }
