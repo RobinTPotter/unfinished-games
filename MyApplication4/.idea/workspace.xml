@@ -109,8 +109,16 @@
                 <element signature="e#2921#2953#0" expanded="true" />
                 <element signature="e#3548#3761#0" expanded="true" />
                 <element signature="e#3760#3761#0" expanded="true" />
-                <element signature="e#8445#8446#0" expanded="true" />
-                <element signature="e#8472#8473#0" expanded="true" />
+                <element signature="e#9847#9848#0" expanded="true" />
+                <element signature="e#9874#9875#0" expanded="true" />
+                <marker date="1538998771199" expanded="true" signature="5223:5480" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="5546:5710" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="5782:6476" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="6599:7160" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="7273:8209" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="8246:9460" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="9534:9768" ph="{...}" />
+                <marker date="1538998771199" expanded="true" signature="9949:9967" ph="{}" />
               </folding>
             </state>
           </provider>
@@ -142,8 +150,8 @@
       <file leaf-file-name="PictureGridView.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/robin/myapplication/PictureGridView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="84" column="30" lean-forward="false" selection-start-line="84" selection-start-column="30" selection-end-line="84" selection-end-column="30" />
+            <state relative-caret-position="170">
+              <caret line="60" column="48" lean-forward="false" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="48" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#680#681#0" expanded="true" />
@@ -2877,17 +2885,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/android-sdk2/sources/android-23/android/widget/ImageView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -2908,16 +2905,35 @@
             <element signature="e#2921#2953#0" expanded="true" />
             <element signature="e#3548#3761#0" expanded="true" />
             <element signature="e#3760#3761#0" expanded="true" />
-            <element signature="e#8445#8446#0" expanded="true" />
-            <element signature="e#8472#8473#0" expanded="true" />
+            <element signature="e#9847#9848#0" expanded="true" />
+            <element signature="e#9874#9875#0" expanded="true" />
+            <marker date="1538998771199" expanded="true" signature="5223:5480" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="5546:5710" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="5782:6476" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="6599:7160" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="7273:8209" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="8246:9460" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="9534:9768" ph="{...}" />
+            <marker date="1538998771199" expanded="true" signature="9949:9967" ph="{}" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/robin/myapplication/PictureGridView.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="84" column="30" lean-forward="false" selection-start-line="84" selection-start-column="30" selection-end-line="84" selection-end-column="30" />
+        <state relative-caret-position="170">
+          <caret line="60" column="48" lean-forward="false" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#680#681#0" expanded="true" />
