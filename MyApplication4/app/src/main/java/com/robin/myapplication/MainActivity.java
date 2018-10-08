@@ -205,7 +205,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     public void permissionCheck() {
 
         if (ContextCompat.checkSelfPermission(this,
