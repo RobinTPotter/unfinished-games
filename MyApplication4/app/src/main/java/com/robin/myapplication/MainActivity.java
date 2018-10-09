@@ -54,12 +54,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+
             process = launchLogcat();
             setContentView(R.layout.activity_main);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             permissionCheck();
+
             final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
             });
+
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity
             toggle.syncState();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
+
             pictureView = (PictureView) findViewById(R.id.pictureView);
             //if (getIntent().hasExtra("Picture")) {
             //    setPicture(getIntent().getStringExtra("Picture"));
@@ -123,6 +128,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         if (locked) return true;
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
@@ -145,7 +151,9 @@ public class MainActivity extends AppCompatActivity
             pictureView.invalidate();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
