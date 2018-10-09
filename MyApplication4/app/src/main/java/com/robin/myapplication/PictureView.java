@@ -31,6 +31,7 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
 
     public PictureView(Context context) {
         super(context);
+
     }
 
 
