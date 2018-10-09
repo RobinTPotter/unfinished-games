@@ -112,11 +112,11 @@ public class PictureView extends View  {
 
             } else {
                 //dest wider, nudge across calc width
-                destwidth = (int) (destheight / aspect_dest);
+                destwidth = (int) (destheight * aspect_src);
                 destx = getWidth() / 2 - destwidth / 2;
             }
 
-            Rect dst = new Rect(destx, desty, destwidth+destx, destheight+desty);
+            Rect dst = new Rect(destx+(int)mPosX, desty+(int)mPosY, destwidth+destx+(int)mPosX, destheight+desty+(int)mPosY);
 
 
             //make sure grid goes in the centre
@@ -247,7 +247,7 @@ public class PictureView extends View  {
 
             // Don't let the object get too small or too large.
             mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 10.0f));
-            Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
 
             invalidate();
             return true;
