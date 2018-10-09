@@ -151,7 +151,9 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
+
         float sf = detector.getScaleFactor();
+
         Toast.makeText(this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
         return false;
     }
