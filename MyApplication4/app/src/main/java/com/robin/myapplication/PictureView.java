@@ -98,7 +98,7 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
                 destx = getWidth() / 2 - destwidth / 2;
             }
 
-            Rect dst = new Rect(destx, desty, destwidth, destheight);
+            Rect dst = new Rect(destx, desty, destwidth+destx, destheight+desty);
 
 
             //make sure grid goes in the centre
