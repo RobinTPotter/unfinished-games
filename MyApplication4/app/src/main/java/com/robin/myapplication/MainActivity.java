@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private final int SELECT_PHOTO = 1;
     Process process;
     private boolean locked = false;
-   PictureView pictureView;
+    PictureView pictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             });
 
         } catch (Exception ex) {
-            Toast.makeText(this,"error: "+ex.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
