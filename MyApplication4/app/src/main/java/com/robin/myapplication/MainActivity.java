@@ -53,47 +53,52 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        process = launchLogcat();
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        permissionCheck();
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                locked = !locked;
-                if (locked) {
-                    Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
-                } else {
-                    //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+        try {
+            process = launchLogcat();
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            permissionCheck();
+            final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    locked = !locked;
+                    if (locked) {
+                        Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
+                    } else {
+                        //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+                    }
                 }
-            }
-        });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        pictureView = (PictureView) findViewById(R.id.pictureView);
-        //if (getIntent().hasExtra("Picture")) {
-        //    setPicture(getIntent().getStringExtra("Picture"));
-        // }
-        //if (getIntent().hasExtra("Grid")) {
-        //   gridDraw(getIntent().getStringExtra("Grid"));
-        // }
-        // final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
-        pictureView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                //  detector.onTouchEvent(event);
-                return true;
-            }
-        });
+            });
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            pictureView = (PictureView) findViewById(R.id.pictureView);
+            //if (getIntent().hasExtra("Picture")) {
+            //    setPicture(getIntent().getStringExtra("Picture"));
+            // }
+            //if (getIntent().hasExtra("Grid")) {
+            //   gridDraw(getIntent().getStringExtra("Grid"));
+            // }
+            // final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
+            pictureView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    //  detector.onTouchEvent(event);
+                    return true;
+                }
+            });
+
+        } catch (Exception ex) {
+            Toast.makeText(this,"error: "+ex.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
