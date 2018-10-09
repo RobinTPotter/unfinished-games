@@ -5,12 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,8 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.Display;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -61,6 +55,7 @@ public class MainActivity extends AppCompatActivity
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
+
             final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
             fab.setOnClickListener(new View.OnClickListener() {
@@ -70,9 +65,8 @@ public class MainActivity extends AppCompatActivity
                     if (locked) {
                         Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                        // fab.setBackgroundColor(getResources().getColor(R.color.boo, null));
                     } else {
-                        //  fab.setBackgroundColor(getResources().getColor(R.color.yay, null));
+
                     }
                 }
             });
