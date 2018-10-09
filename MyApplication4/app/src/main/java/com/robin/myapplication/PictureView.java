@@ -156,10 +156,12 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
         return false;
     }
 
+
     @Override
     public boolean onScaleBegin(ScaleGestureDetector detector) {
         return false;
     }
+
 
     @Override
     public void onScaleEnd(ScaleGestureDetector detector) {
