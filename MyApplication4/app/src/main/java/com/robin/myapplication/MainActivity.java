@@ -46,26 +46,19 @@ public class MainActivity extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_READ_PICS = 0;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_PICS = 0;
     private final int SELECT_PHOTO = 1;
-
-
-   Process process;
+    Process process;
     private boolean locked = false;
     PictureView pictureView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
+        process = launchLogcat();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         permissionCheck();
-
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,40 +72,29 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         pictureView = (PictureView) findViewById(R.id.pictureView);
         //if (getIntent().hasExtra("Picture")) {
         //    setPicture(getIntent().getStringExtra("Picture"));
         // }
         //if (getIntent().hasExtra("Grid")) {
-         //   gridDraw(getIntent().getStringExtra("Grid"));
-       // }
-
-       // final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
-
+        //   gridDraw(getIntent().getStringExtra("Grid"));
+        // }
+        // final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
         pictureView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-              //  detector.onTouchEvent(event);
+                //  detector.onTouchEvent(event);
                 return true;
             }
         });
-
-        process = launchLogcat();
-
     }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -127,7 +109,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -139,16 +120,15 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         if (locked) return true;
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_grid_2x2) {
-            pictureView.setRowsCols(2,2);
+            pictureView.setRowsCols(2, 2);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_3x3) {
-            pictureView.setRowsCols(3,3);
+            pictureView.setRowsCols(3, 3);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_colour_black) {
@@ -160,7 +140,6 @@ public class MainActivity extends AppCompatActivity
             pictureView.invalidate();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -169,14 +148,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_gallery) {
             Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
             selectImageIntent.setType("image/*");
             Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
             startActivityForResult(chooser, SELECT_PHOTO);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -185,32 +162,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
         switch (requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
                     try {
                         final Uri imageUri = imageReturnedIntent.getData();
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                       Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
-
-
-                          pictureView.setBitmap(bitmap);
-
+                        Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
+                        pictureView.setBitmap(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
                 }
         }
     }
 
     public void permissionCheck() {
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -223,7 +193,6 @@ public class MainActivity extends AppCompatActivity
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_PICS
                 );
-
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -231,11 +200,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
         }
-
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -248,7 +215,6 @@ public class MainActivity extends AppCompatActivity
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_PICS
                 );
-
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
@@ -256,12 +222,9 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "permission granted", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-
     private Process launchLogcat() {
-
         try {
             File filename = new File(Environment.getExternalStorageDirectory() + "/gridthing-logfile.log");
             filename.createNewFile();
