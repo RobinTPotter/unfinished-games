@@ -12,7 +12,7 @@
     tools:context="com.robin.myapplication.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <PictureView
+    <com.robin.myapplication.PictureView
         android:id="@+id/pictureView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
