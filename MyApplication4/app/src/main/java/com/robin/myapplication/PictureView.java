@@ -78,7 +78,27 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
                 return;
             }
             Rect src = new Rect(bmpoffsetx, bmpoffsety, bmpwidth, bmpheight);
-            Rect dst = new Rect(0, 0, getWidth(), getHeight());
+
+            double aspect_src = 1.0 * bmpwidth / bmpheight;
+            double aspect_dest = 1.0 * getWidth() / getHeight();
+
+            int destx = 0;
+            int desty = 0;
+            int destwidth = getWidth();
+            int destheight = getHeight();
+
+            if (aspect_src > aspect_dest) {
+                //src wider, nudge down, calc height
+                destheight = (int) (destwidth / aspect_src);
+                desty = getHeight() / 2 - destheight / 2;
+
+            } else {
+                //dest wider, nudge across calc width
+                destwidth = (int) (destheight / aspect_src);
+                destx = getWidth() / 2 - destwidth / 2;
+            }
+
+            Rect dst = new Rect(destx, desty, destwidth, destheight);
 
 
             //make sure grid goes in the centre
