@@ -82,14 +82,6 @@ public class MainActivity extends AppCompatActivity
             pictureView = (PictureView) findViewById(R.id.pictureView);
 
 
-            final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
-            pictureView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    detector.onTouchEvent(event);
-                    return true;
-                }
-            });
 
         } catch (Exception ex) {
             Toast.makeText(this, "error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
