@@ -86,13 +86,9 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(this);
 
             pictureView = (PictureView) findViewById(R.id.pictureView);
-            //if (getIntent().hasExtra("Picture")) {
-            //    setPicture(getIntent().getStringExtra("Picture"));
-            // }
-            //if (getIntent().hasExtra("Grid")) {
-            //   gridDraw(getIntent().getStringExtra("Grid"));
-            // }
-             final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
+
+
+            final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
             pictureView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
