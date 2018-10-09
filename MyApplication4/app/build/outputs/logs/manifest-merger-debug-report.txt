@@ -20,6 +20,7 @@ MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\Potterr\.android\
 MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\Potterr\.android\build-cache\b90488027ce814140b362b45b8dac3d8788a3fd0\output\AndroidManifest.xml:7:5-20
 MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\Potterr\.android\build-cache\b0ef342e00d2078d5144af4754dc719b31bc43ae\output\AndroidManifest.xml:7:5-20
 MERGED from [com.android.support:support-v4:23.4.0] C:\Users\Potterr\.android\build-cache\e17ff4a4344af0e4d9f984ebe2c0c71af11ae9cd\output\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Potterr\.android\build-cache\4f515e6cdb24f333f8c76dee34972bf67fec2f8f\output\AndroidManifest.xml:9:5-20
 	android:label
 		ADDED from C:\Users\Potterr\unfinished-games\MyApplication4\app\src\main\AndroidManifest.xml:8:9-41
 	android:supportsRtl
@@ -72,6 +73,7 @@ MERGED from [com.android.support:appcompat-v7:23.4.0] C:\Users\Potterr\.android\
 MERGED from [com.android.support:animated-vector-drawable:23.4.0] C:\Users\Potterr\.android\build-cache\b90488027ce814140b362b45b8dac3d8788a3fd0\output\AndroidManifest.xml:5:5-44
 MERGED from [com.android.support:support-vector-drawable:23.4.0] C:\Users\Potterr\.android\build-cache\b0ef342e00d2078d5144af4754dc719b31bc43ae\output\AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-v4:23.4.0] C:\Users\Potterr\.android\build-cache\e17ff4a4344af0e4d9f984ebe2c0c71af11ae9cd\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Potterr\.android\build-cache\4f515e6cdb24f333f8c76dee34972bf67fec2f8f\output\AndroidManifest.xml:5:5-7:41
 	tools:overrideLibrary
 		ADDED from [com.android.support:appcompat-v7:23.4.0] C:\Users\Potterr\.android\build-cache\3fba3821e2dabe140acda9361d75e09c82d632c5\output\AndroidManifest.xml:23:9-75
 	android:targetSdkVersion
