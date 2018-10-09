@@ -94,7 +94,7 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
 
             } else {
                 //dest wider, nudge across calc width
-                destwidth = (int) (destheight / aspect_src);
+                destwidth = (int) (destheight / aspect_dest);
                 destx = getWidth() / 2 - destwidth / 2;
             }
 

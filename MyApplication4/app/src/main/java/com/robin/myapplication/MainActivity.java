@@ -92,11 +92,11 @@ public class MainActivity extends AppCompatActivity
             //if (getIntent().hasExtra("Grid")) {
             //   gridDraw(getIntent().getStringExtra("Grid"));
             // }
-            // final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
+             final ScaleGestureDetector detector = new ScaleGestureDetector(this, pictureView);
             pictureView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    //  detector.onTouchEvent(event);
+                    detector.onTouchEvent(event);
                     return true;
                 }
             });
