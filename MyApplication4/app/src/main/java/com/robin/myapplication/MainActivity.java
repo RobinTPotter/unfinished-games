@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private final int SELECT_PHOTO = 1;
     Process process;
     private boolean locked = false;
-    PictureView pictureView;
+   PictureView pictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

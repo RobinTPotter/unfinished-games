@@ -6,9 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.AttributeSet;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
+
+import java.util.jar.Attributes;
 
 public class PictureView extends View implements ScaleGestureDetector.OnScaleGestureListener {
 
@@ -31,6 +34,12 @@ public class PictureView extends View implements ScaleGestureDetector.OnScaleGes
 
     public PictureView(Context context) {
         super(context);
+
+    }
+
+
+    public PictureView(Context context, AttributeSet attr) {
+        super(context, attr);
 
     }
 
