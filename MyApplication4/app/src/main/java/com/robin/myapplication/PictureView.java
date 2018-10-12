@@ -188,7 +188,7 @@ public class PictureView extends View {
                 Matrix matrix = new Matrix();
                 matrix.reset();
                 matrix.postScale(mScaleFactor, mScaleFactor);
-                matrix.postRotate(mRotate);
+                matrix.preRotate(mRotate);
                 matrix.postTranslate(mPosX / mScaleFactor, mPosY / mScaleFactor);
                 canvas.drawBitmap(bitmap, matrix, null);
             }
