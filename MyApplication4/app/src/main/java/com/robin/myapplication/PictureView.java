@@ -128,18 +128,15 @@ public class PictureView extends View {
 
                 Rect dst = new Rect(destx + (int) mPosX, desty + (int) mPosY, destwidth + destx + (int) mPosX, destheight + desty + (int) mPosY);
 
-
                 canvas.drawBitmap(bitmap, src, dst, null);
 
             } else {
-
                 Matrix matrix = new Matrix();
                 matrix.reset();
                 matrix.setTranslate(mPosX, mPosY);
                 matrix.setScale(mScaleFactor, mScaleFactor);
                 matrix.setRotate(mRotate);
                 canvas.drawBitmap(bitmap, matrix, null);
-
             }
             //make sure grid goes in the centre
 
@@ -261,6 +258,8 @@ public class PictureView extends View {
                 break;
             }
         }
+
+        Toast.makeText(this.getContext(), ""+mPosX+","+mPosY, Toast.LENGTH_SHORT).show();
 
         return true;
     }
