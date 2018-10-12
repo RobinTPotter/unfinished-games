@@ -31,6 +31,22 @@ public class PictureView extends View {
 
     private int colour = Color.BLACK;
 
+    public int getC() {
+        return c;
+    }
+
+    public void setC(int c) {
+        this.c = c;
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public void setR(int r) {
+        this.r = r;
+    }
+
     private int c = 0;
     private int r = 0;
 
@@ -91,6 +107,8 @@ public class PictureView extends View {
     public float getPosY() { return mPosY;}
     public float getRotate() { return mRotate;}
 
+
+
     public void setRowsCols(int rt, int ct) {
         r = rt;
         c = ct;
@@ -148,15 +166,6 @@ public class PictureView extends View {
             }
             //make sure grid goes in the centre
 
-            int smaller = getHeight();
-            if (getWidth() < smaller) {
-                smaller = getWidth();
-                offsety = (getHeight() / 2) - (smaller / 2);
-                offsetx = 0;
-            } else {
-                offsetx = (getWidth() / 2) - (smaller / 2);
-                offsety = 0;
-            }
 
 
             //Toast.makeText(this, "canvas is " + canvas.toString(), Toast.LENGTH_SHORT).show();
@@ -170,10 +179,15 @@ public class PictureView extends View {
 
                 //Toast.makeText(this, "set paints etc", Toast.LENGTH_SHORT).show();
 
+                //get max square size
                 int width = getWidth() / c;
                 int height = getHeight() / r;
                 if (width < height) height = width;
                 else width = height;
+
+                offsetx = getWidth()/2 - (width*c)/2;
+                offsety = getHeight()/2 - (height*r)/2;
+
 
                 //Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
 

@@ -2,6 +2,7 @@ package com.robin.myapplication;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private boolean locked = false;
     PictureView pictureView;
     Uri imageUri;
+    int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +80,12 @@ public class MainActivity extends AppCompatActivity
                         Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
-
+                        orientation= getRequestedOrientation();
+                        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
                     } else {
                         Snackbar.make(view, "Unocked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+                        setRequestedOrientation(orientation);
                     }
                     pictureView.setStateLocked(locked);
                 }
@@ -98,6 +102,8 @@ public class MainActivity extends AppCompatActivity
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt("colour", pictureView.getColour());
+        savedInstanceState.putInt("columns", pictureView.getC());
+        savedInstanceState.putInt("rows", pictureView.getR());
         savedInstanceState.putFloat("mPosX", pictureView.getPosX());
         savedInstanceState.putFloat("mPosY", pictureView.getPosY());
         savedInstanceState.putFloat("mRotate", pictureView.getRotate());
@@ -110,6 +116,8 @@ public class MainActivity extends AppCompatActivity
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             pictureView.setColour(savedInstanceState.getInt("colour", Color.BLACK));
+            pictureView.setC(savedInstanceState.getInt("columns", 1));
+            pictureView.setR(savedInstanceState.getInt("rows",1));
             pictureView.setPosX(savedInstanceState.getFloat("mPosX", 0f));
             pictureView.setPosY(savedInstanceState.getFloat("mPosY", 0f));
             pictureView.setRotate(savedInstanceState.getFloat("mRotate", 0f));
@@ -153,6 +161,22 @@ public class MainActivity extends AppCompatActivity
             return true;
         } else if (id == R.id.action_grid_3x3) {
             pictureView.setRowsCols(3, 3);
+            pictureView.invalidate();
+            return true;
+        }else if (id == R.id.action_grid_4x4) {
+            pictureView.setRowsCols(4, 4);
+            pictureView.invalidate();
+            return true;
+        }else if (id == R.id.action_grid_5x5) {
+            pictureView.setRowsCols(5, 5);
+            pictureView.invalidate();
+            return true;
+        }else if (id == R.id.action_grid_4x3) {
+            pictureView.setRowsCols(4, 3);
+            pictureView.invalidate();
+            return true;
+        }else if (id == R.id.action_grid_3x4) {
+            pictureView.setRowsCols(3, 4);
             pictureView.invalidate();
             return true;
         } else if (id == R.id.action_grid_colour_black) {
