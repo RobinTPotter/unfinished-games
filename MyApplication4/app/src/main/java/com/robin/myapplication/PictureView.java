@@ -18,6 +18,7 @@ import java.util.jar.Attributes;
 public class PictureView extends View {
 
 
+    private static final float ROTATION_MULTIPLIER = 10.0f;
     private int offsetx = 0;
     private int offsety = 0;
 
@@ -186,9 +187,9 @@ public class PictureView extends View {
             } else {
                 Matrix matrix = new Matrix();
                 matrix.reset();
-                matrix.postTranslate(mPosX, mPosY);
                 matrix.postScale(mScaleFactor, mScaleFactor);
                 matrix.postRotate(mRotate);
+                matrix.preTranslate(mPosX, mPosY);
                 canvas.drawBitmap(bitmap, matrix, null);
             }
             //make sure grid goes in the centre
@@ -313,6 +314,7 @@ public class PictureView extends View {
 
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             if (!rotating) {
@@ -323,7 +325,7 @@ public class PictureView extends View {
 
             } else {
 
-                mRotate +=  (detector.getScaleFactor()-1);
+                mRotate +=  ROTATION_MULTIPLIER * (detector.getScaleFactor()-1);
 
             }
             invalidate();
