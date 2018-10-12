@@ -201,8 +201,20 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_gallery) {
             Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
             selectImageIntent.setType("image/*");
-            Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
-            startActivityForResult(chooser, SELECT_PHOTO);
+            if (selectImageIntent.resolveActivity(getPackageManager()) != null) {
+                // Bring up gallery to select a photo
+                startActivityForResult(selectImageIntent, SELECT_PHOTO);
+            }
+           // Intent chooser = Intent.createChooser(selectImageIntent, "Choose Picture");
+          //  startActivityForResult(chooser, SELECT_PHOTO);
+
+
+
+
+
+
+
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
