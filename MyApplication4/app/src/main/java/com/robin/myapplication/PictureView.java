@@ -135,7 +135,6 @@ public class PictureView extends View {
         return mRotate;
     }
 
-    private float lastScaleFactor = 1.0f;
 
     public void setRowsCols(int rt, int ct) {
         r = rt;
@@ -323,15 +322,11 @@ public class PictureView extends View {
                 //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
 
             } else {
-                int dir = -1;
-                if (lastScaleFactor > detector.getScaleFactor()) {
-                    dir = 1;
-                }
-                mRotate += dir * detector.getScaleFactor();
+
+                mRotate +=  (detector.getScaleFactor()-1);
 
             }
             invalidate();
-            lastScaleFactor = detector.getScaleFactor();
             return true;
         }
     }
