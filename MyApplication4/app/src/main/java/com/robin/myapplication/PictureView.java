@@ -189,7 +189,7 @@ public class PictureView extends View {
                 matrix.reset();
                 matrix.postScale(mScaleFactor, mScaleFactor);
                 matrix.postRotate(mRotate);
-                matrix.preTranslate(mPosX / mScaleFactor, mPosY / mScaleFactor);
+                matrix.postTranslate(mPosX / mScaleFactor, mPosY / mScaleFactor);
                 canvas.drawBitmap(bitmap, matrix, null);
             }
             //make sure grid goes in the centre
