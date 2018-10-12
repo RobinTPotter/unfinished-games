@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
@@ -14,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.jar.Attributes;
 
-public class PictureView extends View  {
+public class PictureView extends View {
 
 
     private int offsetx = 0;
@@ -33,19 +34,23 @@ public class PictureView extends View  {
     private int c = 0;
     private int r = 0;
 
+    private boolean stateLocked=false;
 
-
-    private float mPosX;
-    private float mPosY;
+    public void setStateLocked(boolean l) {
+        stateLocked=l;
+    }
 
     private float mLastTouchX;
     private float mLastTouchY;
     private static final int INVALID_POINTER_ID = -1;
     private int mActivePointerId = INVALID_POINTER_ID;
 
+    private float mPosX;
+    private float mPosY;
+
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.0f;
-
+    private float mRotate = 0.0f;
 
 
     public PictureView(Context context) {
@@ -95,30 +100,47 @@ public class PictureView extends View  {
                 canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), p);
                 return;
             }
-            Rect src = new Rect(bmpoffsetx, bmpoffsety, bmpwidth, bmpheight);
 
-            double aspect_src = 1.0 * bmpwidth / bmpheight;
-            double aspect_dest = 1.0 * getWidth() / getHeight();
+            boolean matrixStyle = true;
 
-            int destx = 0;
-            int desty = 0;
-            int destwidth = getWidth();
-            int destheight = getHeight();
+            if (!matrixStyle) {
 
-            if (aspect_src > aspect_dest) {
-                //src wider, nudge down, calc height
-                destheight = (int) (destwidth / aspect_src);
-                desty = getHeight() / 2 - destheight / 2;
+                Rect src = new Rect(bmpoffsetx, bmpoffsety, bmpwidth, bmpheight);
+
+                double aspect_src = 1.0 * bmpwidth / bmpheight;
+                double aspect_dest = 1.0 * getWidth() / getHeight();
+
+                int destx = 0;
+                int desty = 0;
+                int destwidth = getWidth();
+                int destheight = getHeight();
+
+                if (aspect_src > aspect_dest) {
+                    //src wider, nudge down, calc height
+                    destheight = (int) (destwidth / aspect_src);
+                    desty = getHeight() / 2 - destheight / 2;
+
+                } else {
+                    //dest wider, nudge across calc width
+                    destwidth = (int) (destheight * aspect_src);
+                    destx = getWidth() / 2 - destwidth / 2;
+                }
+
+                Rect dst = new Rect(destx + (int) mPosX, desty + (int) mPosY, destwidth + destx + (int) mPosX, destheight + desty + (int) mPosY);
+
+
+                canvas.drawBitmap(bitmap, src, dst, null);
 
             } else {
-                //dest wider, nudge across calc width
-                destwidth = (int) (destheight * aspect_src);
-                destx = getWidth() / 2 - destwidth / 2;
+
+                Matrix matrix = new Matrix();
+                matrix.reset();
+                matrix.setTranslate(mPosX, mPosY);
+                matrix.setScale(mScaleFactor, mScaleFactor);
+                matrix.setRotate(mRotate);
+                canvas.drawBitmap(bitmap, matrix, null);
+
             }
-
-            Rect dst = new Rect(destx+(int)mPosX, desty+(int)mPosY, destwidth+destx+(int)mPosX, destheight+desty+(int)mPosY);
-
-
             //make sure grid goes in the centre
 
             int smaller = getHeight();
@@ -131,8 +153,6 @@ public class PictureView extends View  {
                 offsety = 0;
             }
 
-
-            canvas.drawBitmap(bitmap, src, dst, null);
 
             //Toast.makeText(this, "canvas is " + canvas.toString(), Toast.LENGTH_SHORT).show();
 
@@ -168,11 +188,16 @@ public class PictureView extends View  {
     }
 
 
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+
+        if (stateLocked) return true;
+
         // Let the ScaleGestureDetector inspect all events.
+
+
         mScaleDetector.onTouchEvent(ev);
+
 
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
@@ -238,8 +263,6 @@ public class PictureView extends View  {
     }
 
 
-
-
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
@@ -247,7 +270,7 @@ public class PictureView extends View  {
 
             // Don't let the object get too small or too large.
             mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 10.0f));
-         //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
 
             invalidate();
             return true;

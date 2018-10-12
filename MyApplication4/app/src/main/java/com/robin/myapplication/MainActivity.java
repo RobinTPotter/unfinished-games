@@ -52,11 +52,21 @@ public class MainActivity extends AppCompatActivity
 
             process = launchLogcat();
             setContentView(R.layout.activity_main);
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
 
             final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+
+            final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -65,22 +75,22 @@ public class MainActivity extends AppCompatActivity
                     if (locked) {
                         Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                    } else {
+                        setSupportActionBar(null);
 
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    } else {
+                        setSupportActionBar(toolbar);
+
+                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        Snackbar.make(view, "Unocked", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
                     }
+                    pictureView.setStateLocked(locked);
                 }
             });
 
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
 
             pictureView = (PictureView) findViewById(R.id.pictureView);
-
 
 
         } catch (Exception ex) {
