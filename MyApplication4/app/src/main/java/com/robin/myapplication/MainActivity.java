@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     Process process;
     private boolean locked = false;
     PictureView pictureView;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,27 @@ public class MainActivity extends AppCompatActivity
 
         } catch (Exception ex) {
             Toast.makeText(this, "error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt("colour", pictureView.getColour());
+        savedInstanceState.putFloat("mPosX", pictureView.getPosX());
+        savedInstanceState.putFloat("mPosY", pictureView.getPosY());
+        savedInstanceState.putFloat("mRotate", pictureView.getRotate());
+        savedInstanceState.putFloat("mScale", pictureView.getScale());
+        savedInstanceState.putString("imageUri", imageUri.toString());
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            pictureView.setColour(savedInstanceState.getInt("colour", Color.BLACK));
+            pictureView.setPosX(savedInstanceState.getFloat("mPosX", 0f));
+            pictureView.setPosY(savedInstanceState.getFloat("mPosY", 0f));
+            pictureView.setRotate(savedInstanceState.getFloat("mRotate", 0f));
+            pictureView.setScale(savedInstanceState.getFloat("mScale", 1.0f));
+            imageUri = Uri.parse(savedInstanceState.getString("imageUri", ""));
+            loadPicture();
         }
     }
 
@@ -167,15 +189,20 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    try {
-                        final Uri imageUri = imageReturnedIntent.getData();
-                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
-                        pictureView.setBitmap(bitmap);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    final Uri _imageUri = imageReturnedIntent.getData();
+                    imageUri = _imageUri;
+                    loadPicture();
                 }
+        }
+    }
+
+    public void loadPicture() {
+        try {
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
+            pictureView.setBitmap(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 

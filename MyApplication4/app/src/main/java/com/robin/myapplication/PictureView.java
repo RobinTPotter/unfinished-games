@@ -78,6 +78,18 @@ public class PictureView extends View {
     public void setColour(int col) {
         colour = col;
     }
+    public void setScale(float sc) { mScaleFactor=sc;}
+    public void setPosX(float sc) { mPosX=sc;}
+    public void setPosY(float sc) { mPosY=sc;}
+    public void setRotate(float sc) { mRotate=sc;}
+
+    public int getColour() {
+        return colour ;
+    }
+    public float getScale() { return mScaleFactor;}
+    public float getPosX() { return  mPosX;}
+    public float getPosY() { return mPosY;}
+    public float getRotate() { return mRotate;}
 
     public void setRowsCols(int rt, int ct) {
         r = rt;
@@ -109,37 +121,29 @@ public class PictureView extends View {
             if (!matrixStyle) {
 
                 Rect src = new Rect(bmpoffsetx, bmpoffsety, bmpwidth, bmpheight);
-
                 double aspect_src = 1.0 * bmpwidth / bmpheight;
                 double aspect_dest = 1.0 * getWidth() / getHeight();
-
                 int destx = 0;
                 int desty = 0;
                 int destwidth = getWidth();
                 int destheight = getHeight();
-
                 if (aspect_src > aspect_dest) {
                     //src wider, nudge down, calc height
                     destheight = (int) (destwidth / aspect_src);
                     desty = getHeight() / 2 - destheight / 2;
-
                 } else {
                     //dest wider, nudge across calc width
                     destwidth = (int) (destheight * aspect_src);
                     destx = getWidth() / 2 - destwidth / 2;
                 }
-
                 Rect dst = new Rect(destx + (int) mPosX, desty + (int) mPosY, destwidth + destx + (int) mPosX, destheight + desty + (int) mPosY);
-
                 canvas.drawBitmap(bitmap, src, dst, null);
-
             } else {
                 Matrix matrix = new Matrix();
                 matrix.reset();
+                matrix.postTranslate(mPosX, mPosY);
                 matrix.postScale(mScaleFactor, mScaleFactor);
                 matrix.postRotate(mRotate);
-                matrix.postTranslate(mPosX, mPosY);
-
                 canvas.drawBitmap(bitmap, matrix, null);
             }
             //make sure grid goes in the centre
