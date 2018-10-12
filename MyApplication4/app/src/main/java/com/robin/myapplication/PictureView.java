@@ -50,10 +50,10 @@ public class PictureView extends View {
     private int c = 0;
     private int r = 0;
 
-    private boolean stateLocked=false;
+    private boolean stateLocked = false;
 
     public void setStateLocked(boolean l) {
-        stateLocked=l;
+        stateLocked = l;
     }
 
     private float mLastTouchX;
@@ -67,7 +67,7 @@ public class PictureView extends View {
     private ScaleGestureDetector mScaleDetector;
     private float mScaleFactor = 1.0f;
     private float mRotate = 0.0f;
-
+    private boolean rotating = false;
 
     public PictureView(Context context) {
         super(context);
@@ -83,6 +83,10 @@ public class PictureView extends View {
 
     }
 
+    public void setRotating(boolean r) {
+        rotating = r;
+    }
+
     public void setBitmap(Bitmap bmp) {
         bitmap = bmp;
         bmpoffsetx = 0;
@@ -94,20 +98,44 @@ public class PictureView extends View {
     public void setColour(int col) {
         colour = col;
     }
-    public void setScale(float sc) { mScaleFactor=sc;}
-    public void setPosX(float sc) { mPosX=sc;}
-    public void setPosY(float sc) { mPosY=sc;}
-    public void setRotate(float sc) { mRotate=sc;}
+
+    public void setScale(float sc) {
+        mScaleFactor = sc;
+    }
+
+    public void setPosX(float sc) {
+        mPosX = sc;
+    }
+
+    public void setPosY(float sc) {
+        mPosY = sc;
+    }
+
+    public void setRotate(float sc) {
+        mRotate = sc;
+    }
 
     public int getColour() {
-        return colour ;
+        return colour;
     }
-    public float getScale() { return mScaleFactor;}
-    public float getPosX() { return  mPosX;}
-    public float getPosY() { return mPosY;}
-    public float getRotate() { return mRotate;}
 
+    public float getScale() {
+        return mScaleFactor;
+    }
 
+    public float getPosX() {
+        return mPosX;
+    }
+
+    public float getPosY() {
+        return mPosY;
+    }
+
+    public float getRotate() {
+        return mRotate;
+    }
+
+    private float lastScaleFactor = 1.0f;
 
     public void setRowsCols(int rt, int ct) {
         r = rt;
@@ -167,7 +195,6 @@ public class PictureView extends View {
             //make sure grid goes in the centre
 
 
-
             //Toast.makeText(this, "canvas is " + canvas.toString(), Toast.LENGTH_SHORT).show();
 
             if (c > 0 & r > 0) {
@@ -185,8 +212,8 @@ public class PictureView extends View {
                 if (width < height) height = width;
                 else width = height;
 
-                offsetx = getWidth()/2 - (width*c)/2;
-                offsety = getHeight()/2 - (height*r)/2;
+                offsetx = getWidth() / 2 - (width * c) / 2;
+                offsety = getHeight() / 2 - (height * r) / 2;
 
 
                 //Toast.makeText(this, "" + width + "," + height, Toast.LENGTH_SHORT).show();
@@ -199,7 +226,7 @@ public class PictureView extends View {
                     }
                 }
 
-                canvas.drawText(""+mScaleFactor+" "+mRotate+" "+mPosX +","+mPosY,0,getHeight()-20,paint);
+                canvas.drawText("" + mScaleFactor + " " + mRotate + " " + mPosX + "," + mPosY, 0, getHeight() - 20, paint);
 
             }
 
@@ -226,7 +253,6 @@ public class PictureView extends View {
             case MotionEvent.ACTION_DOWN: {
                 final float x = ev.getX();
                 final float y = ev.getY();
-
                 mLastTouchX = x;
                 mLastTouchY = y;
                 mActivePointerId = ev.getPointerId(0);
@@ -239,7 +265,7 @@ public class PictureView extends View {
                 final float y = ev.getY(pointerIndex);
 
                 // Only move if the ScaleGestureDetector isn't processing a gesture.
-               // if (!mScaleDetector.isInProgress()) {
+                // if (!mScaleDetector.isInProgress()) {
                 if (true) {
                     final float dx = x - mLastTouchX;
                     final float dy = y - mLastTouchY;
@@ -290,11 +316,22 @@ public class PictureView extends View {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            mScaleFactor *= detector.getScaleFactor();
-            // Don't let the object get too small or too large.
-            mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 10.0f));
-            //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
+            if (!rotating) {
+                mScaleFactor *= detector.getScaleFactor();
+                // Don't let the object get too small or too large.
+                mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 10.0f));
+                //   Toast.makeText(PictureView.this.getContext(), "" + detector.getScaleFactor(), Toast.LENGTH_SHORT).show();
+
+            } else {
+                int dir = -1;
+                if (lastScaleFactor > detector.getScaleFactor()) {
+                    dir = 1;
+                }
+                mRotate += dir * detector.getScaleFactor();
+
+            }
             invalidate();
+            lastScaleFactor = detector.getScaleFactor();
             return true;
         }
     }
