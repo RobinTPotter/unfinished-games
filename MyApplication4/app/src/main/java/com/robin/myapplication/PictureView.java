@@ -85,7 +85,10 @@ public class PictureView extends View {
     }
 
     public void onDraw(Canvas canvas) {
-        //  super.onDraw(canvas);
+
+        super.onDraw(canvas);
+
+
         try {
             if (bitmap == null) {
                 Paint p = new Paint();
@@ -133,9 +136,10 @@ public class PictureView extends View {
             } else {
                 Matrix matrix = new Matrix();
                 matrix.reset();
-                matrix.setTranslate(mPosX, mPosY);
-                matrix.setScale(mScaleFactor, mScaleFactor);
-                matrix.setRotate(mRotate);
+                matrix.postScale(mScaleFactor, mScaleFactor);
+                matrix.postRotate(mRotate);
+                matrix.postTranslate(mPosX, mPosY);
+
                 canvas.drawBitmap(bitmap, matrix, null);
             }
             //make sure grid goes in the centre
@@ -259,7 +263,6 @@ public class PictureView extends View {
             }
         }
 
-        Toast.makeText(this.getContext(), ""+mPosX+","+mPosY, Toast.LENGTH_SHORT).show();
 
         return true;
     }
