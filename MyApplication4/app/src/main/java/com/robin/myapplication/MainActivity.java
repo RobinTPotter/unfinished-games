@@ -3,6 +3,7 @@ package com.robin.myapplication;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -75,13 +76,9 @@ public class MainActivity extends AppCompatActivity
                     if (locked) {
                         Snackbar.make(view, "Locked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                        setSupportActionBar(null);
 
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
                     } else {
-                        setSupportActionBar(toolbar);
-
-                        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                         Snackbar.make(view, "Unocked", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }

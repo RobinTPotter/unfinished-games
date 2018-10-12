@@ -179,6 +179,9 @@ public class PictureView extends View {
                         canvas.drawRect(rect, paint);
                     }
                 }
+
+                canvas.drawText(""+mScaleFactor+" "+mRotate+" "+mPosX +","+mPosY,0,getHeight()-20,paint);
+
             }
 
         } catch (Exception ex) {
