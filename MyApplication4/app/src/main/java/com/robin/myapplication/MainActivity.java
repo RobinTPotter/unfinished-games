@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.action_grid_colour_yellow) {
             pictureView.setColour(Color.YELLOW);
             pictureView.invalidate();
+
             return true;
         }
 

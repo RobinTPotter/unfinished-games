@@ -239,7 +239,8 @@ public class PictureView extends View {
                 final float y = ev.getY(pointerIndex);
 
                 // Only move if the ScaleGestureDetector isn't processing a gesture.
-                if (!mScaleDetector.isInProgress()) {
+               // if (!mScaleDetector.isInProgress()) {
+                if (true) {
                     final float dx = x - mLastTouchX;
                     final float dy = y - mLastTouchY;
 
