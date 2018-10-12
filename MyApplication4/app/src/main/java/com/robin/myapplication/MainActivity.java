@@ -102,7 +102,9 @@ public class MainActivity extends AppCompatActivity
         savedInstanceState.putFloat("mPosY", pictureView.getPosY());
         savedInstanceState.putFloat("mRotate", pictureView.getRotate());
         savedInstanceState.putFloat("mScale", pictureView.getScale());
-        savedInstanceState.putString("imageUri", imageUri.toString());
+        String stringUri="";
+        if (imageUri != null) stringUri=imageUri.toString();
+        savedInstanceState.putString("imageUri", stringUri);
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -201,8 +203,8 @@ public class MainActivity extends AppCompatActivity
             final InputStream imageStream = getContentResolver().openInputStream(imageUri);
             Bitmap bitmap = BitmapFactory.decodeStream(imageStream).copy(Bitmap.Config.ARGB_8888, true);
             pictureView.setBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
