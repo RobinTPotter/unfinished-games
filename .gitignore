@@ -1,0 +1,3 @@
+*.pyc
+*.class
+servers/cards/node_modules

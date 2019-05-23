@@ -1,0 +1,6 @@
+# view res/layout/main.xml #generated:12
+-keep class robin.hello.finger.Plate { <init>(...); }
+
+# view AndroidManifest.xml #generated:8
+-keep class robin.hello.finger.TheFinger { <init>(...); }
+

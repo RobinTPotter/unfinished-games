@@ -1,0 +1,711 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 744.0945 1052.3622">
+    <defs>
+        <pattern id="p_circles" x="5" y="0" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0) scale(2)">
+            <circle cx="20" cy="20" r="16" style="fill:none;stroke:#000;stroke-width:2"/>
+        </pattern>
+        
+        <pattern id="p_squares" x="5" y="0" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(43 0 0) scale(2)">
+            <rect x="0" y="0" width="30" height="30" style="fill:none;stroke:#000;stroke-width:2"/>
+        </pattern>
+        
+        <pattern id="p_stars" x="0" y="0" width="110" height="110" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
+            <g transform="translate(20 0) rotate(45 13 24) scale(2.4)">
+                <path d="M 29 13 L 19 18 L 18 28 L 11 21 L 0 22 L 5 13 L 0 4 L 11 5 L 18 -2 L 19 8 L 29 13" style="fill:none;stroke:#000;stroke-width:2"/>
+            </g>
+        </pattern>
+        
+        <pattern id="p_triangles" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
+            <g transform="rotate(45 8 22) scale(2.1)"><path d="M 0 0 L 30 0 L 15 26 L 0 0" style="fill:none;stroke:#000;stroke-width:2"/></g>
+        </pattern>
+    </defs>
+
+
+
+    
+
+    <g transform="scale(.77)"><g transform="scale(0.25) translate(100 141)" id="deck"><g id="p_circles_6_1554309799382" style="visibility: visible;" transform="translate(0 0)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">6</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">6</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">6</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_7_1554309799383" style="visibility: visible;" transform="translate(1333 0)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">7</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">7</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">7</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_8_1554309799383" style="visibility: visible;" transform="translate(2666 0)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">8</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">8</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">8</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_9_1554309799383" style="visibility: visible;" transform="translate(0 1879.53)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">9</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">9</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle">9</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_M_1554309799384" style="visibility: visible;" transform="translate(1333 1879.53)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle"/>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" text-anchor="middle"/>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d="m 395.93093,397.32628 c -31.2681,-41.54588 -18.19945,-110.78495 20.04882,-149.03283 38.24826,-38.24827 105.61896,-51.3169 149.03283,-20.04882 z M 625.22708,288.9837 C 652.25091,330.33573 642.7817,399.08865 604.77832,437.09202 566.77531,475.09541 498.956,487.36657 456.67038,457.5404 Z M 357.23089,495.95994 c 87.53186,87.53187 227.08444,89.8975 311.69844,5.28308 84.61438,-84.61439 82.24917,-224.16654 -5.2831,-311.69841 l -0.11907,-0.11907 c -87.53187,-87.53227 -227.08402,-89.897506 -311.69842,-5.28308 -84.61401,84.61438 -82.24879,224.16656 5.28308,311.69841 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_+2_1554309799384" style="visibility: visible;" transform="translate(2666 1879.53)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+2</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(450 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline: middle; font-family: impact; font-size: 750px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">+2</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 750px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">+2</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_R_1554309799385" style="visibility: visible;" transform="translate(0 3759.06)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: url(&quot;#p_circles&quot;); stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle"/>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline: middle; font-family: impact; font-size: 900px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle"/>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 900px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle"/>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d="m 546.55515,558.6015 c -73.68388,0 -133.41657,-57.74128 -133.41657,-128.96934 0,-71.22769 59.73269,-128.9694 133.41657,-128.9694 l 0,-87.69879 c -123.78873,0 -224.13966,97.00542 -224.13966,216.66819 0,119.66273 100.35093,216.66854 224.13966,216.66854 l 0,57.193 79.11769,-101.0424 -79.11769,-101.04241 z M 474.2032,126.78383 c 73.68388,0 133.41659,57.74128 133.41659,128.96937 0,71.22769 -59.73271,128.96935 -133.41659,128.96935 l 0,87.69883 c 123.78875,0 224.13966,-97.00581 224.13966,-216.66818 0,-119.66276 -100.35091,-216.668561 -224.13966,-216.668561 l 0,-57.19301 -79.11769,101.042415 79.11769,101.042396 z"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_?_1554309799385" style="visibility: visible;" transform="translate(1333 3759.06)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: none; stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: sans-serif; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">?</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(500 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline: middle; font-family: sans-serif; font-size: 900px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">?</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline: middle; font-family: sans-serif; font-size: 900px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">?</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g><g id="p_circles_+4_1554309799386" style="visibility: visible;" transform="translate(2666 3759.06)">
+        <g id="background">
+            <rect id="main_d1" x="0" y="0" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_d2" x="20" y="20" width="960" height="1370" style="fill:none;stroke:#000;stroke-width:3"/>
+            <rect id="main_background" x="40" y="40" width="900" height="1310" style="fill: none; stroke: rgb(0, 0, 0); stroke-width: 5;"/>
+        </g>
+        <g id="values">
+            <g transform="translate(120 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t1" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <text id="t2" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)"> <!-- (10 10) -->
+                            <path id="s1" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> <!-- (0 0) -->
+                            <path id="s2" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(840 120)"> <!-- (120 120) -->
+                <g id="minor_digit">
+                    <text id="t3" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <text id="t4" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s3" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)"> 
+                            <path id="s4" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(120 1250)">
+                <g id="minor_digit">
+                    <text id="t5" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <text id="t6" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s5" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s6" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                    </g>
+                 </g>
+            </g>
+            <g transform="translate(840 1250)">
+                <g id="minor_digit">
+                    <text id="t7" class="value_top_left" x="10" y="10" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <text id="t8" class="value_top_left" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 100px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 2;" text-anchor="middle">+4</text>
+                    <g transform="translate(-75 -60)">
+                        <g transform="translate(10 10)scale(0.15)">
+                            <path id="s7" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#000;stroke:#000;stroke-width:10" d=""/>
+                        </g>
+                        <g transform="translate(0 0)scale(0.15)">
+                            <path id="s8" class="value_top_left" style="dominant-baseline:middle;font-family:sans-serif;font-size:100;fill:#fff;stroke:#000;stroke-width:10" d=""/>
+                        </g> </g>
+                 </g>
+            </g>
+            <g id="main_value" transform="translate(450 720)">
+                <g id="main_digit">
+                    <g class="text">
+                        <text id="value_main_shadow" x="15" y="15" style="dominant-baseline: middle; font-family: impact; font-size: 750px; fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">+4</text>
+                        <text id="value_main" x="0" y="0" style="dominant-baseline: middle; font-family: impact; font-size: 750px; fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0); stroke-width: 10; letter-spacing: -30px;" text-anchor="middle">+4</text>
+                        <g transform="translate(-500 -380)">
+                        <g transform="translate(15 15)"><path id="s_value_main_shadow" x="15" y="15" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#000;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/></g>
+                        <path id="s_value_main" x="0" y="0" style="dominant-baseline:middle;font-family:impact;font-size:900;fill:#fff;stroke:#000;stroke-width:10;letter-spacing:-30" d=""/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g></g></g>
+
+    
+    <script type="text/javascript">
+    <![CDATA[
+        document.getElementsByTagName('svg')[0].removeChild(document.getElementById('main_script'))
+    ]]>
+    </script>
+    
+    
+</svg>
