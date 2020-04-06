@@ -19,6 +19,9 @@ l.rot = [0,0,0]+[-10 for a in range(0,180,10)]+[0,0,0,0]
 l.gen()
 g.lines = [l.outer_lines, l.inner_lines, l.wall_lines]
 
+
+from random import randint
+
 def poo(point):
     return point[0]-1+randint(0,1), point[1]-1+randint(0,1)
 
@@ -28,25 +31,62 @@ g.tf = poo
 
 # args = argparse.init()
 
-def depth(tup, dep=10):
-    return (
-        (tup[0]) / dep,
-        (tup[1]) / dep
-    )
+class Point():
+    def __init__(self, x=0, y=0, *args):
+        self.x=x
+        self.y=y
+        if isinstance(args, (tuple)) and len(args)==2:
+            self.x = args[0]
+            self.y = args[1]
+    
+    def __add__(self, point):
+        if isinstance(point,Point):
+            return Point(self.x+point.x,self.y+point.y)
+        elif isinstance(point,(int,float)):
+            return Point(self.x+point,self.y+point)
+        else:
+            print('operation not allowed add {} to {}'.format(self, point))
+            return None
+
+    def __mult__(self, point):
+        if isinstance(point,Point):
+            return Point(self.x*point.x,self.y*point.y)
+        elif isinstance(point,(int,float)):
+            return Point(self.x*point,self.y*point)
+        else:
+            print('operation not allowed mult {} to {}'.format(self, point))
+            return None
+            
+    def __truediv__(self, point):
+        if isinstance(point,Point):
+            return Point(self.x/point.x,self.y/point.y)
+        elif isinstance(point,(int,float)):
+            return Point(self.x/point,self.y/point)
+        else:
+            print('operation not allowed truediv {} to {}'.format(self, point))
+            return None
+    
+    def tup(self):
+        return (self.x, self.y)
+        
+
+
+
 
 class Level():
     def __init__(self, size=SIZE):
         self.closed = False
         self.size = size
-        self.init_start = (-220,-220)
+        self.init_start = Point(-220,-120)
         self.length = 38
         self.init_rot = 90
-        self.rot = [10,10,10,-10,-10,-10]
+        self.rot = [0,0,0] + [-10 for a in range(12)] +[10,10,10]
         self.depth = 10
 
     def gen(self):
         self.closed = False
         size = self.size
+        middle = Point (self.size[0] / 2, self.size[1] / 2)
         start = self.init_start
         self.outer_lines = []
         self.inner_lines = []
@@ -54,27 +94,30 @@ class Level():
         current_a = self.init_rot
         saved_start_top = None
         saved_start_bottom = None
+        centre = Point(SIZE[0],SIZE[1])
         for a in self.rot:
             current_a = current_a + a
 
-            end = (start[0]+self.length*cos(2 * pi * current_a / 360), \
-                start[1]+self.length*sin(2 * pi * current_a / 360) )
 
-            if saved_start_top is None: saved_start_top = (start[0]+size[0]/2,start[1]+size[1]/2)
+            next =  Point(self.length * cos(2 * pi * current_a / 360),self.length * sin(2 * pi * current_a / 360))
 
-            self.outer_lines.append((start[0]+size[0]/2,start[1]+size[1]/2))
-            self.outer_lines.append((end[0]+size[0]/2,end[1]+size[1]/2))
+            end = start + next
 
-            deep_start = depth(start,dep=self.depth)
-            deep_end = depth(end,dep=self.depth)
+            if saved_start_top is None: saved_start_top =start + middle
 
-            self.inner_lines.append((deep_start[0]+size[0]/2,deep_start[1]+size[1]/2))
-            self.inner_lines.append((deep_end[0]+size[0]/2,deep_end[1]+size[1]/2))
+            self.outer_lines.append(start + middle)
+            self.outer_lines.append(end + middle)
 
-            if saved_start_bottom is None: saved_start_bottom = (deep_start[0]+size[0]/2,deep_start[1]+size[1]/2)
+            deep_start = start / self.depth
+            deep_end = end / self.depth
 
-            self.wall_lines.append((end[0]+size[0]/2,end[1]+size[1]/2))
-            self.wall_lines.append((deep_end[0]+size[0]/2,deep_end[1]+size[1]/2))
+            self.inner_lines.append(deep_start + middle)
+            self.inner_lines.append(deep_end + middle)
+
+            if saved_start_bottom is None: saved_start_bottom = (deep_start + middle)
+
+            self.wall_lines.append(end + middle)
+            self.wall_lines.append(deep_end + middle)
 
             start = end
         if start == self.init_start:
@@ -113,7 +156,8 @@ class Gogo():
 
     def tf(self,point):
         from random import randint
-        return point
+        me = Point(point.x, point.y)+Point(randint(-1,1),randint(-1,1))/2
+        return me
 
     def gogo(self):
         print('gogo')
@@ -124,17 +168,13 @@ class Gogo():
                 if event.type == pg.QUIT:
                     self.working = False
 
-                pg.display.update()
-
             self.screen.fill(Colours.darkBlue)
             for ls in self.lines:
                 for ll in range(0, len(ls), 2):
-                    pg.draw.line(self.screen, Colours.white, self.tf(ls[ll]), self.tf(ls[ll+1]), 1)
+                    pg.draw.line(self.screen, Colours.white, self.tf(ls[ll]).tup(), self.tf(ls[ll+1]).tup(), 1)
 
             self.clock.tick(40)
             pg.display.flip()
-
-            w = self.get_working()
         
         pg.display.quit()
         if DEBUG: print('end')
