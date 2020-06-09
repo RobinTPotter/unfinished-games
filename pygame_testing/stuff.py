@@ -48,7 +48,7 @@ class Point():
             print('operation not allowed add {} to {}'.format(self, point))
             return None
 
-    def __mult__(self, point):
+    def __mul__(self, point):
         if isinstance(point,Point):
             return Point(self.x*point.x,self.y*point.y)
         elif isinstance(point,(int,float)):
@@ -97,28 +97,18 @@ class Level():
         centre = Point(SIZE[0],SIZE[1])
         for a in self.rot:
             current_a = current_a + a
-
-
             next =  Point(self.length * cos(2 * pi * current_a / 360),self.length * sin(2 * pi * current_a / 360))
-
             end = start + next
-
             if saved_start_top is None: saved_start_top =start + middle
-
             self.outer_lines.append(start + middle)
             self.outer_lines.append(end + middle)
-
             deep_start = start / self.depth
             deep_end = end / self.depth
-
             self.inner_lines.append(deep_start + middle)
             self.inner_lines.append(deep_end + middle)
-
             if saved_start_bottom is None: saved_start_bottom = (deep_start + middle)
-
             self.wall_lines.append(end + middle)
             self.wall_lines.append(deep_end + middle)
-
             start = end
         if start == self.init_start:
             self.closed = True
@@ -145,7 +135,7 @@ class Gogo():
         #self.lines = [[ (10,10), (20,20)]]
         self.level = Level()
         self.level.gen()
-        self.lines = [self.level.outer_lines, self.level.inner_lines, self.level.wall_lines]
+        #self.lines = [self.level.outer_lines, self.level.inner_lines, self.level.wall_lines]
         self.working = True
         self.thread = threading.Thread(target=self.gogo)
         if DEBUG: print('starting thread')
@@ -169,9 +159,9 @@ class Gogo():
                     self.working = False
 
             self.screen.fill(Colours.darkBlue)
-            for ls in self.lines:
-                for ll in range(0, len(ls), 2):
-                    pg.draw.line(self.screen, Colours.white, self.tf(ls[ll]).tup(), self.tf(ls[ll+1]).tup(), 1)
+            lines = self.level.outer_lines+self.level.wall_lines+self.level.inner_lines
+            for ll in range(0, len(lines), 2):
+                pg.draw.line(self.screen, Colours.white, self.tf(lines[ll]).tup(), self.tf(lines[ll+1]).tup(), 1)
 
             self.clock.tick(40)
             pg.display.flip()
