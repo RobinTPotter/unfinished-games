@@ -9,12 +9,38 @@ SIZE = (640, 480)
 DEBUG=True
 
 
+
+
 class Matrix:
     def __init__(self, x,y,z,t):
         self.x=x
         self.y=y
         self.z=z
         self.t=t
+
+def rotationX(a):
+    return Matrix(
+        Point(1,0,0),
+        Point(0,cos(a), -sin(a)),
+        Point(0, sin(a), cos(a)),
+        Point(0,0,0)
+    )
+
+def rotationY(a):
+    return Matrix(
+        Point(cos(a), 0, sin(a)),
+        Point(0,1, 0),
+        Point(-sin(a), 0, cos(a)),
+        Point(0,0,0)
+    )
+
+def rotationZ(a):
+    return Matrix(
+        Point(cos(a), -sin(a), 0),
+        Point(sin(a), cos(a), 0),
+        Point(0, 0,1),
+        Point(0,0,0)
+    )
 
 class Point():
     def __init__(self, x=0, y=0, z=0, *args):
@@ -141,7 +167,10 @@ class Gogo():
         pg.init()
         self.screen = pg.display.set_mode(SIZE)
         while self.get_working():
-            camera.t.x -= 0.01
+            #camera.t.x -= 0.01
+            camera.x = camera.x.matrix_mult(rotationZ(0.005))
+            #camera.y = camera.y.matrix_mult(rotationZ(0.001))
+            #camera.z = camera.z.matrix_mult(rotationX(0.0001))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.working = False
