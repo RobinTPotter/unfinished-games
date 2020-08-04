@@ -48,8 +48,12 @@ class Camera:
         self._matrix.itemset(13,  p.y())
         self._matrix.itemset(14,  p.z())
         self.update()
+    def getPos(self):
+        return self._p
+        
     def update(self):
         self._inv = np.linalg.inv(self._matrix)
+        
     def rotateU(self, angle):
         cur = self._u
         dd = self._d.rotate(cur, angle)
@@ -136,7 +140,7 @@ class Polygon:
         return 'Polygon {}'.format(self.points)
     def matrix_mult_project(self, camera, size):
         self.shape = []
-        mm = [p.matrix_mult(camera._matrix) for p in self.points]
+        mm = [p.matrix_mult(camera._inv) for p in self.points]
         #print(mm)
         pr = [p.project(size) for p in mm if p.z()>0]
         if len(pr)>=3:
@@ -176,15 +180,29 @@ class Gogo():
             data = fl.readlines()
             data = [d.split(',') for d in data]
             self.model = [Polygon(num=int(d[0]), data=d[1:]) for d in data]
+        
+        for mp in self.model:
+            for mpp in mp.points:
+                mpp._vector[2]=0.2
         #self.model = [Polygon()]
+      
+        self.init_controls()
+      
         print(self.model) 
         self.thread = threading.Thread(target=self.gogo)
         self.camera = Camera()
         self.camera.setPos(Point(0,0,0.05))
-        self.camera.rotateU(0.002)
         print(self.camera) 
         if DEBUG: print('starting thread')
         self.thread.start()
+   
+    def init_controls(self):
+        control = type('control', (object,), { "key": 0, "status": False } )
+        self.controls = type('controls', (object,), { "left": control(), "right": control(), "go": control() })        
+        self.controls.left.key = pg.K_LEFT
+        self.controls.right.key = pg.K_RIGHT
+        self.controls.go.key = pg.K_SPACE
+        
    
     def get_working(self):
         return self.working
@@ -202,6 +220,15 @@ class Gogo():
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.working = False
+                    
+                if event.type == pg.KEYDOWN or event.type == pg.KEYUP:
+                    if event.key == self.controls.left.key:
+                        self.controls.left.status = event.type == pg.KEYDOWN 
+                    if event.key == self.controls.right.key:
+                        self.controls.right.status = event.type == pg.KEYDOWN 
+                    if event.key == self.controls.go.key:
+                        self.controls.go.status = event.type == pg.KEYDOWN 
+                        
 
             self.screen.fill(Colours.darkBlue)
             for pol in self.model:
@@ -216,7 +243,14 @@ class Gogo():
                 #        #print (l1,l2)
                 #        pg.draw.line(self.screen, Colours.white, l1, l2, 1)
 
-            self.camera.rotateD(0.05)
+            if self.controls.left.status or self.controls.right.status:
+                p = self.camera.getPos()                
+                if self.controls.right.status: p._vector[0] += 0.1
+                if self.controls.left.status: p._vector[0] -= 0.1
+                self.camera.setPos(p)
+            
+            if self.controls.go.status: self.camera.rotateD(0.02)
+            
             #print(self.camera)
             pg.display.flip()
         
