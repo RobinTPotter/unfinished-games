@@ -143,9 +143,11 @@ class Polygon:
             self.points = Polygon(radius=1, num=4).points
     def __repr__(self):
         return 'Polygon {}'.format(self.points)
-    def matrix_mult_project(self, camera, size, offset=Point()):
+    def matrix_mult_project(self, camera, size, orientation=Camera()):
         self.shape = []
-        mm = [(p+offset).matrix_mult(camera._inv) for p in self.points]
+        points = [(p).matrix_mult(camera._inv) for p in self.points]
+        
+        mm = [(p).matrix_mult(orientation._inv) for p in points]
         #print(mm)
         pr = [p.project(size) for p in mm if p.z()>0]
         if len(pr)>=3:
@@ -172,8 +174,19 @@ class Colours():
 
 
 
+class Model:
 
-
+    def __init__(self,polys):
+        self.polygons = polys
+        self.orientation = Camera()
+        self.orientation.setPos(Point(0,0,-0.1))
+        
+    def draw(self, screen, camera, size):
+        for pol in self.polygons:
+            ply = pol.matrix_mult_project(camera, size, orientation=self.orientation)
+            #print(ply)
+            if ply is not None:
+                pg.draw.polygon(screen, Colours.darkGreen, ply)
 
 
 
@@ -184,7 +197,8 @@ class Gogo():
         with open('output.poly') as fl:
             data = fl.readlines()
             data = [d.split(',') for d in data]
-            self.model = [Polygon(num=int(d[0]), data=d[1:]) for d in data]
+            self.model = Model([Polygon(num=int(d[0]), data=d[1:]) for d in data])
+            self.model.pos = Point(0,0,0.1)
         
         #self.model = [Polygon(radius=-3040, num=3)]
       
@@ -193,7 +207,7 @@ class Gogo():
         print(self.model) 
         self.thread = threading.Thread(target=self.gogo)
         self.camera = Camera()
-        self.camera.setPos(Point(0,0,0.05))
+        self.camera.setPos(Point(2,0,0))
         print(self.camera) 
         if DEBUG: print('starting thread')
         self.thread.start()
@@ -239,11 +253,8 @@ class Gogo():
                         
 
             self.screen.fill(Colours.darkBlue)
-            for pol in self.model:
-                ply = pol.matrix_mult_project(self.camera, SIZE, offset=Point(0,0,0.2))
-                #print(ply)
-                if ply is not None:
-                    pg.draw.polygon(self.screen, Colours.darkGreen, ply)
+            self.model.orientation.rotateD(0.05)
+            self.model.draw(self.screen, self.camera, SIZE)
                 #for p in range(len(pol.points)):
                 #    l1 = pol.points[p].matrix_mult(camera).project(SIZE)
                 #    l2 = pol.points[(p+1) % len(pol.points)].matrix_mult(camera).project(SIZE)
@@ -251,21 +262,29 @@ class Gogo():
                 #        #print (l1,l2)
                 #        pg.draw.line(self.screen, Colours.white, l1, l2, 1)
 
+            #if self.controls.left.status or self.controls.right.status:
+            #    p = self.camera.getPos()                
+            #    if self.controls.right.status: p._vector[0] += 1
+            #    if self.controls.left.status: p._vector[0] -= 1
+            #    self.camera.setPos(p)
+            #
+            #if self.controls.up.status or self.controls.down.status:
+            #    p = self.camera.getPos()                
+            #    if self.controls.up.status: p._vector[1] += 1
+            #    if self.controls.down.status: p._vector[1] -= 1
+            #    self.camera.setPos(p)
+            #
+            #if self.controls.go.status: self.camera.rotateV(0.2)
+            
             if self.controls.left.status or self.controls.right.status:
-                p = self.camera.getPos()                
-                if self.controls.right.status: p._vector[0] += 1
-                if self.controls.left.status: p._vector[0] -= 1
-                self.camera.setPos(p)
+                if self.controls.left.status: self.camera.rotateV(0.02)
+                elif self.controls.right.status: self.camera.rotateV(-0.02)
             
             if self.controls.up.status or self.controls.down.status:
-                p = self.camera.getPos()                
-                if self.controls.up.status: p._vector[1] += 1
-                if self.controls.down.status: p._vector[1] -= 1
-                self.camera.setPos(p)
+                if self.controls.up.status: self.camera.rotateU(0.02)
+                elif self.controls.down.status: self.camera.rotateU(-0.02)
             
-            if self.controls.go.status: self.camera.rotateV(0.2)
-            
-            #print(self.camera)
+            print(self.camera._inv)
             pg.display.flip()
         
         pg.display.quit()
